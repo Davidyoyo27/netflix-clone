@@ -4,10 +4,14 @@
 
 <script>
 export default {
-
-}
+  props: {},
+  data() {
+    return {};
+  },
+  watch: {},
+};
 </script>
 
-<style>
+<style scoped>
 
 </style>

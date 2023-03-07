@@ -1,5 +1,4 @@
 <template>
-  <div class="wrapper">
     <div class="container">
       <div class="item">
         <h1>¿Te perdiste?</h1>
@@ -16,7 +15,6 @@
     <div class="cont-movie">
       <p>DE <strong>PERDIDOS EN EL ESPACIO</strong></p>
     </div>
-  </div>
 </template>
 
 <script>
@@ -50,7 +48,6 @@ export default {
 .item {
   height: auto;
   width: 55rem;
-  cursor: default;
 }
 
 h1 {
@@ -100,6 +97,7 @@ h2 strong {
   display: flex;
   justify-content: flex-end;
   align-items: flex-end;
+  cursor: default;
 }
 
 .cont-movie p {

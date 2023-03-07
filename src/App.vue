@@ -1,23 +1,25 @@
 <template>
-  <!-- MENU -->
-  <MenuPrincipal></MenuPrincipal>
-  <!-- FIN MENU -->
-  <!-- el router view llama directamente a la ruta definida por defecto como el Home/Inicio -->
-  <!-- 1.9 -->
-  <router-view></router-view>
+  <div class="body">
+    <!-- MENU -->
+    <MenuPrincipal></MenuPrincipal>
+    <!-- FIN MENU -->
+    <!-- el router view llama directamente a la ruta definida por defecto como el Home/Inicio -->
+    <!-- 1.9 -->
+    <router-view></router-view>
+  </div>
 </template>
 
 <script>
-import MenuPrincipal from './components/MenuPrincipal.vue';
-import Inicio from './components/Inicio.vue';
+import MenuPrincipal from "./components/MenuPrincipal.vue";
+import Inicio from "./components/Inicio.vue";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
     MenuPrincipal,
     Inicio,
-  }
-}
+  },
+};
 </script>
 
 <style>
@@ -30,8 +32,9 @@ export default {
   /* margin-top: 60px; */
 }
 
-*{
+* {
   padding: 0;
   margin: 0;
 }
+
 </style>

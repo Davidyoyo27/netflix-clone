@@ -37,4 +37,7 @@ export default {
   margin: 0;
 }
 
+.body{
+  background-color: coral;
+}
 </style>

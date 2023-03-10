@@ -4,6 +4,27 @@
       <!-- INICIO MENU IZQUIERDO -->
       <div class="first_option_menu">
         <img src="../assets/Netflix_2015_logo.svg.png" alt="" />
+        <!-- INICIO RESPONSIVE MENU -->
+        <ul class="responsive_menu">
+          <li>
+            <div class="cont_responsive_menu">
+              <p>Explorar</p>
+              <div class="figure"></div>
+              <ul class="responsive_menu_options">
+                <div class="cont-figure-left-menu">
+                  <div class="figure_left_menu"></div>
+                </div>
+                <a href="">Inicio</a>
+                <a href="">Series</a>
+                <a href="">Películas</a>
+                <a href="">Novedades populares</a>
+                <a href="">Mi lista</a>
+                <a href="">Explora por idiomas</a>
+              </ul>
+            </div>
+          </li>
+        </ul>
+        <!-- FIN RESPONSIVE MENU -->
         <a href="#">
           <li>Inicio</li>
         </a>
@@ -37,19 +58,22 @@
             placeholder="Títulos, personas, géneros"
           />
         </div>
-        <a href="">Niños</a>
+        <a class="link-second-menu" href="">Niños</a>
         <font-awesome-icon class="icon" icon="fa-solid fa-bell" />
         <!-- INICIO PERFIL MENU -->
         <ul class="right_menu">
           <li>
-            <div class="cont-img-icon">
-              <img
-                class="img-icon"
-                src="../assets/image-icon-netflix.png"
-                alt=""
-              />
-              <div class="figure"></div>
+            <div class="cont-menu">
+              <div class="cont-img-icon">
+                <img
+                  class="img-icon"
+                  src="../assets/image-icon-netflix.png"
+                  alt=""
+                />
+                <div class="figure"></div>
+              </div>
               <ul class="submenu">
+                <div class="figure_right_menu"></div>
                 <a href="">
                   <div>
                     <img
@@ -147,9 +171,7 @@
 <script>
 export default {
   data() {},
-  methods: {
-
-  },
+  methods: {},
 };
 </script>
 
@@ -166,12 +188,15 @@ export default {
   display: flex;
   align-items: center;
   gap: 1rem;
+  background-color: slateblue;
 }
 
 .second_option_menu {
   display: flex;
   align-items: center;
   gap: 1.2rem;
+  background-color: violet;
+  /* margin-right: 5rem; */
 }
 
 .first_option_menu a {
@@ -195,9 +220,12 @@ a li.active,
   color: #fff;
 }
 
+.submenu a {
+  background-color: skyblue;
+}
+
 .first_option_menu img {
   width: 5.8rem;
-  margin: 0rem 2.7rem 0rem 3.7rem;
 }
 
 .second_option_menu .icon_search,
@@ -218,7 +246,7 @@ a li.active,
 
 .icon_search {
   position: absolute;
-  margin-left: .4rem;
+  margin-left: 0.4rem;
 }
 
 .input_search {
@@ -244,15 +272,12 @@ a li.active,
 .input_search:focus {
   width: 17rem;
   font-size: 14px;
+  /* transicion del input cuando se abre */
   transition: width 0.3s ease-in-out;
   outline: none;
   border: 1px solid #fff;
   opacity: 1;
   cursor: auto;
-}
-
-.right_menu{
-  margin-right: 5rem;
 }
 
 .right_menu > li {
@@ -272,10 +297,12 @@ a li.active,
   width: 380%;
   visibility: hidden;
   opacity: 0;
-  transition: opacity 0.5s;
+  /* el transition le da el desvanecimiento al 
+  menu al momento de quitar el mouse de encima */
+  transition: 0.5s;
   border-radius: 1px solid #000;
   right: 0rem;
-  top: 2rem;
+  top: 3.5rem;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -308,7 +335,7 @@ a li.active,
 
 .session-close {
   padding: 1.2rem;
-  border-top: 1px solid #fff;
+  border-top: 1.5px solid #6e6c6c;
 }
 
 .session-close p {
@@ -347,26 +374,213 @@ a li.active,
   transition: 0.4s;
 }
 
+.figure_right_menu {
+  /* creacion de figura geometrica */
+  border-bottom: 5px solid darkgreen;
+  border-left: 8px solid black;
+  border-right: 8px solid blue;
+  border-width: 8px;
+  border-color: transparent;
+  border-bottom-color: #f0eeee;
+  width: 0;
+  height: 0;
+  margin-left: 10px;
+  transform: rotate(0deg);
+  /* fin creacion de figura geometrica */
+  /* posicionamiento del elemento */
+  position: absolute;
+  bottom: 25.5rem;
+  left: 9rem;
+  /* fin posicionamiento del elemento */
+  background-color: seagreen;
+  cursor: pointer;
+}
+
 /* al hacer hover en el cont se mueve la figura creada */
 /* ej de como mover otro elemento cuando se hace hover en otro elemento 
  pero el requisito es que el elemento a mover este contenido dentro de otro, 
  en este caso es el div cont*/
-.cont-img-icon:hover .figure {
+.cont-menu:hover .figure {
   /* rotate(XXXrad) para que la figura gire hacia la derecha y no hacia la izquierda 
     como lo hace de manera normal */
   transform: rotate(6.285rad);
   transition: 0.4s;
 }
 
-.cont-img-icon {
+.cont-img-icon{
   display: flex;
   align-items: center;
+  cursor: pointer;
+}
+
+/* ---------------------------------------------------------------- */
+.responsive_menu {
+  display: none;
+}
+
+.responsive_menu > li {
+  position: relative;
+  display: inline-block;
+}
+
+.responsive_menu > li > a {
+  display: block;
+  font-family: "Open sans";
+  text-decoration: none;
+}
+
+.responsive_menu_options {
+  position: absolute;
+  /* hace el menu transparente */
+  background-color: rgba(0, 0, 0, 0.8);
+  width: 380%;
+  visibility: hidden;
+  opacity: 0;
+  transition: 0.5s;
+  border-radius: 1px solid #000;
+  right: -6.5rem;
+  top: 4rem;
+  display: flex;
+  flex-direction: column;
+}
+
+/* linea blanca del menu responsive de la izquierda(Explorar) */
+.responsive_menu_options a:nth-child(2) {
+  border-top: 3px solid #fff;
+}
+
+.responsive_menu_options li {
+  list-style: none;
+}
+
+.responsive_menu_options a {
+  text-decoration: none;
+  padding: 1rem;
+}
+
+.responsive_menu_options a:hover {
+  background-color: rgba(73, 72, 72, 0.5);
+}
+
+.responsive_menu_options div p {
+  margin-left: 0.5rem;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.responsive_menu li:hover .responsive_menu_options {
+  visibility: visible;
+  opacity: 1;
+}
+
+.figure_left_menu {
+  border-bottom: 5px solid darkgreen;
+  border-left: 8px solid black;
+  border-right: 8px solid blue;
+  border-width: 8px;
+  border-color: transparent;
+  border-bottom-color: #f0eeee;
+  width: 0;
+  height: 0;
+  margin-left: 10px;
+  transform: rotate(0deg);
+}
+
+.cont-figure-left-menu {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: absolute;
+  width: 100%;
+  bottom: 19.2rem;
+}
+
+.cont_responsive_menu,
+.responsive_menu_options a {
+  color: #fff;
+}
+
+.cont_responsive_menu {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.cont_responsive_menu p {
+  font-size: 14px;
+  font-weight: 600;
 }
 
 @media screen and (max-width: 890px) {
-  /* ejemplo del cambio de menu */
-  /* .principal_menu{
+  .principal_menu {
+    background-color: skyblue;
+  }
+
+  /* .first_option_menu a{
     display: none;
   } */
+}
+
+@media (min-width: 891px) and (max-width: 1129px) {
+  .principal_menu {
+    background-color: springgreen;
+  }
+  /* INICIO MENU IZQUIERDO */
+  .first_option_menu a li {
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  /* .first_option_menu img {
+    margin: 0rem 1rem 0rem 1rem;
+  } */
+  /* FIN MENU IZQUIERDO */
+
+  /* INICIO MENU DERECHO */
+  .link-second-menu {
+    display: none;
+  }
+
+  .input_search:focus {
+    width: 14rem;
+    font-size: 14px;
+    transition: width 0.3s ease-in-out;
+    outline: none;
+    border: 1px solid #fff;
+    opacity: 1;
+    cursor: auto;
+  }
+  /* FIN MENU DERECHO */
+
+}
+
+@media (min-width: 1130px) and (max-width: 1330px) {
+  .principal_menu {
+    background-color: tomato;
+  }
+  /* INICIO MENU IZQUIERDO */
+  /* .first_option_menu img {
+    margin: 0rem 1rem 0rem 1.5rem;
+  } */
+  /* FIN MENU IZQUIERDO */
+
+  /* INICIO MENU DERECHO */
+  .link-second-menu {
+    display: none;
+  }
+
+
+
+  .input_search:focus {
+    width: 16rem;
+    font-size: 14px;
+    transition: width 0.3s ease-in-out;
+    outline: none;
+    border: 1px solid #fff;
+    opacity: 1;
+    cursor: auto;
+  }
+  /* FIN MENU DERECHO */
+  
 }
 </style>

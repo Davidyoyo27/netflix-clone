@@ -1,28 +1,5 @@
 <template>
   <h1>este es el inicio de la pagina</h1>
-  <ul class="responsive_menu">
-    <li>
-      <div class="cont_responsive_menu">
-        <p>Explorar</p>
-        <div class="figure"></div>
-        <ul class="responsive_menu_options">
-          <!-- <div class="figure_menu"></div> -->
-          <div class="cont-figure">
-            <div class="figure_menu"></div>
-            <div class="first_option_menu"></div>
-          </div>
-          <!-- pasar al primer elemento la linea de color blanco que en este caso correspondie a Inicio, luego de eso ver la figura geometrica -->
-          <!-- ya que al aumentar el tamaño de la fuente esta no se ve alterada de su posicion establecida -->
-          <a href="">Inicio</a>
-          <a href="">Series</a>
-          <a href="">Películas</a>
-          <a href="">Novedades populares</a>
-          <a href="">Mi lista</a>
-          <a href="">Explora por idiomas</a>
-        </ul>
-      </div>
-    </li>
-  </ul>
   <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Accusamus corrupti consequuntur accusantium nihil exercitationem eaque vitae libero. Asperiores, dolorem exercitationem. Commodi adipisci ipsa modi inventore minus dolore veniam corporis itaque?
   Quibusdam architecto nostrum nisi, possimus quae, quod harum ipsam voluptatem repellat fugiat autem aliquid voluptatibus blanditiis. Saepe voluptatem asperiores est architecto deserunt. Obcaecati saepe odio natus facere repudiandae ipsum aliquid!
   Minus, distinctio possimus ad illum quibusdam autem, hic magnam nulla atque quos iste porro non vero suscipit necessitatibus placeat vel beatae cumque error ab impedit nostrum iure modi ducimus! Quo.
@@ -64,121 +41,10 @@ export default {
   props: {},
   data() {
     return {};
-  },
-  watch: {},
+  }
 };
 </script>
 
 <style scoped>
-.responsive_menu > li {
-  position: relative;
-  display: inline-block;
-}
-
-.responsive_menu > li > a {
-  display: block;
-  font-family: "Open sans";
-  text-decoration: none;
-}
-
-.responsive_menu_options {
-  position: absolute;
-  /* hace el menu transparente */
-  background-color: rgba(0,0,0,0.8);
-  width: 380%;
-  visibility: hidden;
-  opacity: 0;
-  transition: .5s;
-  border-radius: 1px solid #000;
-  right: -6.5rem;
-  top: 2rem;
-  display: flex;
-  flex-direction: column;
-}
-
-.responsive_menu_options li {
-  list-style: none;
-}
-
-.responsive_menu_options a {
-  text-decoration: none;
-  padding: 1rem;
-}
-
-.responsive_menu_options a:hover {
-  background-color: rgba(73, 72, 72, 0.5);
-}
-
-.responsive_menu_options div p {
-  margin-left: 0.5rem;
-  font-size: 13px;
-  font-weight: 600;
-}
-
-.responsive_menu li:hover .responsive_menu_options {
-  visibility: visible;
-  opacity: 1;
-}
-
-.figure {
-  border-bottom: 5px solid darkgreen;
-  border-left: 5px solid black;
-  border-right: 5px solid blue;
-  border-width: 5px;
-  border-color: transparent;
-  border-bottom-color: #f0eeee;
-  width: 0;
-  height: 0;
-  margin-left: 10px;
-  transform: rotate(180deg);
-  transition: 0.4s;
-}
-
-.figure_menu {
-  border-bottom: 5px solid darkgreen;
-  border-left: 5px solid black;
-  border-right: 5px solid blue;
-  border-width: 5px;
-  border-color: transparent;
-  border-bottom-color: #f0eeee;
-  width: 0;
-  height: 0;
-  margin-left: 10px;
-  transform: rotate(0deg);
-  transition: 0.4s;
-}
-
-.cont_responsive_menu, .responsive_menu_options a {
-  color: #fff;
-}
-
-.cont_responsive_menu {
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-}
-
-.cont_responsive_menu p {
-  font-size: 14px;
-  font-weight: 600;
-}
-
-.first_option_menu{
-  padding: .1rem;
-  background-color: #fff;
-}
-
-.cont-figure{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: absolute;
-  width: 100%;
-  bottom: 18.7rem;
-}
-
-.first_option_menu{
-  width: 100%;
-}
 
 </style>

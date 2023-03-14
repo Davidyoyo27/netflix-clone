@@ -3,60 +3,77 @@
     <div class="principal_menu">
       <!-- INICIO MENU IZQUIERDO -->
       <div class="first_option_menu">
-        <img src="../assets/Netflix_2015_logo.svg.png" alt="" />
+        <img v-bind:src="img_logo_principal_menu" alt="" />
         <!-- INICIO RESPONSIVE MENU -->
         <ul class="responsive_menu">
           <li>
             <div class="cont_responsive_menu">
-              <p>Explorar</p>
-              <div class="figure"></div>
+              <div class="container_text">
+                <p>Explorar</p>
+                <div class="figure"></div>
+              </div>
               <ul class="responsive_menu_options">
-                <div class="cont-figure-left-menu">
-                  <div class="figure_left_menu"></div>
-                </div>
-                <a href="">Inicio</a>
-                <a href="">Series</a>
-                <a href="">Películas</a>
-                <a href="">Novedades populares</a>
-                <a href="">Mi lista</a>
-                <a href="">Explora por idiomas</a>
+                <div class="figure_left_menu"></div>
+                <a href=""><li>Inicio</li></a>
+                <a href=""><li>Series</li></a>
+                <a href=""><li>Películas</li></a>
+                <a href=""><li>Novedades populares</li></a>
+                <a href=""><li>Mi lista</li></a>
+                <a href=""><li>Explora por idiomas</li></a>
               </ul>
             </div>
           </li>
         </ul>
         <!-- FIN RESPONSIVE MENU -->
-        <a href="#">
-          <li>Inicio</li>
-        </a>
-        <a href="#">
-          <li class="list-item active">Series</li>
-        </a>
-        <a href="#">
-          <li>Películas</li>
-        </a>
-        <a href="#">
-          <li>Novedades populares</li>
-        </a>
-        <a href="#">
-          <li>Mi lista</li>
-        </a>
-        <a href="#">
-          <li>Explora por idiomas</li>
-        </a>
+        <div class="normal_options_menu">
+          <a href="#">
+            <li>Inicio</li>
+          </a>
+          <a href="#">
+            <li class="list-item active">Series</li>
+          </a>
+          <a href="#">
+            <li>Películas</li>
+          </a>
+          <a href="#">
+            <li>Novedades populares</li>
+          </a>
+          <a href="#">
+            <li>Mi lista</li>
+          </a>
+          <a href="#">
+            <li>Explora por idiomas</li>
+          </a>
+        </div>
       </div>
       <!-- FIN MENU IZQUIERDO -->
       <!-- INICIO MENU DERECHO -->
       <div class="second_option_menu">
         <div class="input-cont">
+          <!-- ICONO BUSCAR -->
           <font-awesome-icon
-            class="icon_search"
+            class="icon_input"
             icon="fa-solid fa-magnifying-glass"
           />
+          <!-- ICONO BUSCAR -->
+          <!-- INPUT TEXT -->
           <input
+            v-model="input_value"
+            ref="clear_input"
+            id="click_input"
             class="input_search"
             type="search"
             placeholder="Títulos, personas, géneros"
           />
+          <!-- INPUT TEXT -->
+          <!-- ICONO(X) BORRAR TEXTO -->
+          <font-awesome-icon
+            icon="fa-solid fa-rectangle-xmark"
+            id="icon_clear_text"
+            v-on:click="clearInputText()"
+            v-show="icon_visible"
+          />
+          <!-- ICONO(X) BORRAR TEXTO -->
         </div>
         <a class="link-second-menu" href="">Niños</a>
         <font-awesome-icon class="icon" icon="fa-solid fa-bell" />
@@ -67,7 +84,7 @@
               <div class="cont-img-icon">
                 <img
                   class="img-icon"
-                  src="../assets/image-icon-netflix.png"
+                  v-bind:src="img_perfil_menu"
                   alt=""
                 />
                 <div class="figure"></div>
@@ -78,7 +95,7 @@
                   <div>
                     <img
                       class="img-icon"
-                      src="../assets/image-icon-netflix-2.png"
+                      v-bind:src="img_perfil_2_right_menu"
                       alt=""
                     />
                     <p>Juan</p>
@@ -88,7 +105,7 @@
                   <div>
                     <img
                       class="img-icon"
-                      src="../assets/image-icon-netflix-3.png"
+                      v-bind:src="img_perfil_3_right_menu"
                       alt=""
                     />
                     <p>Tito</p>
@@ -98,7 +115,7 @@
                   <div>
                     <img
                       class="img-icon"
-                      src="../assets/image-icon-netflix-4.png"
+                      v-bind:src="img_perfil_4_right_menu"
                       alt=""
                     />
                     <p>Barbara</p>
@@ -108,7 +125,7 @@
                   <div>
                     <img
                       class="img-icon"
-                      src="../assets/image-icon-netflix-5.png"
+                      v-bind:src="img_perfil_ninos_right_menu"
                       alt=""
                     />
                     <p>Niños</p>
@@ -118,7 +135,7 @@
                   <div>
                     <img
                       class="img-icon"
-                      src="../assets/pencil-icon.jpg"
+                      v-bind:src="img_icon_admin_perfil_menu"
                       alt=""
                     />
                     <p>Administrar perfiles</p>
@@ -128,7 +145,7 @@
                   <div>
                     <img
                       class="img-icon"
-                      src="../assets/transfer-perfil-icon.jpg"
+                      v-bind:src="img_icon_transfer_perfil"
                       alt=""
                     />
                     <p>Transferir perfil</p>
@@ -138,7 +155,7 @@
                   <div>
                     <img
                       class="img-icon"
-                      src="../assets/perfil-icon.png"
+                      v-bind:src="img_icon_account"
                       alt=""
                     />
                     <p>Cuenta</p>
@@ -148,7 +165,7 @@
                   <div>
                     <img
                       class="img-icon"
-                      src="../assets/interrogation-icon.png"
+                      v-bind:src="img_icon_center_of_help"
                       alt=""
                     />
                     <p>Centro de ayuda</p>
@@ -169,9 +186,66 @@
 </template>
 
 <script>
+import img_logo_principal_menu from '@/assets/Netflix_2015_logo.svg.png'
+import img_perfil_menu from '@/assets/image-icon-netflix.png'
+import img_perfil_2_right_menu from '@/assets/image-icon-netflix-2.png'
+import img_perfil_3_right_menu from '@/assets/image-icon-netflix-3.png'
+import img_perfil_4_right_menu from '@/assets/image-icon-netflix-4.png'
+import img_perfil_ninos_right_menu from '@/assets/image-icon-netflix-5.png'
+import img_icon_admin_perfil_menu from '@/assets/pencil-icon.jpg'
+import img_icon_transfer_perfil from '@/assets/transfer-perfil-icon.jpg'
+import img_icon_account from '@/assets/perfil-icon.png'
+import img_icon_center_of_help from '@/assets/interrogation-icon.png'
+
 export default {
-  data() {},
-  methods: {},
+  data() {
+    return {
+      input_value: "",
+      // icono de X dentro del input no visible
+      icon_visible: false,
+      // logo netflix menu principal
+      img_logo_principal_menu,
+      // imagen principal icon perfil right menu
+      img_perfil_menu,
+      // imagen icon perfil right menu
+      img_perfil_2_right_menu,
+      img_perfil_3_right_menu,
+      img_perfil_4_right_menu,
+      img_perfil_ninos_right_menu,
+      // img icon opciones right menu
+      img_icon_admin_perfil_menu,
+      img_icon_transfer_perfil,
+      img_icon_account,
+      img_icon_center_of_help
+    }
+  },
+  watch: {
+    input_value(newValue, oldValue) {
+      console.log(`primer valor ${newValue} segundo valor ${oldValue}`);
+      if (newValue != "") {
+        this.closeIconAppears();
+      } else {
+        this.icon_visible = false
+      }
+    },
+  },
+  methods: {
+    // funcion para que muestre el icono X del input
+    closeIconAppears() {
+      // si el input no esta vacio
+      if (this.input_value != "") {
+        // si se encuentra algun caracter en el input el icono pasa a ser visible
+        this.icon_visible = true
+      }
+    },
+
+    clearInputText() {
+      this.icon_visible = false
+      this.input_value = ""
+      // setea el focus en el input, la relacion se establece con el ref="clear_input"
+      this.$refs.clear_input.focus()
+    },
+  },
 };
 </script>
 
@@ -187,16 +261,14 @@ export default {
 .first_option_menu {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  background-color: slateblue;
+  margin-left: 4rem;
 }
 
 .second_option_menu {
   display: flex;
   align-items: center;
   gap: 1.2rem;
-  background-color: violet;
-  /* margin-right: 5rem; */
+  margin-right: 5rem;
 }
 
 .first_option_menu a {
@@ -212,7 +284,7 @@ export default {
 
 a li.active,
 .second_option_menu a,
-.second_option_menu .icon_search,
+.second_option_menu .icon_input,
 .icon,
 .input_search:focus::placeholder,
 .input_search,
@@ -220,18 +292,29 @@ a li.active,
   color: #fff;
 }
 
-.submenu a {
-  background-color: skyblue;
+#icon_clear_text {
+  position: absolute;
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+  right: 0;
+  margin-right: 0.5rem;
 }
 
 .first_option_menu img {
   width: 5.8rem;
+  margin-right: 1.5rem;
 }
 
-.second_option_menu .icon_search,
+.second_option_menu .icon_input,
 .icon {
   font-size: 20px;
   cursor: pointer;
+}
+
+.normal_options_menu {
+  display: flex;
+  gap: 1rem;
 }
 
 .second_option_menu a {
@@ -244,7 +327,7 @@ a li.active,
   color: #000;
 }
 
-.icon_search {
+.icon_input {
   position: absolute;
   margin-left: 0.4rem;
 }
@@ -392,7 +475,6 @@ a li.active,
   bottom: 25.5rem;
   left: 9rem;
   /* fin posicionamiento del elemento */
-  background-color: seagreen;
   cursor: pointer;
 }
 
@@ -407,13 +489,14 @@ a li.active,
   transition: 0.4s;
 }
 
-.cont-img-icon{
+.cont-img-icon {
   display: flex;
   align-items: center;
   cursor: pointer;
 }
 
-/* ---------------------------------------------------------------- */
+/* =========================== INICIO MENU RESPONSIVE =========================== */
+/* el menu desaparece en el tamaño mas grande de la pantalla(monitor, notebook) */
 .responsive_menu {
   display: none;
 }
@@ -438,15 +521,18 @@ a li.active,
   opacity: 0;
   transition: 0.5s;
   border-radius: 1px solid #000;
-  right: -6.5rem;
+  right: -9.3rem;
   top: 4rem;
   display: flex;
   flex-direction: column;
+  border: 1px solid #5a5858;
+  /* para evitar la linea del border en top */
+  border-top: 1px solid #fff;
 }
 
 /* linea blanca del menu responsive de la izquierda(Explorar) */
 .responsive_menu_options a:nth-child(2) {
-  border-top: 3px solid #fff;
+  border-top: 2px solid #fff;
 }
 
 .responsive_menu_options li {
@@ -456,6 +542,11 @@ a li.active,
 .responsive_menu_options a {
   text-decoration: none;
   padding: 1rem;
+}
+
+.responsive_menu_options a li {
+  font-size: 13px;
+  font-weight: 600;
 }
 
 .responsive_menu_options a:hover {
@@ -474,6 +565,7 @@ a li.active,
 }
 
 .figure_left_menu {
+  /* inicio figura geometrica */
   border-bottom: 5px solid darkgreen;
   border-left: 8px solid black;
   border-right: 8px solid blue;
@@ -484,15 +576,12 @@ a li.active,
   height: 0;
   margin-left: 10px;
   transform: rotate(0deg);
-}
-
-.cont-figure-left-menu {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  /* inicio figura geometrica */
+  /* inicio posicionamiento */
   position: absolute;
-  width: 100%;
-  bottom: 19.2rem;
+  left: 8rem;
+  bottom: 18rem;
+  /* fin posicionamiento */
 }
 
 .cont_responsive_menu,
@@ -500,7 +589,7 @@ a li.active,
   color: #fff;
 }
 
-.cont_responsive_menu {
+.container_text {
   display: flex;
   align-items: center;
   cursor: pointer;
@@ -511,76 +600,113 @@ a li.active,
   font-weight: 600;
 }
 
+/* =========================== FIN MENU RESPONSIVE =========================== */
+
 @media screen and (max-width: 890px) {
-  .principal_menu {
-    background-color: skyblue;
-  }
-
-  /* .first_option_menu a{
-    display: none;
-  } */
-}
-
-@media (min-width: 891px) and (max-width: 1129px) {
-  .principal_menu {
-    background-color: springgreen;
-  }
   /* INICIO MENU IZQUIERDO */
-  .first_option_menu a li {
-    font-size: 13px;
-    font-weight: 600;
+  .first_option_menu {
+    margin-left: 2rem;
   }
 
-  /* .first_option_menu img {
-    margin: 0rem 1rem 0rem 1rem;
-  } */
+  .first_option_menu img {
+    margin-right: 1rem;
+  }
+
+  .normal_options_menu a {
+    display: none;
+  }
+
+  .responsive_menu {
+    display: block;
+  }
+
+  .principal_menu {
+    position: relative;
+  }
   /* FIN MENU IZQUIERDO */
 
   /* INICIO MENU DERECHO */
   .link-second-menu {
     display: none;
   }
-
-  .input_search:focus {
-    width: 14rem;
-    font-size: 14px;
-    transition: width 0.3s ease-in-out;
-    outline: none;
-    border: 1px solid #fff;
-    opacity: 1;
-    cursor: auto;
-  }
-  /* FIN MENU DERECHO */
-
-}
-
-@media (min-width: 1130px) and (max-width: 1330px) {
-  .principal_menu {
-    background-color: tomato;
-  }
-  /* INICIO MENU IZQUIERDO */
-  /* .first_option_menu img {
-    margin: 0rem 1rem 0rem 1.5rem;
-  } */
-  /* FIN MENU IZQUIERDO */
-
-  /* INICIO MENU DERECHO */
-  .link-second-menu {
-    display: none;
-  }
-
-
 
   .input_search:focus {
     width: 16rem;
-    font-size: 14px;
-    transition: width 0.3s ease-in-out;
-    outline: none;
-    border: 1px solid #fff;
-    opacity: 1;
-    cursor: auto;
+  }
+
+  .second_option_menu {
+    margin-right: 2rem;
+  }
+
+  /* al momento de estar en el tamaño de pantalla mas pequeña 
+    el elemento se superpone al first_option_menu para que el 
+    input al momento de abrirse no tenga problemas*/
+  .second_option_menu {
+    position: absolute;
+    /* establecemos el menu al lado derecho */
+    right: 0;
+  }
+
+  /* FIN MENU DERECHO */
+}
+
+@media (min-width: 891px) and (max-width: 1129px) {
+  /* INICIO MENU IZQUIERDO */
+  .first_option_menu {
+    margin-left: 2rem;
+  }
+
+  .first_option_menu img {
+    margin-right: 1rem;
+  }
+
+  .normal_options_menu a {
+    display: none;
+  }
+
+  .responsive_menu {
+    display: block;
+  }
+  /* FIN MENU IZQUIERDO */
+
+  /* INICIO MENU DERECHO */
+  .link-second-menu {
+    display: none;
+  }
+
+  .input_search:focus {
+    width: 16rem;
+  }
+
+  .second_option_menu {
+    margin-right: 2rem;
   }
   /* FIN MENU DERECHO */
-  
+}
+
+@media (min-width: 1130px) and (max-width: 1330px) {
+  /* INICIO MENU IZQUIERDO */
+  .first_option_menu {
+    margin-left: 2rem;
+  }
+
+  .first_option_menu img {
+    margin-right: 1rem;
+  }
+  /* FIN MENU IZQUIERDO */
+
+  /* INICIO MENU DERECHO */
+  .link-second-menu {
+    display: none;
+  }
+
+  .input_search:focus {
+    width: 16rem;
+  }
+
+  .second_option_menu {
+    margin-right: 2rem;
+  }
+  /* FIN MENU DERECHO */
 }
 </style>

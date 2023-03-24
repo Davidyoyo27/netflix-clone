@@ -9,6 +9,7 @@ import Novedades from '../components/Novedades'
 import Mi_lista from '../components/MiLista'
 import Explora_idiomas from '../components/ExploraIdiomas'
 import Page_Not_Found from '../components/Error404PageNotFound'
+import EmbedVideoPlayer from '../components/EmbedVideoPlayer'
 
 // 1.4-. creamos las rutas
 const routes = [
@@ -18,6 +19,7 @@ const routes = [
     { path: '/novedades', component: Novedades },
     { path: '/mi_lista', component: Mi_lista },
     { path: '/explora_por_idiomas', component: Explora_idiomas },
+    { path: '/video_player', component: EmbedVideoPlayer },
     // page 404 Not Found
     // se busca cualquier url que no tenga match con los especificados aca en las rutas
     { path: '/:pathMatch(.*)*', component: Page_Not_Found },

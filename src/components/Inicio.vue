@@ -1,5 +1,6 @@
 <template>
   <h1>este es el inicio de la pagina</h1>
+  <p>texto para hacer el commit</p>
   <img v-bind:src="imagen" alt="" />
   <video-player :options="videoOptions" />
   <iframe

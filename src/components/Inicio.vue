@@ -2,7 +2,6 @@
   <h1>este es el inicio de la pagina</h1>
   <p>texto para hacer el commit</p>
   <img v-bind:src="imagen" alt="" />
-  <video-player :options="videoOptions" />
   <iframe
     width="560"
     height="315"
@@ -25,15 +24,9 @@
 <script>
 import service from "@/helpers/services/services.js";
 import img_poster from "@/assets/poster-oficial-spider-man-no-way-home.jpg";
-import { defineComponent } from "vue";
-import { VideoPlayer } from "@videojs-player/vue";
-import "video.js/dist/video-js.css";
 
 export default {
   props: {},
-  components: {
-    VideoPlayer,
-  },
   data() {
     return {
       // pagina: 500,
@@ -44,42 +37,10 @@ export default {
       // url_img: 'https://image.tmdb.org/t/p/original'
       video: "https://www.youtube-nocookie.com/embed/F5ApJc5sSkk",
       img_poster,
-      // videoOptions: {
-      //   autoplay: true,
-      //   controls: true,
-      //   muted: true,
-      //   volume: 0.6,
-      //   loop: true,
-      //   poster: this.img_poster,
-
-      //   sources: [
-      //     {
-      //       src: this.video.isCrossOrigin,
-      //       type: "video/youtube"
-      //       // type: 'application/dash+xml'
-      //     }
-      //   ],
-      // },
     };
   },
   computed: {
-    videoOptions() {
-      return {
-        autoplay: true,
-        controls: true,
-        muted: true,
-        volume: 0.6,
-        loop: true,
-        poster: this.img_poster,
 
-        sources: [
-          {
-            src: this.video,
-            type: "text/html",
-          },
-        ],
-      };
-    },
   },
   async mounted() {
     // axios

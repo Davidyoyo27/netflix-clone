@@ -23,8 +23,6 @@
 
 <script>
 import service from "@/helpers/services/services.js";
-import video_local from "@/assets/abe mao - believe in yourself (Sub español).mp4";
-import video_local2 from "@/assets/videoplayback.mp4";
 import img_poster from "@/assets/poster-oficial-spider-man-no-way-home.jpg";
 import { defineComponent } from "vue";
 import { VideoPlayer } from "@videojs-player/vue";
@@ -44,8 +42,6 @@ export default {
       url_img: "https://www.themoviedb.org/t/p/w220_and_h330_face",
       // url_img: 'https://image.tmdb.org/t/p/original'
       video: "https://www.youtube-nocookie.com/embed/F5ApJc5sSkk",
-      video_local,
-      video_local2,
       img_poster,
       // videoOptions: {
       //   autoplay: true,

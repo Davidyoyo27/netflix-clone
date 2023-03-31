@@ -10,14 +10,14 @@
 </template>
 
 <script>
-import MenuPrincipal from "./components/MenuPrincipal.vue";
-import Inicio from "./components/Inicio.vue";
+import { defineAsyncComponent } from "vue";
 
 export default {
   name: "App",
   components: {
-    MenuPrincipal,
-    Inicio,
+    //                                    LazyLoad
+    MenuPrincipal: defineAsyncComponent(() => import(/* webpackChunkName: "MenuPrincipal.vue" */ '@/components/MenuPrincipal.vue')),
+    Inicio: defineAsyncComponent(() => import(/* webpackChunkName: "Inicio.vue" */ '@/components/Inicio.vue')),
   },
 };
 </script>

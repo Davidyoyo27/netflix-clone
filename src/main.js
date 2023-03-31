@@ -8,11 +8,12 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 /* import font awesome icon component */
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 /* import specific icons */
-import { faBell, faMagnifyingGlass, faRectangleXmark } from '@fortawesome/free-solid-svg-icons'
+import { faBell, faCircleInfo, faMagnifyingGlass, faPlay, faRectangleXmark } from '@fortawesome/free-solid-svg-icons'
+// import {  } from '@fortawesome/free-regular-svg-icons'
 
 /* add icons to the library */
 // NOTA: para usar los iconos de font awesome se debe importar uno a uno los iconos a usar
-library.add(faMagnifyingGlass, faBell, faRectangleXmark)
+library.add(faMagnifyingGlass, faBell, faRectangleXmark, faPlay, faCircleInfo)
 
 createApp(App)
         // usamos el componente

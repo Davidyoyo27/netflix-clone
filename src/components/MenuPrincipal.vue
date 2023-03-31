@@ -14,36 +14,36 @@
               </div>
               <ul class="responsive_menu_options">
                 <div class="figure_left_menu"></div>
-                <a href=""><li>Inicio</li></a>
-                <a href=""><li>Series</li></a>
-                <a href=""><li>Películas</li></a>
-                <a href=""><li>Novedades populares</li></a>
-                <a href=""><li>Mi lista</li></a>
-                <a href=""><li>Explora por idiomas</li></a>
+                <router-link to="/"><li>Inicio</li></router-link>
+                <router-link to="/series"><li>Series</li></router-link>
+                <router-link to="/peliculas"><li>Películas</li></router-link>
+                <router-link to="/novedades"><li>Novedades populares</li></router-link>
+                <router-link to="/mi_lista"><li>Mi lista</li></router-link>
+                <router-link to="/explora_por_idiomas"><li>Explora por idiomas</li></router-link>
               </ul>
             </div>
           </li>
         </ul>
         <!-- FIN RESPONSIVE MENU -->
         <div class="normal_options_menu">
-          <a href="#">
+          <router-link to="/" class="link">
             <li>Inicio</li>
-          </a>
-          <a href="#">
-            <li class="list-item active">Series</li>
-          </a>
-          <a href="#">
+          </router-link>
+          <router-link to="/series" class="link">
+            <li>Series</li>
+          </router-link>
+          <router-link to="/peliculas" class="link">
             <li>Películas</li>
-          </a>
-          <a href="#">
+          </router-link>
+          <router-link to="/novedades" class="link">
             <li>Novedades populares</li>
-          </a>
-          <a href="#">
+          </router-link>
+          <router-link to="/mi_lista" class="link">
             <li>Mi lista</li>
-          </a>
-          <a href="#">
+          </router-link>
+          <router-link to="/explora_por_idiomas" class="link">
             <li>Explora por idiomas</li>
-          </a>
+          </router-link>
         </div>
       </div>
       <!-- FIN MENU IZQUIERDO -->
@@ -75,7 +75,7 @@
           />
           <!-- ICONO(X) BORRAR TEXTO -->
         </div>
-        <a class="link-second-menu" href="">Niños</a>
+        <router-link class="link-second-menu" to="">Niños</router-link>
         <font-awesome-icon class="icon" icon="fa-solid fa-bell" />
         <!-- INICIO PERFIL MENU -->
         <ul class="right_menu">
@@ -282,19 +282,28 @@ export default {
   color: #d3d3d3;
 }
 
-a li.active,
 .second_option_menu a,
 .second_option_menu .icon_input,
 .icon,
 .input_search:focus::placeholder,
 .input_search,
-.submenu {
+.submenu, 
+#icon_clear_text,
+/* cuando se active el link se cambiara el color */
+.normal_options_menu .router-link-exact-active li {
+  color: #fff;
+}
+
+.normal_options_menu .router-link-exact-active li {
+  cursor: default;
+}
+
+.normal_options_menu .router-link-exact-active li:hover {
   color: #fff;
 }
 
 #icon_clear_text {
   position: absolute;
-  color: #fff;
   font-size: 20px;
   cursor: pointer;
   right: 0;
@@ -303,7 +312,7 @@ a li.active,
 
 .first_option_menu img {
   width: 5.8rem;
-  margin-right: 1.5rem;
+  margin-right: 3rem;
 }
 
 .second_option_menu .icon_input,
@@ -321,6 +330,11 @@ a li.active,
   text-decoration: none;
   font-size: 14px;
   font-weight: 600;
+}
+
+.normal_options_menu a li:hover {
+  color: #8d8a8a;
+  transition: .5s;
 }
 
 .input_search::placeholder {

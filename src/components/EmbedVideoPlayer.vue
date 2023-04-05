@@ -4,7 +4,7 @@
   <div class="container">
     <div id="container_image">
       <div class="container_info_movie">
-        <div class="info_movie">
+        <div id="info_movie">
           <div class="logo_movie">dasdsadsa</div>
           <div class="sinopsis">dadsdsadsadsadsdasdsadas</div>
           <div class="cont_buttons">
@@ -17,75 +17,124 @@
               <span>Más información</span>
             </button>
           </div>
-          <!-- <div class="rep">
-            <font-awesome-icon class="icon" icon="fa-solid fa-play" />
-            <button>Reproducir</button>
-          </div>
-          <div class="info">
-            <font-awesome-icon class="icon" icon="fa-solid fa-circle-info" />
-            <button>Más información</button>
-          </div> -->
-          <!-- <div class="buttons">
-          </div> -->
         </div>
       </div>
     </div>
     <div ref="youtube" :id="playerId"></div>
+    <!-- "total_pages": 127,
+    "total_results": 2540
+
+    "total_pages": 11311,
+    "total_results": 226210 -->
   </div>
 </template>
 
 <script setup>
-import { onMounted, ref, watch } from "vue";
+import { onMounted, ref, watch, computed } from "vue";
+import services from "@/helpers/services/services.js";
 
 const player = ref(null);
-const props = defineProps({
-  videoId: {
-    type: String,
-    required: false,
-    default: "nNkw3Fo9Aqk",
-  },
-});
+// const videokey = ref("nNkw3Fo9Aqk");
+const videokey = ref("nNkw3Fo9Aqk");
 
-watch(
-  () => props.videoId,
-  (videoId) => {
-    if (player.value && videoId) {
-      console.log("watch", videoId);
-      // loadVideoById({
-      //   videoId,
-      //   startSeconds: props.playerVars.start || 0,
-      //   endSeconds: props.playerVars.end || 0,
-      // });
-      // cueVideoById({
-      //   videoId,
-      //   startSeconds: props.playerVars.start || 0,
-      //   endSeconds: props.playerVars.end || 0,
-      // });
-    }
-  }
-);
-
-// function validate(videoId) {
-//   if (!videoId) {
-//     console.error('s "videoId" must be provided.');
+// watch(
+//   () => videokey,
+//   (videokey) => {
+//     if (player.value && videokey) {
+//       console.log("watch", videokey);
+//       console.log("se ejecuto el watch");
+//       // loadVideoById({
+//       //   videoId,
+//       //   startSeconds: props.playerVars.start || 0,
+//       //   endSeconds: props.playerVars.end || 0,
+//       // });
+//     }
 //   }
-// }
+// );
 
 const playerId = ref(null);
+let numMax = 501;
+let numMin = 1;
+console.log("aca vemos la variable playerId", playerId.value);
+
+// const pepepe = ref(null);
+
 onMounted(async () => {
   //generar id de manera aleatoria
   //se genera de manera aleatoria el id del player, en este caso el <iframe>,
   //para poder visualizarlo ir al navegador y buscar la etiqueta <iframe> en el inspector
   // playerId.value = Math.random().toString(36).substring(2, 12);
   playerId.value = "reproductor";
-  console.log("mounted", props.videoId);
+  // pepepe.value = 
+  // videoId = movie_key;
+  // console.log("mounted", props.videoId);
   // validate(props.videoId);
   loadAPI().then(() => {
     checkIfYTLoaded().then(() => {
-      createPlayer();
+      setTimeout(() => {
+        createPlayer();
+    }, 2000);
     });
   });
+  //
+  
+  // try {
+  //   let respAxios = await services.prueba_api(getPageRandom(numMax, numMin));
+  //   // pagina, id, overview, title, backdrop_path
+  //   const pagina = respAxios.data.page;
+  //   const dataArray = respAxios.data.results;
+  //   let dataSorted = dataArray.sort(getNumberRandom);
+  //   let idSorted = dataSorted[0].id;
+  //   console.log(respAxios);
+  //   console.log(idSorted);
+
+  //   //                                                  42994
+  //   let resp_video_movie = await services.movie_start(idSorted);
+  //   let params_movie = resp_video_movie.data.results;
+  //   let movie_key = params_movie[0].key;
+  //   // console.log("key", movie_key);
+  //   // console.log(params_movie);
+  //   // pelicula_key = movie_key;
+  //   videokey.value = movie_key;
+
+  //   console.log("videokey", videokey.value);
+  // } catch (error) {
+  //   return error;
+  // }
 });
+const respAxios = ref(null);
+const dataArray = ref([]);
+const dataSorted = ref([]);
+const idSorted = ref(0);
+const resp_video_movie = ref(null);
+const params_movie = ref([]);
+const movie_key = ref('');
+
+const vaaa = computed( async () => {
+  respAxios.value = await services.movie_info(getPageRandom(numMax, numMin));
+  console.log("prueba api", respAxios.value);
+  dataArray.value = respAxios.value.data.results;
+  dataSorted.value = dataArray.value.sort(getNumberRandom);
+  idSorted.value = dataSorted.value[0].id;
+  
+  resp_video_movie.value = await services.movie_video_start(idSorted.value);
+  params_movie.value = resp_video_movie.value.data.results;
+  movie_key.value = params_movie.value[0].key;
+  console.log("holaa", params_movie.value[0].key);
+  // return movie_key
+})
+
+// const valor = async () => {
+//   let respAxios = await services.prueba_api(getPageRandom(numMax, numMin)).then();
+//   let dataArray = respAxios.data.results;
+//   let dataSorted = dataArray.sort(getNumberRandom);
+//   let idSorted = dataSorted[0].id;
+
+//   let resp_video_movie = await services.movie_start(idSorted);
+//   let params_movie = resp_video_movie.data.results;
+//   let movie_key = params_movie[0].key;
+//   return movie_key;
+// }
 
 function loadAPI() {
   if (
@@ -98,8 +147,10 @@ function loadAPI() {
   tag.src = "https://www.youtube.com/iframe_api";
   document.head.appendChild(tag);
   console.info("Youtube API script added");
+  console.log("funcion vaaa", vaaa.value);
   return Promise.resolve();
 }
+
 function checkIfYTLoaded() {
   if (window.YT && window.YT.Player) {
     console.info("Youtube API loaded", window.YT);
@@ -115,6 +166,7 @@ function checkIfYTLoaded() {
     }, 100);
   });
 }
+
 const emit = defineEmits([
   "ready",
   "playing",
@@ -126,17 +178,31 @@ const emit = defineEmits([
   "error",
   "apiChange",
 ]);
+
+// generamos un numero random entre una cantidad especifica
+// max: 500, min: 1
+// estos valores son la cantidad de paginas de la API
+function getPageRandom(max, min) {
+  return Math.floor(Math.random() * (max - min) + min);
+}
+
+// funcion para mezclar el array aleatoriamente con el sort
+function getNumberRandom() {
+  return 0.5 - Math.random();
+}
+
 function createPlayer() {
   // el platerElement con el                  playerId
   // const playerElement = document.getElementById(playerId.value);
   const playerElement = playerId.value;
   //
-  const videoID = props.videoId;
+  const videoID = movie_key.value;
   console.log("createPlayer", videoID);
+  console.log("asdasd", movie_key.value);
   // capturamos el id del iframe cuando este se crea
   let video_style = document.getElementById("reproductor");
   // le pasamos el estilo de css mediante JS cuando el video ya este renderizado
-  video_style.style.pointerEvents = "none";
+  // video_style.style.pointerEvents = "none";
   video_style.style.width = "100%";
   // asignamos el style con el heigh con viewport width, esto quiere decir que su "altura"
   // cambiara cuando se haga mas pequeña el tamaño de la ventana
@@ -171,35 +237,18 @@ function onPlayerReady(event) {
   let objeto = event.target;
   let data = objeto.h.attributes.title;
   let titulo = data.value;
-  console.log("data", titulo);
+  console.log("titulo del video -", titulo);
+  console.log("aa", movie_key.value);
 }
+
 function onPlayerStateChange(event) {
   switch (event.data) {
     case window.YT.PlayerState.PLAYING:
       emit("playing", event.target);
-      img_container = document.getElementById("container_image");
-      img_container.style.opacity = "0";
       console.log("la wea se esta reproduciendo", event.target);
-      // let objeto = event.target;
-      // let data = objeto.h.attributes;
-      // console.log("data", data);
       break;
     case window.YT.PlayerState.PAUSED:
       emit("paused", event.target);
-
-      // let url =
-      //   "https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Netflix_logo.svg/2560px-Netflix_logo.svg.png";
-
-      // let image = new Image();
-      // image.src = url;
-      // document.getElementById("container_image").appendChild(image);
-      // console.log("si se puso la imageeeeen");
-      // destroy();
-
-      // let img = document.createElement("img");
-      // img.src = "@/assets/poster-oficial-spider-man-no-way-home.jpg";
-      // let src = document.getElementById("texto");
-      // src.appendChild(img);
 
       console.log("la wea esta pausada");
       // window.alert("aca lo tomo");
@@ -223,11 +272,13 @@ function onPlayerStateChange(event) {
       // desactivamos las interacciones con el mouse cuando este el fondo de la imagen
       img_poster.style.pointerEvents = "none";
 
+      // capturamos el elemento que contiene los datos de la pelicula visualizada
+      let info_movie = document.getElementById("info_movie");
+      // una vez terminado el video asignamos opacity 1 al elemento para que sea visible junto con la imagen de fondo
+      info_movie.style.visibility = 'visible';
+
       // al finalizar el video usamos el destroy para quitarlo, ya que
       destroy();
-      // img_container = document.getElementById("container_image");
-      // img_container
-      console.log("si se puso la imageeeeen");
 
       console.log("la wea finalizo");
       break;
@@ -443,95 +494,32 @@ defineExpose({
   destroy,
   loadVideoById,
   cueVideoById,
+  // 
 });
 </script>
 
 <style scoped>
-/* -------------------------------------------------------- */
 .container {
   position: relative;
   width: 100%;
 }
 
 #container_image {
-  /* background-color: aqua; */
   position: absolute;
   width: 100%;
   height: 43vw;
-  /* opacity: 0.3; */
 }
 
-/* .buttons {
-  display: flex;
-  gap: 10px;
-  position: absolute;
-  bottom: 14rem;
-  margin-left: 4rem;
-  background-color: aqua;
-} */
-
-/* .rep {
-  position: relative;
-  display: flex;
-  align-items: center;
-} */
-
-/* .info {
-  position: relative;
-  display: flex;
-  align-items: center;
-} */
-
-.info .icon {
-  color: #fff;
-}
-
-/* .icon {
-  position: absolute;
-} */
-
-.rep button {
-  padding: 0.9rem 2rem 0.9rem 4rem;
-  border-style: none;
-  background-color: #fff;
-  font-weight: 600;
-  font-size: 1.2rem;
-  border-radius: 3px;
-  cursor: pointer;
-}
-
-.info button {
-  padding: 0.9rem 2rem 0.9rem 4rem;
-  border-style: none;
-  background-color: #6d6a6a;
-  color: #fff;
-  font-weight: 600;
-  font-size: 1.2rem;
-  border-radius: 3px;
-  cursor: pointer;
-}
-
-/* .buttons .info button {
-  background-color: #6d6a6a;
-  color: #fff;
-} */
-
-/* .buttons div .icon {
-  left: 1.5rem;
-  font-size: 1.8rem;
-} */
-/* -------------------------------------------------------- */
 .container_info_movie {
-  background-color: aqua;
+  /* background-color: aqua; */
   width: 40%;
   height: 100%;
   position: absolute;
   display: flex;
   align-items: center;
-  /* z-index: 1; */
 }
 
-.info_movie {
+#info_movie {
   background-color: violet;
   width: 100%;
   height: 50%;
@@ -540,14 +528,12 @@ defineExpose({
   justify-content: center;
   align-items: flex-start;
   margin-left: 4rem;
+  visibility: hidden;
 }
 
-/* -------------------------------------------------------- */
 .cont_buttons button {
-  /* width: 150px; */
   padding: 0.9rem 1.5rem 0.9rem 1.5rem;
   border-style: none;
-  /* background-color: #fff; */
   font-weight: 600;
   font-size: 1.2rem;
   border-radius: 3px;
@@ -565,7 +551,6 @@ defineExpose({
   display: flex;
   align-items: center;
   background-color: #fff;
-  /* width: 13vw; */
 }
 
 .button_info {
@@ -581,16 +566,14 @@ defineExpose({
 }
 
 @media screen and (min-width: 390px) and (max-width: 889px) {
-  .info_movie {
+  #info_movie {
     background-color: yellow;
     margin-left: 2rem;
   }
 
   .cont_buttons button {
-    /* width: 150px; */
     padding: 0.5rem 1rem 0.5rem 1rem;
     border-style: none;
-    /* background-color: #fff; */
     font-weight: 600;
     font-size: 0.7rem;
     border-radius: 3px;
@@ -608,16 +591,14 @@ defineExpose({
 }
 
 @media screen and (min-width: 890px) and (max-width: 1129px) {
-  .info_movie {
+  #info_movie {
     background-color: purple;
     margin-left: 2rem;
   }
 
   .cont_buttons button {
-    /* width: 150px; */
     padding: 0.5rem 1rem 0.5rem 1rem;
     border-style: none;
-    /* background-color: #fff; */
     font-weight: 600;
     font-size: 0.8rem;
     border-radius: 3px;
@@ -631,16 +612,14 @@ defineExpose({
 }
 
 @media (min-width: 1130px) and (max-width: 1330px) {
-  .info_movie {
+  #info_movie {
     background-color: springgreen;
     margin-left: 2rem;
   }
 
   .cont_buttons button {
-    /* width: 150px; */
     padding: 0.5rem 1rem 0.5rem 1rem;
     border-style: none;
-    /* background-color: #fff; */
     font-weight: 600;
     font-size: 0.8rem;
     border-radius: 3px;
@@ -651,6 +630,5 @@ defineExpose({
     font-size: 1.5rem;
     margin-right: 1rem;
   }
-
 }
 </style>

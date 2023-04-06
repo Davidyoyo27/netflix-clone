@@ -52,7 +52,7 @@ export default {
 
     try {
       // recibe la respuesta de la API que contiene la pelicula
-      let respAxios = await service.prueba_api(
+      let respAxios = await service.movie_info(
         this.getPageRandom(this.valor_max, this.valor_min)
       );
       // muestra todos los resultados contenidos en la pagina X con sus correspondientes peliculas Array(20)

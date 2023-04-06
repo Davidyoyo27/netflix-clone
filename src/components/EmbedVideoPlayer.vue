@@ -5,8 +5,8 @@
     <div id="container_image">
       <div class="container_info_movie">
         <div id="info_movie">
-          <div class="logo_movie">dasdsadsa</div>
-          <div class="sinopsis">dadsdsadsadsadsdasdsadas</div>
+          <div class="logo_movie">{{ movie_title }}</div>
+          <div class="sinopsis">{{ movie_overview }}</div>
           <div class="cont_buttons">
             <button class="button_rep">
               <font-awesome-icon class="icon" icon="fa-solid fa-play" />
@@ -73,7 +73,7 @@ onMounted(async () => {
     checkIfYTLoaded().then(() => {
       setTimeout(() => {
         createPlayer();
-    }, 2000);
+    }, 4000);
     });
   });
   //
@@ -109,6 +109,11 @@ const idSorted = ref(0);
 const resp_video_movie = ref(null);
 const params_movie = ref([]);
 const movie_key = ref('');
+const movie_title = ref('');
+const movie_overview = ref('');
+const movie_backdrop_link = ref('https://image.tmdb.org/t/p/original');
+const movie_backdrop_key = ref('');
+const movie_backdrop_image = ref('');
 
 const vaaa = computed( async () => {
   respAxios.value = await services.movie_info(getPageRandom(numMax, numMin));
@@ -116,6 +121,10 @@ const vaaa = computed( async () => {
   dataArray.value = respAxios.value.data.results;
   dataSorted.value = dataArray.value.sort(getNumberRandom);
   idSorted.value = dataSorted.value[0].id;
+  movie_title.value = dataSorted.value[0].title;
+  movie_overview.value = dataSorted.value[0].overview;
+  movie_backdrop_key.value = dataSorted.value[0].backdrop_path;
+  movie_backdrop_image.value = movie_backdrop_link.value+movie_backdrop_key.value;
   
   resp_video_movie.value = await services.movie_video_start(idSorted.value);
   params_movie.value = resp_video_movie.value.data.results;
@@ -256,8 +265,7 @@ function onPlayerStateChange(event) {
     case window.YT.PlayerState.ENDED:
       emit("ended", event.target);
 
-      let url =
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Netflix_logo.svg/2560px-Netflix_logo.svg.png";
+      let url = movie_backdrop_image.value;
 
       let image = new Image();
       image.src = url;

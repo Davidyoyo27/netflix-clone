@@ -256,6 +256,9 @@ export default {
   justify-content: space-between;
   align-items: center;
   height: 4.2rem;
+  z-index: 1;
+  position: absolute;
+  width: 100%;
 }
 
 .first_option_menu {

@@ -16,8 +16,14 @@ export default {
   name: "App",
   components: {
     //                                    LazyLoad
-    MenuPrincipal: defineAsyncComponent(() => import(/* webpackChunkName: "MenuPrincipal.vue" */ '@/components/MenuPrincipal.vue')),
-    Inicio: defineAsyncComponent(() => import(/* webpackChunkName: "Inicio.vue" */ '@/components/Inicio.vue')),
+    MenuPrincipal: defineAsyncComponent(() =>
+      import(
+        /* webpackChunkName: "MenuPrincipal.vue" */ "@/components/MenuPrincipal.vue"
+      )
+    ),
+    Inicio: defineAsyncComponent(() =>
+      import(/* webpackChunkName: "Inicio.vue" */ "@/components/Inicio.vue")
+    ),
   },
 };
 </script>
@@ -37,7 +43,33 @@ export default {
   margin: 0;
 }
 
-.body{
+.body {
   background-color: coral;
 }
+
+/* --------------- scrollbar -------------------- */
+/* los cambios solo se reflejan en estos mavegadores:*/
+/* Chrome, Opera, Edge */
+/* si esta propiedad no esta no suerte efecto el cambio 
+  con el resto de propiedades */
+*::-webkit-scrollbar {
+  background-color: #000;
+}
+
+/* barra */
+*::-webkit-scrollbar-thumb {
+  background-color: #545454;
+}
+
+/* boton flecha arriba y abajo de scroll bar */
+*::-webkit-scrollbar-button{
+  background-color: #000;
+}
+
+/* fondo del scroll bar */
+*::-webkit-scrollbar-track {
+  background-color: #000;
+}
+/* ----------------- fin scrollbar -----------------*/
+
 </style>

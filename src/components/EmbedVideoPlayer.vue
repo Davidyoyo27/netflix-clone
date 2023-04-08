@@ -5,8 +5,12 @@
     <div id="container_image">
       <div class="container_info_movie">
         <div id="info_movie">
-          <div class="logo_movie">{{ movie_title }}</div>
-          <div class="sinopsis">{{ movie_overview }}</div>
+          <div class="title_movie">
+            <h1>{{ movie_title }}</h1>
+          </div>
+          <div class="cont_sinopsis">
+            <p>{{ movie_overview }}</p>
+          </div>
           <div class="cont_buttons">
             <button class="button_rep">
               <font-awesome-icon class="icon" icon="fa-solid fa-play" />
@@ -26,124 +30,116 @@
 
     "total_pages": 11311,
     "total_results": 226210 -->
+    <p>
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Sint repellat
+      libero quisquam? Natus culpa est fugit et eius eaque ullam repudiandae
+      aliquid optio, unde corporis suscipit eos iste. Sunt, voluptatum? Mollitia
+      eligendi necessitatibus nihil dolor. Autem iure eos est! Dicta pariatur
+      atque, voluptatum totam possimus nulla est unde explicabo eius, ducimus
+      impedit. Nihil accusamus commodi quasi, repudiandae asperiores vero
+      impedit. At rerum illo, eligendi quam, et dolorem quo, vero eveniet
+      architecto cum est optio quibusdam magni perferendis odit delectus
+      inventore placeat soluta laboriosam voluptate. Tenetur alias vel magnam
+      voluptates exercitationem! Magnam eaque blanditiis dolore nemo mollitia
+      harum, laudantium reprehenderit illum, quae voluptate id consectetur
+      nobis! Id aspernatur nam suscipit excepturi, veritatis pariatur a velit
+      dolore cum. Reprehenderit distinctio culpa dignissimos! Facere
+      voluptatibus, dolorum vel a explicabo id beatae quaerat, praesentium
+      eligendi natus dignissimos quo consequatur ex ipsum odio voluptates nemo
+      minima. Illo laborum modi esse doloribus quam aliquam minima?
+      Exercitationem? Omnis amet praesentium illum quod est corporis, ratione
+      eos iure quidem nam et ipsa enim, dolorem minima quam totam necessitatibus
+      laboriosam voluptate deleniti quae quisquam maxime id unde. Deleniti,
+      porro. Voluptate atque accusantium odit illum sint iure quia deleniti
+      aliquid quas recusandae quae, inventore beatae tempora consequatur quod
+      rerum. Reiciendis, totam maxime provident officiis voluptate nobis iure
+      reprehenderit iste minima! Iure necessitatibus sequi animi ab repellat in
+      distinctio quidem aliquid laboriosam a soluta dolores illo, praesentium
+      quos iusto veniam corporis mollitia similique ratione ipsum! Expedita
+      dolore deserunt quae delectus dolor! Aliquid, quaerat consequuntur,
+      assumenda laborum aspernatur sed nam alias, illum necessitatibus officia
+      quidem illo! Repellat illum iure velit tempore, quas quos, consequuntur et
+      cupiditate cumque unde repellendus tempora ipsa quia? Unde sequi illo
+      nobis enim ratione atque quos, rem accusamus vel corporis! Veritatis eos
+      eum quis impedit sapiente temporibus provident doloremque pariatur,
+      tenetur rerum suscipit minus, laboriosam quidem quaerat quas.
+    </p>
   </div>
 </template>
 
 <script setup>
-import { onMounted, ref, watch, computed } from "vue";
+import { onMounted, ref, watch, onBeforeMount } from "vue";
 import services from "@/helpers/services/services.js";
 
+/// inicializacion de las variables a usar
+//variable contenedora del reproductor
 const player = ref(null);
-// const videokey = ref("nNkw3Fo9Aqk");
-const videokey = ref("nNkw3Fo9Aqk");
-
-// watch(
-//   () => videokey,
-//   (videokey) => {
-//     if (player.value && videokey) {
-//       console.log("watch", videokey);
-//       console.log("se ejecuto el watch");
-//       // loadVideoById({
-//       //   videoId,
-//       //   startSeconds: props.playerVars.start || 0,
-//       //   endSeconds: props.playerVars.end || 0,
-//       // });
-//     }
-//   }
-// );
-
+//id del <iframe>
 const playerId = ref(null);
+//variables de la cantidad de paginas existentes en la API
 let numMax = 501;
 let numMin = 1;
-console.log("aca vemos la variable playerId", playerId.value);
-
-// const pepepe = ref(null);
-
-onMounted(async () => {
-  //generar id de manera aleatoria
-  //se genera de manera aleatoria el id del player, en este caso el <iframe>,
-  //para poder visualizarlo ir al navegador y buscar la etiqueta <iframe> en el inspector
-  // playerId.value = Math.random().toString(36).substring(2, 12);
-  playerId.value = "reproductor";
-  // pepepe.value = 
-  // videoId = movie_key;
-  // console.log("mounted", props.videoId);
-  // validate(props.videoId);
-  loadAPI().then(() => {
-    checkIfYTLoaded().then(() => {
-      setTimeout(() => {
-        createPlayer();
-    }, 4000);
-    });
-  });
-  //
-  
-  // try {
-  //   let respAxios = await services.prueba_api(getPageRandom(numMax, numMin));
-  //   // pagina, id, overview, title, backdrop_path
-  //   const pagina = respAxios.data.page;
-  //   const dataArray = respAxios.data.results;
-  //   let dataSorted = dataArray.sort(getNumberRandom);
-  //   let idSorted = dataSorted[0].id;
-  //   console.log(respAxios);
-  //   console.log(idSorted);
-
-  //   //                                                  42994
-  //   let resp_video_movie = await services.movie_start(idSorted);
-  //   let params_movie = resp_video_movie.data.results;
-  //   let movie_key = params_movie[0].key;
-  //   // console.log("key", movie_key);
-  //   // console.log(params_movie);
-  //   // pelicula_key = movie_key;
-  //   videokey.value = movie_key;
-
-  //   console.log("videokey", videokey.value);
-  // } catch (error) {
-  //   return error;
-  // }
-});
+//variables que contienen los datos de la API
 const respAxios = ref(null);
 const dataArray = ref([]);
 const dataSorted = ref([]);
 const idSorted = ref(0);
 const resp_video_movie = ref(null);
 const params_movie = ref([]);
-const movie_key = ref('');
-const movie_title = ref('');
-const movie_overview = ref('');
-const movie_backdrop_link = ref('https://image.tmdb.org/t/p/original');
-const movie_backdrop_key = ref('');
-const movie_backdrop_image = ref('');
+const movie_key = ref("");
+const movie_title = ref("");
+const movie_overview = ref("");
+const movie_backdrop_link = ref("https://image.tmdb.org/t/p/original");
+const movie_backdrop_key = ref("");
+const movie_backdrop_image = ref("");
 
-const vaaa = computed( async () => {
+// utilizamos el onBeforeMount ya que es el que se renderiza primero dentro del Ciclo de Vida de los componentes
+onBeforeMount(async () => {
+  console.log("1-. se cargo altirooooooo");
   respAxios.value = await services.movie_info(getPageRandom(numMax, numMin));
-  console.log("prueba api", respAxios.value);
+  console.log("1.1-. prueba api", respAxios.value);
   dataArray.value = respAxios.value.data.results;
   dataSorted.value = dataArray.value.sort(getNumberRandom);
+  if (dataSorted.value[0].backdrop_path === null || dataSorted.value[0].overview === "") {
+    console.log("datos nulos o vacios");
+    dataSorted.value = dataArray.value.sort(getNumberRandom);
+    console.log("datos generados nuevamente");
+  }
   idSorted.value = dataSorted.value[0].id;
-  movie_title.value = dataSorted.value[0].title;
-  movie_overview.value = dataSorted.value[0].overview;
   movie_backdrop_key.value = dataSorted.value[0].backdrop_path;
-  movie_backdrop_image.value = movie_backdrop_link.value+movie_backdrop_key.value;
-  
+  movie_backdrop_image.value = movie_backdrop_link.value + movie_backdrop_key.value;
+  getImageBackground();
+  // retrasamos 0.5seg la respuesta a los datos del titulo y la sinopsis
+  // para sincronizarlo de mejor manera con el fondo de la pelicula
+  setTimeout(()=>{
+    movie_title.value = dataSorted.value[0].title;
+    movie_overview.value = dataSorted.value[0].overview;
+  }, 500);
+  console.log("1.2-. imagen final link -", movie_backdrop_image.value);
   resp_video_movie.value = await services.movie_video_start(idSorted.value);
   params_movie.value = resp_video_movie.value.data.results;
   movie_key.value = params_movie.value[0].key;
-  console.log("holaa", params_movie.value[0].key);
-  // return movie_key
-})
+  console.log("1.3-. holaa", params_movie.value[0].key);
 
-// const valor = async () => {
-//   let respAxios = await services.prueba_api(getPageRandom(numMax, numMin)).then();
-//   let dataArray = respAxios.data.results;
-//   let dataSorted = dataArray.sort(getNumberRandom);
-//   let idSorted = dataSorted[0].id;
+  // aquiVaLaOtra();
+  console.log("10-. se muestra si o si");
+});
 
-//   let resp_video_movie = await services.movie_start(idSorted);
-//   let params_movie = resp_video_movie.data.results;
-//   let movie_key = params_movie[0].key;
-//   return movie_key;
-// }
+onMounted(async () => {
+  // asignar el id al <iframe>
+  playerId.value = "reproductor";
+  loadAPI().then(() => {
+    checkIfYTLoaded().then(() => {
+      // esperamos a que onBeforeMount obtenga la key
+      //del video para pasarsela a la variable de videoID
+      // si no es asi, la videoID siempre estara vacia, ya que
+      // el reproductor se creara antes de consultar la informacion de la API
+      setTimeout(() => {
+        createPlayer();
+      }, 4000);
+    });
+  });
+});
 
 function loadAPI() {
   if (
@@ -156,7 +152,6 @@ function loadAPI() {
   tag.src = "https://www.youtube.com/iframe_api";
   document.head.appendChild(tag);
   console.info("Youtube API script added");
-  console.log("funcion vaaa", vaaa.value);
   return Promise.resolve();
 }
 
@@ -166,13 +161,16 @@ function checkIfYTLoaded() {
     return Promise.resolve();
   }
   // recursively check if the YT object is loaded
+  //R: The JavaScript exception "too much recursion" or "Maximum call stack size exceeded"
+  //occurs when there are too many function calls, or a function is missing a base case.
   // eslint-disable-next-line no-unused-vars
   return new Promise((resolve) => {
+    // agregamos el setTimeout() con 1seg para evitar el problema de recursividad con las funciones
     setTimeout(() => {
       checkIfYTLoaded().then(() => {
         resolve();
       });
-    }, 100);
+    }, 1000);
   });
 }
 
@@ -200,22 +198,45 @@ function getNumberRandom() {
   return 0.5 - Math.random();
 }
 
+function getImageBackground() {
+  let url = movie_backdrop_image.value;
+  let image = new Image();
+  image.src = url;
+  document.getElementById("container_image").appendChild(image);
+  // le asignamos el id a la imagen una vez que se crea
+  image.setAttribute("id", "img_poster");
+  // caputaramos el id de la etiqueta <img> una vez que esta se creo
+  let img_poster = document.getElementById("img_poster");
+  // le asignamos el ancho y alto correspondiente a la imagen
+  img_poster.style.width = "100%";
+  img_poster.style.height = "100%";
+  // desactivamos las interacciones con el mouse cuando este el fondo de la imagen
+  img_poster.style.pointerEvents = "none";
+  // capturamos el elemento que contiene los datos de la pelicula visualizada
+  let info_movie = document.getElementById("info_movie");
+  // una vez terminado el video asignamos opacity 1 al elemento para que sea visible junto con la imagen de fondo
+  info_movie.style.visibility = "visible";
+  console.log("2-. imagen de fondo lista");
+}
+
 function createPlayer() {
   // el platerElement con el                  playerId
   // const playerElement = document.getElementById(playerId.value);
   const playerElement = playerId.value;
-  //
   const videoID = movie_key.value;
   console.log("createPlayer", videoID);
-  console.log("asdasd", movie_key.value);
   // capturamos el id del iframe cuando este se crea
   let video_style = document.getElementById("reproductor");
   // le pasamos el estilo de css mediante JS cuando el video ya este renderizado
+  // video_style.style.position = "absolute";
+  // video_style.style.left = "0";
+  // video_style.style.zIndex = "-1";
+  // video_style.style.top = "0rem";
   // video_style.style.pointerEvents = "none";
   video_style.style.width = "100%";
   // asignamos el style con el heigh con viewport width, esto quiere decir que su "altura"
   // cambiara cuando se haga mas pequeña el tamaño de la ventana
-  video_style.style.height = "43.25vw";
+  video_style.style.height = "58.25vw";
   // eslint-disable-next-line no-undef
   player.value = new YT.Player(playerElement, {
     // height: "900",
@@ -224,7 +245,7 @@ function createPlayer() {
     // playerVars: props.playerVars,
     playerVars: {
       mute: 1,
-      autoplay: 1,
+      autoplay: 0,
       controls: 0,
       disablekb: 1,
       enableapi: 1,
@@ -244,16 +265,45 @@ function onPlayerReady(event) {
   emit("ready", event.target);
   console.log("la wea esta lista");
   let objeto = event.target;
+  console.log("event.target -", event.target);
   let data = objeto.h.attributes.title;
   let titulo = data.value;
   console.log("titulo del video -", titulo);
-  console.log("aa", movie_key.value);
+
+  // let url = movie_backdrop_image.value;
+  // let image = new Image();
+  // image.src = url;
+  // document.getElementById("container_image").appendChild(image);
+  // // le asignamos el id a la imagen una vez que se crea
+  // image.setAttribute("id", "img_poster");
+  // // caputaramos el id de la etiqueta <img> una vez que esta se creo
+  // let img_poster = document.getElementById("img_poster");
+  // // le asignamos el ancho y alto correspondiente a la imagen
+  // img_poster.style.width = "100%";
+  // img_poster.style.height = "100%";
+  // // desactivamos las interacciones con el mouse cuando este el fondo de la imagen
+  // img_poster.style.pointerEvents = "none";
+
+  // // capturamos el elemento que contiene los datos de la pelicula visualizada
+  // let info_movie = document.getElementById("info_movie");
+  // // una vez terminado el video asignamos opacity 1 al elemento para que sea visible junto con la imagen de fondo
+  // info_movie.style.visibility = "visible";
+  setTimeout(() => {
+    playVideo();
+    console.log("se reprodujo aqui con el metodo despues de 5 segundos");
+  }, 5000);
 }
 
 function onPlayerStateChange(event) {
   switch (event.data) {
     case window.YT.PlayerState.PLAYING:
       emit("playing", event.target);
+      // capturamos el elemento que contiene los datos de la pelicula visualizada
+      let info_movie2 = document.getElementById("info_movie");
+      // una vez terminado el video asignamos opacity 1 al elemento para que sea visible junto con la imagen de fondo
+      info_movie2.style.visibility = "hidden";
+      let cont_img = document.getElementById("container_image");
+      cont_img.style.visibility = "hidden";
       console.log("la wea se esta reproduciendo", event.target);
       break;
     case window.YT.PlayerState.PAUSED:
@@ -265,28 +315,28 @@ function onPlayerStateChange(event) {
     case window.YT.PlayerState.ENDED:
       emit("ended", event.target);
 
-      let url = movie_backdrop_image.value;
+      // let url = movie_backdrop_image.value;
 
-      let image = new Image();
-      image.src = url;
-      document.getElementById("container_image").appendChild(image);
-      // le asignamos el id a la imagen una vez que se crea
-      image.setAttribute("id", "img_poster");
-      // caputaramos el id de la etiqueta <img> una vez que esta se creo
-      let img_poster = document.getElementById("img_poster");
-      // le asignamos el ancho y alto correspondiente a la imagen
-      img_poster.style.width = "100%";
-      img_poster.style.height = "100%";
-      // desactivamos las interacciones con el mouse cuando este el fondo de la imagen
-      img_poster.style.pointerEvents = "none";
+      // let image = new Image();
+      // image.src = url;
+      // document.getElementById("container_image").appendChild(image);
+      // // le asignamos el id a la imagen una vez que se crea
+      // image.setAttribute("id", "img_poster");
+      // // caputaramos el id de la etiqueta <img> una vez que esta se creo
+      // let img_poster = document.getElementById("img_poster");
+      // // le asignamos el ancho y alto correspondiente a la imagen
+      // img_poster.style.width = "100%";
+      // img_poster.style.height = "100%";
+      // // desactivamos las interacciones con el mouse cuando este el fondo de la imagen
+      // img_poster.style.pointerEvents = "none";
 
-      // capturamos el elemento que contiene los datos de la pelicula visualizada
-      let info_movie = document.getElementById("info_movie");
-      // una vez terminado el video asignamos opacity 1 al elemento para que sea visible junto con la imagen de fondo
-      info_movie.style.visibility = 'visible';
+      // // capturamos el elemento que contiene los datos de la pelicula visualizada
+      // let info_movie = document.getElementById("info_movie");
+      // // una vez terminado el video asignamos opacity 1 al elemento para que sea visible junto con la imagen de fondo
+      // info_movie.style.visibility = "visible";
 
-      // al finalizar el video usamos el destroy para quitarlo, ya que
-      destroy();
+      // // al finalizar el video usamos el destroy para quitarlo, ya que
+      // destroy();
 
       console.log("la wea finalizo");
       break;
@@ -502,7 +552,7 @@ defineExpose({
   destroy,
   loadVideoById,
   cueVideoById,
-  // 
+  //
 });
 </script>
 
@@ -515,11 +565,13 @@ defineExpose({
 #container_image {
   position: absolute;
   width: 100%;
-  height: 43vw;
+  height: 58.5vw;
+  /* background-color: bisque; */
+  /* opacity: 0.2; */
 }
 
 .container_info_movie {
-  /* background-color: aqua; */
+  background-color: aqua;
   width: 40%;
   height: 100%;
   position: absolute;
@@ -534,9 +586,9 @@ defineExpose({
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-start;
   margin-left: 4rem;
-  visibility: hidden;
+  gap: 20px;
+  /* visibility: hidden; */
 }
 
 .cont_buttons button {
@@ -551,7 +603,7 @@ defineExpose({
 .cont_buttons {
   background-color: tomato;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 10px;
 }
 
@@ -571,6 +623,18 @@ defineExpose({
 .icon {
   font-size: 2rem;
   margin-right: 1rem;
+}
+
+.cont_sinopsis {
+  text-align: left;
+  color: #fff;
+  /* oculta el texto cuando este se desborda */
+  overflow: hidden;
+}
+
+.title_movie h1 {
+  color: #fff;
+  font-size: 40px;
 }
 
 @media screen and (min-width: 390px) and (max-width: 889px) {

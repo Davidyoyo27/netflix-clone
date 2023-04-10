@@ -1,17 +1,15 @@
 <template>
-  <!-- id="embed_video" -->
-  <!-- <img src="@/assets/poster-oficial-spider-man-no-way-home.jpg" alt=""> -->
   <div class="container">
     <div id="container_image">
-      <div class="container_info_movie">
-        <div id="info_movie">
+      <div id="container_info_movie">
+        <div class="info_movie">
           <div class="title_movie">
             <h1>{{ movie_title }}</h1>
           </div>
           <div class="cont_sinopsis">
-            <p>{{ movie_overview }}</p>
+            <p id="sinopsis">{{ movie_overview }}</p>
           </div>
-          <div class="cont_buttons">
+          <div id="cont_buttons">
             <button class="button_rep">
               <font-awesome-icon class="icon" icon="fa-solid fa-play" />
               <span>Reproducir</span>
@@ -25,11 +23,6 @@
       </div>
     </div>
     <div ref="youtube" :id="playerId"></div>
-    <!-- "total_pages": 127,
-    "total_results": 2540
-
-    "total_pages": 11311,
-    "total_results": 226210 -->
     <p>
       Lorem ipsum dolor sit amet consectetur adipisicing elit. Sint repellat
       libero quisquam? Natus culpa est fugit et eius eaque ullam repudiandae
@@ -92,6 +85,7 @@ const movie_overview = ref("");
 const movie_backdrop_link = ref("https://image.tmdb.org/t/p/original");
 const movie_backdrop_key = ref("");
 const movie_backdrop_image = ref("");
+const buttons = ref(null);
 
 // utilizamos el onBeforeMount ya que es el que se renderiza primero dentro del Ciclo de Vida de los componentes
 onBeforeMount(async () => {
@@ -100,18 +94,22 @@ onBeforeMount(async () => {
   console.log("1.1-. prueba api", respAxios.value);
   dataArray.value = respAxios.value.data.results;
   dataSorted.value = dataArray.value.sort(getNumberRandom);
-  if (dataSorted.value[0].backdrop_path === null || dataSorted.value[0].overview === "") {
-    console.log("datos nulos o vacios");
+  if (dataSorted.value[0].backdrop_path === null) {
+    console.log("backdrop_path vacio");
     dataSorted.value = dataArray.value.sort(getNumberRandom);
+    console.log("nuevos datos", dataSorted.value);
     console.log("datos generados nuevamente");
   }
   idSorted.value = dataSorted.value[0].id;
   movie_backdrop_key.value = dataSorted.value[0].backdrop_path;
-  movie_backdrop_image.value = movie_backdrop_link.value + movie_backdrop_key.value;
+  movie_backdrop_image.value =
+    movie_backdrop_link.value + movie_backdrop_key.value;
   getImageBackground();
   // retrasamos 0.5seg la respuesta a los datos del titulo y la sinopsis
   // para sincronizarlo de mejor manera con el fondo de la pelicula
-  setTimeout(()=>{
+  setTimeout(() => {
+    buttons.value = document.getElementById("cont_buttons");
+    buttons.value.style.visibility = "visible";
     movie_title.value = dataSorted.value[0].title;
     movie_overview.value = dataSorted.value[0].overview;
   }, 500);
@@ -212,10 +210,6 @@ function getImageBackground() {
   img_poster.style.height = "100%";
   // desactivamos las interacciones con el mouse cuando este el fondo de la imagen
   img_poster.style.pointerEvents = "none";
-  // capturamos el elemento que contiene los datos de la pelicula visualizada
-  let info_movie = document.getElementById("info_movie");
-  // una vez terminado el video asignamos opacity 1 al elemento para que sea visible junto con la imagen de fondo
-  info_movie.style.visibility = "visible";
   console.log("2-. imagen de fondo lista");
 }
 
@@ -232,10 +226,13 @@ function createPlayer() {
   // video_style.style.left = "0";
   // video_style.style.zIndex = "-1";
   // video_style.style.top = "0rem";
-  // video_style.style.pointerEvents = "none";
+
+  // desactivamos la interaccion con el reproductor del video click derecho e izquierdo
+  video_style.style.pointerEvents = "none";
   video_style.style.width = "100%";
   // asignamos el style con el heigh con viewport width, esto quiere decir que su "altura"
-  // cambiara cuando se haga mas pequeña el tamaño de la ventana
+  // cambiara cuando se haga mas pequeña el tamaño de la ventana en base al ancho de la pantalla
+  // como se especifica con el vw(viewport width)
   video_style.style.height = "58.25vw";
   // eslint-disable-next-line no-undef
   player.value = new YT.Player(playerElement, {
@@ -269,74 +266,49 @@ function onPlayerReady(event) {
   let data = objeto.h.attributes.title;
   let titulo = data.value;
   console.log("titulo del video -", titulo);
-
-  // let url = movie_backdrop_image.value;
-  // let image = new Image();
-  // image.src = url;
-  // document.getElementById("container_image").appendChild(image);
-  // // le asignamos el id a la imagen una vez que se crea
-  // image.setAttribute("id", "img_poster");
-  // // caputaramos el id de la etiqueta <img> una vez que esta se creo
-  // let img_poster = document.getElementById("img_poster");
-  // // le asignamos el ancho y alto correspondiente a la imagen
-  // img_poster.style.width = "100%";
-  // img_poster.style.height = "100%";
-  // // desactivamos las interacciones con el mouse cuando este el fondo de la imagen
-  // img_poster.style.pointerEvents = "none";
-
-  // // capturamos el elemento que contiene los datos de la pelicula visualizada
-  // let info_movie = document.getElementById("info_movie");
-  // // una vez terminado el video asignamos opacity 1 al elemento para que sea visible junto con la imagen de fondo
-  // info_movie.style.visibility = "visible";
   setTimeout(() => {
     playVideo();
     console.log("se reprodujo aqui con el metodo despues de 5 segundos");
   }, 5000);
 }
 
+const cont_info_movie = ref(null);
+const cont_img = ref(null);
+const sinopsis = ref(null);
+
 function onPlayerStateChange(event) {
   switch (event.data) {
     case window.YT.PlayerState.PLAYING:
       emit("playing", event.target);
-      // capturamos el elemento que contiene los datos de la pelicula visualizada
-      let info_movie2 = document.getElementById("info_movie");
-      // una vez terminado el video asignamos opacity 1 al elemento para que sea visible junto con la imagen de fondo
-      info_movie2.style.visibility = "hidden";
-      let cont_img = document.getElementById("container_image");
-      cont_img.style.visibility = "hidden";
+      // SE OCULTA LA INFO DE LA PELICULA
+      // capturamos el elemento contenedor con los datos de la pelicula visualizada
+      cont_info_movie.value = document.getElementById("container_info_movie");
+      // pasamos el estilo de CSS ocultando el contenedor con la info mientras el video se reproduce
+      cont_info_movie.value.style.visibility = "visible";
+      // SE OCULTA LA IMAGEN DE FONDO DE LA PELICULA
+      // capturamos el elemento que contiene la imagen de fondo de la pelicula
+      cont_img.value = document.getElementById("container_image");
+      // pasamos el estilo de CSS ocultando el contenedor con la imagen de la pelicula
+      cont_img.value.style.visibility = "hidden";
+      // buttons.value.style.visibility = "hidden";
+      sinopsis.value = document.getElementById("sinopsis");
+      sinopsis.value.style.fontSize = "0px";
+      sinopsis.value.style.opacity = "0";
+      // sinopsis.style.display = "none";
+      // sinopsis.style.transition = "all 1s";
       console.log("la wea se esta reproduciendo", event.target);
       break;
     case window.YT.PlayerState.PAUSED:
       emit("paused", event.target);
-
       console.log("la wea esta pausada");
-      // window.alert("aca lo tomo");
       break;
     case window.YT.PlayerState.ENDED:
       emit("ended", event.target);
-
-      // let url = movie_backdrop_image.value;
-
-      // let image = new Image();
-      // image.src = url;
-      // document.getElementById("container_image").appendChild(image);
-      // // le asignamos el id a la imagen una vez que se crea
-      // image.setAttribute("id", "img_poster");
-      // // caputaramos el id de la etiqueta <img> una vez que esta se creo
-      // let img_poster = document.getElementById("img_poster");
-      // // le asignamos el ancho y alto correspondiente a la imagen
-      // img_poster.style.width = "100%";
-      // img_poster.style.height = "100%";
-      // // desactivamos las interacciones con el mouse cuando este el fondo de la imagen
-      // img_poster.style.pointerEvents = "none";
-
-      // // capturamos el elemento que contiene los datos de la pelicula visualizada
-      // let info_movie = document.getElementById("info_movie");
-      // // una vez terminado el video asignamos opacity 1 al elemento para que sea visible junto con la imagen de fondo
-      // info_movie.style.visibility = "visible";
-
-      // // al finalizar el video usamos el destroy para quitarlo, ya que
-      // destroy();
+      // cont_info_movie.value.style.visibility = "visible";
+      cont_img.value.style.visibility = "visible";
+      sinopsis.value.style.fontSize = "23px";
+      sinopsis.value.style.opacity = "1";
+      // buttons.value.style.visibility = "visible";
 
       console.log("la wea finalizo");
       break;
@@ -562,6 +534,7 @@ defineExpose({
   width: 100%;
 }
 
+/* contenedor que se superpone */
 #container_image {
   position: absolute;
   width: 100%;
@@ -570,7 +543,7 @@ defineExpose({
   /* opacity: 0.2; */
 }
 
-.container_info_movie {
+#container_info_movie {
   background-color: aqua;
   width: 40%;
   height: 100%;
@@ -579,7 +552,7 @@ defineExpose({
   align-items: center;
 }
 
-#info_movie {
+.info_movie {
   background-color: violet;
   width: 100%;
   height: 50%;
@@ -591,7 +564,7 @@ defineExpose({
   /* visibility: hidden; */
 }
 
-.cont_buttons button {
+#cont_buttons button {
   padding: 0.9rem 1.5rem 0.9rem 1.5rem;
   border-style: none;
   font-weight: 600;
@@ -600,11 +573,12 @@ defineExpose({
   cursor: pointer;
 }
 
-.cont_buttons {
+#cont_buttons {
   background-color: tomato;
   display: flex;
   justify-content: flex-start;
   gap: 10px;
+  visibility: hidden;
 }
 
 .button_rep {
@@ -632,18 +606,36 @@ defineExpose({
   overflow: hidden;
 }
 
-.title_movie h1 {
-  color: #fff;
-  font-size: 40px;
+.cont_sinopsis p {
+  font-size: 23px;
+  font-weight: 500;
+  cursor: default;
 }
 
+.title_movie h1 {
+  color: #fff;
+  font-size: 50px;
+  cursor: default;
+}
+
+#sinopsis {
+  /* font-size: 15px; */
+  transition: font-size 2.5s;
+  /* opacity: 1; */
+  text-shadow: 0.1em 0.1em 0.1em rgb(65, 64, 64)
+}
+
+/* #sinopsis:hover{
+  font-size: 0px;
+} */
+
 @media screen and (min-width: 390px) and (max-width: 889px) {
-  #info_movie {
+  .info_movie {
     background-color: yellow;
     margin-left: 2rem;
   }
 
-  .cont_buttons button {
+  #cont_buttons button {
     padding: 0.5rem 1rem 0.5rem 1rem;
     border-style: none;
     font-weight: 600;
@@ -657,18 +649,18 @@ defineExpose({
     margin-right: 1rem;
   }
 
-  .container_info_movie {
+  #container_info_movie {
     width: 60%;
   }
 }
 
 @media screen and (min-width: 890px) and (max-width: 1129px) {
-  #info_movie {
+  .info_movie {
     background-color: purple;
     margin-left: 2rem;
   }
 
-  .cont_buttons button {
+  #cont_buttons button {
     padding: 0.5rem 1rem 0.5rem 1rem;
     border-style: none;
     font-weight: 600;
@@ -684,12 +676,12 @@ defineExpose({
 }
 
 @media (min-width: 1130px) and (max-width: 1330px) {
-  #info_movie {
+  .info_movie {
     background-color: springgreen;
     margin-left: 2rem;
   }
 
-  .cont_buttons button {
+  #cont_buttons button {
     padding: 0.5rem 1rem 0.5rem 1rem;
     border-style: none;
     font-weight: 600;

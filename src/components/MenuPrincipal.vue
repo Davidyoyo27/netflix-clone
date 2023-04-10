@@ -257,7 +257,7 @@ export default {
   align-items: center;
   height: 4.2rem;
   z-index: 1;
-  position: absolute;
+  position: fixed;
   width: 100%;
 }
 

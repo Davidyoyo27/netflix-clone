@@ -19,8 +19,6 @@ const routes = [
     // page 404 Not Found
     // se busca cualquier url que no tenga match con los especificados aca en las rutas
     { path: '/:pathMatch(.*)*', component: () => import(/* webpackChunkName: "Error404PageNotFound.vue" */ '../components/Error404PageNotFound') },
-    // PAGINA DE PRUEBA CON EL CODIGO ORIGINAL DEL VIDEO FUNCIONANDO
-    { path: '/video_player_original', component: () => import(/* webpackChunkName: "EmbedVideoPlayerOR.vue" */ '../components/EmbedVideoPlayerOR') },
 ]
 
 // 1.4-. creamos la instancia del router

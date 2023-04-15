@@ -27,6 +27,7 @@ export default {
         }
     },
 
+
     movie_video_start: async (id_pelicula) => {
         try {
             const API_KEY = 'api_key=ef6f33754f4bdb2e45fe025d71c82878'
@@ -52,6 +53,32 @@ export default {
             return { ok: false, error: err.message }
         }
     },
+
+    // trae la certificacion de la pelicula EJ: para mayores de 18 años, 16, 14, 10, etc.
+    movie_certification: async(id_pelicula) => {
+        try {
+            const API_KEY = 'api_key=ef6f33754f4bdb2e45fe025d71c82878'
+            const axiosConfig = {
+
+                baseURL: 'https://api.themoviedb.org/3',
+                url: `/movie/${id_pelicula}/release_dates?${API_KEY}`,
+
+                headers: {
+                    Authorization: `API KEY ${API_KEY}`,
+                },
+
+                method: 'get',
+                params: {
+                    id_pelicula: id_pelicula
+                }
+            }
+
+            const respuesta = await axios.request(axiosConfig)
+            return { ok: true, data: respuesta.data }
+        } catch (err) {
+            return { ok: false, error: err.message }
+        }
+    }
 
     
 }

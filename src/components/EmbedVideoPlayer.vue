@@ -3,65 +3,55 @@
     <div id="container_image">
       <div id="container_info_movie">
         <div class="info_movie">
-          <div class="title_movie">
-            <h1>{{ movie_title }}</h1>
+          <div class="box-left">
+            <div class="title_movie">
+              <h1>{{ movie_title }}</h1>
+            </div>
+            <div class="cont_sinopsis">
+              <p id="sinopsis">{{ movie_overview }}</p>
+            </div>
+            <div id="cont_buttons">
+              <button class="button_rep">
+                <font-awesome-icon class="icon" icon="fa-solid fa-play" />
+                <span>Reproducir</span>
+              </button>
+              <button class="button_info">
+                <font-awesome-icon
+                  class="icon"
+                  icon="fa-solid fa-circle-info"
+                />
+                <span>Más información</span>
+              </button>
+            </div>
           </div>
-          <div class="cont_sinopsis">
-            <p id="sinopsis">{{ movie_overview }}</p>
-          </div>
-          <div id="cont_buttons">
-            <button class="button_rep">
-              <font-awesome-icon class="icon" icon="fa-solid fa-play" />
-              <span>Reproducir</span>
-            </button>
-            <button class="button_info">
-              <font-awesome-icon class="icon" icon="fa-solid fa-circle-info" />
-              <span>Más información</span>
-            </button>
+
+          <div class="box-right">
+            <div class="cont-play-mute">
+              <button id="button-mute" v-on:click="deactivateVolumeVideo">
+                <font-awesome-icon icon="fa-solid fa-volume-xmark" />
+              </button>
+              <button id="button-unMute" v-on:click="activateVolumeVideo">
+                <font-awesome-icon icon="fa-solid fa-volume-high" />
+              </button>
+              <button id="button-playVideo" v-on:click="playVideoAgain">
+                <font-awesome-icon icon="fa-solid fa-rotate-right" />
+              </button>
+            </div>
+            <div v-if="flagCertificacion" class="cont-cert">
+              <p>{{ resp_cert }}</p>
+            </div>
           </div>
         </div>
       </div>
     </div>
     <div ref="youtube" :id="playerId"></div>
-    <p>
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Sint repellat
-      libero quisquam? Natus culpa est fugit et eius eaque ullam repudiandae
-      aliquid optio, unde corporis suscipit eos iste. Sunt, voluptatum? Mollitia
-      eligendi necessitatibus nihil dolor. Autem iure eos est! Dicta pariatur
-      atque, voluptatum totam possimus nulla est unde explicabo eius, ducimus
-      impedit. Nihil accusamus commodi quasi, repudiandae asperiores vero
-      impedit. At rerum illo, eligendi quam, et dolorem quo, vero eveniet
-      architecto cum est optio quibusdam magni perferendis odit delectus
-      inventore placeat soluta laboriosam voluptate. Tenetur alias vel magnam
-      voluptates exercitationem! Magnam eaque blanditiis dolore nemo mollitia
-      harum, laudantium reprehenderit illum, quae voluptate id consectetur
-      nobis! Id aspernatur nam suscipit excepturi, veritatis pariatur a velit
-      dolore cum. Reprehenderit distinctio culpa dignissimos! Facere
-      voluptatibus, dolorum vel a explicabo id beatae quaerat, praesentium
-      eligendi natus dignissimos quo consequatur ex ipsum odio voluptates nemo
-      minima. Illo laborum modi esse doloribus quam aliquam minima?
-      Exercitationem? Omnis amet praesentium illum quod est corporis, ratione
-      eos iure quidem nam et ipsa enim, dolorem minima quam totam necessitatibus
-      laboriosam voluptate deleniti quae quisquam maxime id unde. Deleniti,
-      porro. Voluptate atque accusantium odit illum sint iure quia deleniti
-      aliquid quas recusandae quae, inventore beatae tempora consequatur quod
-      rerum. Reiciendis, totam maxime provident officiis voluptate nobis iure
-      reprehenderit iste minima! Iure necessitatibus sequi animi ab repellat in
-      distinctio quidem aliquid laboriosam a soluta dolores illo, praesentium
-      quos iusto veniam corporis mollitia similique ratione ipsum! Expedita
-      dolore deserunt quae delectus dolor! Aliquid, quaerat consequuntur,
-      assumenda laborum aspernatur sed nam alias, illum necessitatibus officia
-      quidem illo! Repellat illum iure velit tempore, quas quos, consequuntur et
-      cupiditate cumque unde repellendus tempora ipsa quia? Unde sequi illo
-      nobis enim ratione atque quos, rem accusamus vel corporis! Veritatis eos
-      eum quis impedit sapiente temporibus provident doloremque pariatur,
-      tenetur rerum suscipit minus, laboriosam quidem quaerat quas.
-    </p>
   </div>
 </template>
 
 <script setup>
-import { onMounted, ref, watch, onBeforeMount } from "vue";
+// hacer lo de pasar todos los estilos a un archivo, para luego llamar a ese archivo con sus respectivas constantes con los parametros de css
+// y enviar la variable a cada punto del codigo segun se necesite
+import { onMounted, ref, onBeforeMount } from "vue";
 import services from "@/helpers/services/services.js";
 
 /// inicializacion de las variables a usar
@@ -86,41 +76,71 @@ const movie_backdrop_link = ref("https://image.tmdb.org/t/p/original");
 const movie_backdrop_key = ref("");
 const movie_backdrop_image = ref("");
 const buttons = ref(null);
+const resp_certification = ref(null);
+const datos = ref([]);
+const resp_cert = ref("");
+const flagCertificacion = ref(false);
+// botones play video, subir volumen, bajar volumen
+// const mutear = ref(document.getElementById("button-mute"));
+// const desmutear = ref(document.getElementById("button-unMute"));
+// const reproducir = ref(document.getElementById("button-playVideo"));
 
 // utilizamos el onBeforeMount ya que es el que se renderiza primero dentro del Ciclo de Vida de los componentes
 onBeforeMount(async () => {
-  console.log("1-. se cargo altirooooooo");
-  respAxios.value = await services.movie_info(getPageRandom(numMax, numMin));
-  console.log("1.1-. prueba api", respAxios.value);
-  dataArray.value = respAxios.value.data.results;
-  dataSorted.value = dataArray.value.sort(getNumberRandom);
-  if (dataSorted.value[0].backdrop_path === null) {
-    console.log("backdrop_path vacio");
+  try {
+    console.log("1-. se cargo altirooooooo");
+    respAxios.value = await services.movie_info(getPageRandom(numMax, numMin));
+    console.log("1.1-. prueba api", respAxios.value);
+    dataArray.value = respAxios.value.data.results;
     dataSorted.value = dataArray.value.sort(getNumberRandom);
-    console.log("nuevos datos", dataSorted.value);
-    console.log("datos generados nuevamente");
-  }
-  idSorted.value = dataSorted.value[0].id;
-  movie_backdrop_key.value = dataSorted.value[0].backdrop_path;
-  movie_backdrop_image.value =
-    movie_backdrop_link.value + movie_backdrop_key.value;
-  getImageBackground();
-  // retrasamos 0.5seg la respuesta a los datos del titulo y la sinopsis
-  // para sincronizarlo de mejor manera con el fondo de la pelicula
-  setTimeout(() => {
-    buttons.value = document.getElementById("cont_buttons");
-    buttons.value.style.visibility = "visible";
-    movie_title.value = dataSorted.value[0].title;
-    movie_overview.value = dataSorted.value[0].overview;
-  }, 500);
-  console.log("1.2-. imagen final link -", movie_backdrop_image.value);
-  resp_video_movie.value = await services.movie_video_start(idSorted.value);
-  params_movie.value = resp_video_movie.value.data.results;
-  movie_key.value = params_movie.value[0].key;
-  console.log("1.3-. holaa", params_movie.value[0].key);
+    if (dataSorted.value[0].backdrop_path === null) {
+      console.log("backdrop_path vacio");
+      dataSorted.value = dataArray.value.sort(getNumberRandom);
+      console.log("nuevos datos", dataSorted.value);
+      console.log("datos generados nuevamente");
+    }
+    idSorted.value = dataSorted.value[0].id;
+    console.log("id", idSorted.value);
+    movie_backdrop_key.value = dataSorted.value[0].backdrop_path;
+    movie_backdrop_image.value =
+      movie_backdrop_link.value + movie_backdrop_key.value;
+    getImageBackground();
+    // retrasamos 0.5seg la respuesta a los datos del titulo y la sinopsis
+    // para sincronizarlo de mejor manera con el fondo de la pelicula
+    setTimeout(() => {
+      buttons.value = document.getElementById("cont_buttons");
+      buttons.value.style.visibility = "visible";
+      movie_title.value = dataSorted.value[0].title;
+      movie_overview.value = dataSorted.value[0].overview;
+    }, 500);
+    console.log("1.2-. imagen final link -", movie_backdrop_image.value);
+    resp_video_movie.value = await services.movie_video_start(idSorted.value);
+    params_movie.value = resp_video_movie.value.data.results;
+    movie_key.value = params_movie.value[0].key;
+    console.log("1.3-. holaa", params_movie.value[0].key);
 
-  // aquiVaLaOtra();
-  console.log("10-. se muestra si o si");
+    resp_certification.value = await services.movie_certification(
+      idSorted.value
+    );
+    datos.value = resp_certification.value.data.results[0].release_dates;
+    resp_cert.value = datos.value[0].certification;
+    console.log("a", resp_cert.value);
+    // operador ternario
+    // si el contenido de la variable resp_cert que es .certification esta vacia
+    // a la variable resp_cert se le pasara el valor "vacio", por el contrario,
+    // si la variable ya contiene informacion, esta se retornara con su valor correspondiente
+    resp_cert.value === "" ? (resp_cert.value = "vacío") : resp_cert.value;
+    flagCertificacion.value = true;
+
+    // (screen.width >= 1330) ? window.alert("rosa") : null;
+    // (screen.width <= 1329 && screen.width >= 1130) ? window.alert("verde") : null;
+    // (screen.width <= 1129 && screen.width >= 890) ? window.alert("purpura") : null;
+    // (screen.width <= 889) ? window.alert("amarillo") : null;
+
+    console.log("10-. se muestra si o si");
+  } catch (error) {
+    console.log("error", error);
+  }
 });
 
 onMounted(async () => {
@@ -217,16 +237,12 @@ function createPlayer() {
   // el platerElement con el                  playerId
   // const playerElement = document.getElementById(playerId.value);
   const playerElement = playerId.value;
+  // creamos videoID que es la variable que contendra la key del video
   const videoID = movie_key.value;
   console.log("createPlayer", videoID);
   // capturamos el id del iframe cuando este se crea
   let video_style = document.getElementById("reproductor");
   // le pasamos el estilo de css mediante JS cuando el video ya este renderizado
-  // video_style.style.position = "absolute";
-  // video_style.style.left = "0";
-  // video_style.style.zIndex = "-1";
-  // video_style.style.top = "0rem";
-
   // desactivamos la interaccion con el reproductor del video click derecho e izquierdo
   video_style.style.pointerEvents = "none";
   video_style.style.width = "100%";
@@ -236,11 +252,10 @@ function createPlayer() {
   video_style.style.height = "58.25vw";
   // eslint-disable-next-line no-undef
   player.value = new YT.Player(playerElement, {
-    // height: "900",
-    // width: "100%",
     videoId: videoID,
-    // playerVars: props.playerVars,
     playerVars: {
+      start: 10, //5
+      end: 60, //65
       mute: 1,
       autoplay: 0,
       controls: 0,
@@ -260,12 +275,14 @@ function createPlayer() {
 
 function onPlayerReady(event) {
   emit("ready", event.target);
-  console.log("la wea esta lista");
+  // console.log("esta listo");
   let objeto = event.target;
-  console.log("event.target -", event.target);
+  // console.log("event.target -", event.target);
   let data = objeto.h.attributes.title;
   let titulo = data.value;
   console.log("titulo del video -", titulo);
+  // esperamos 5 segundos a visualizar el fondo de la pelicula
+  // para luego reproducir el trailer
   setTimeout(() => {
     playVideo();
     console.log("se reprodujo aqui con el metodo despues de 5 segundos");
@@ -275,6 +292,12 @@ function onPlayerReady(event) {
 const cont_info_movie = ref(null);
 const cont_img = ref(null);
 const sinopsis = ref(null);
+// const button_unMute = ref(null);
+// const button_mute = ref(null);
+// const button_playVideo = ref(null);
+const mutear = ref(null);
+const desmutear = ref(null);
+const reproducir = ref(null);
 
 function onPlayerStateChange(event) {
   switch (event.data) {
@@ -290,44 +313,113 @@ function onPlayerStateChange(event) {
       cont_img.value = document.getElementById("container_image");
       // pasamos el estilo de CSS ocultando el contenedor con la imagen de la pelicula
       cont_img.value.style.visibility = "hidden";
-      // buttons.value.style.visibility = "hidden";
       sinopsis.value = document.getElementById("sinopsis");
-      sinopsis.value.style.fontSize = "0px";
+      sinopsis.value.style.fontSize = "0vw";
       sinopsis.value.style.opacity = "0";
-      // sinopsis.style.display = "none";
-      // sinopsis.style.transition = "all 1s";
-      console.log("la wea se esta reproduciendo", event.target);
+
+      // FUNCA
+      // button_unMute.value = document.getElementById("button-unMute");
+      // button_unMute.value.style.display = "block";
+      //
+      // reproducir.value.style.display = "none";
+
+      // console.log("llamando funcion isMuted", isMuted());
+      reproducir.value = document.getElementById("button-playVideo");
+      mutear.value = document.getElementById("button-mute");
+      if (isMuted() === true) {
+        desmutear.value = document.getElementById("button-unMute");
+        desmutear.value.style.display = "block";
+        console.log("esta muteadooo");
+      } else {
+        // mutear.value = document.getElementById("button-mute");
+        // mutear.value.style.display = "none";
+        mutear.value.style.display = "block";
+        console.log("nooo esta muteadooo");
+      }
+
+      console.log("se esta reproduciendo", event.target);
       break;
     case window.YT.PlayerState.PAUSED:
       emit("paused", event.target);
-      console.log("la wea esta pausada");
+      console.log("se ha pausado");
       break;
     case window.YT.PlayerState.ENDED:
       emit("ended", event.target);
-      // cont_info_movie.value.style.visibility = "visible";
       cont_img.value.style.visibility = "visible";
-      sinopsis.value.style.fontSize = "23px";
+      sinopsis.value.style.fontSize = "1.5vw";
       sinopsis.value.style.opacity = "1";
-      // buttons.value.style.visibility = "visible";
 
-      console.log("la wea finalizo");
+      // FUNCA
+      // button_playVideo.value = document.getElementById("button-playVideo");
+      // button_playVideo.value.style.display = "block";
+      // desmutear.value.style.display = "none";
+      //
+      // reproducir.value = document.getElementById("button-playVideo");
+      // reproducir.value.style.display = "block";
+
+      desmutear.value.style.display = "none";
+      mutear.value.style.display = "none";
+      reproducir.value.style.display = "block";
+      // if(isMuted() === true){
+      //   console.log("esta muteadooo");
+      // }else{
+      //   console.log("nooo esta muteadooo");
+      // }
+
+      console.log("finalizo el video");
       break;
   }
   emit("stateChange", event.target);
   // console.log("esta wea no se que es :B");
+  // console.log("ver aca", isMuted());
+  console.log("11-. duracion del video -", getDuration());
 }
+
+function activateVolumeVideo() {
+  unMute();
+  desmutear.value.style.display = "none";
+  mutear.value.style.display = "block";
+  // let desmutear = document.getElementById("button-unMute");
+  // desmutear.style.display = "none";
+  // let mutear = document.getElementById("button-mute");
+  // mutear.style.display = "block";
+  // desmutear.value.style.display = "none";
+}
+
+function deactivateVolumeVideo() {
+  mute();
+  desmutear.value.style.display = "block";
+  mutear.value.style.display = "none";
+  // let mutear = document.getElementById("button-mute");
+  // mutear.style.display = "none";
+  // let desmutear = document.getElementById("button-unMute");
+  // desmutear.style.display = "block";
+}
+
+function playVideoAgain() {
+  playVideo({
+    startSeconds: 10,
+    endSeconds: 60,
+  });
+  reproducir.value.style.display = "none";
+}
+
 function onPlaybackQualityChange(event) {
   emit("playbackQualityChange", event.target);
 }
+
 function onPlaybackRateChange(event) {
   emit("playbackRateChange", event.target);
 }
+
 function onError(event) {
   emit("error", event.target);
 }
+
 function onApiChange(event) {
   emit("apiChange", event.target);
 }
+
 /**
  * @see https://developers.google.com/youtube/iframe_api_reference#playVideo
  */
@@ -544,8 +636,8 @@ defineExpose({
 }
 
 #container_info_movie {
-  background-color: aqua;
-  width: 40%;
+  /* background-color: aqua; */
+  width: 100%;
   height: 100%;
   position: absolute;
   display: flex;
@@ -553,15 +645,37 @@ defineExpose({
 }
 
 .info_movie {
-  background-color: violet;
+  /* background-color: violet; */
   width: 100%;
-  height: 50%;
+  height: 70%;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
+  /* align-items: center; */
+  /* flex-direction: column; */
+  /* justify-content: center; */
   margin-left: 4rem;
+  /* margin: 0rem 4rem 0rem 4rem; */
   gap: 20px;
   /* visibility: hidden; */
+}
+
+.box-left {
+  /* background-color: purple; */
+  width: 40%;
+  height: 75%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 20px;
+}
+
+.box-right {
+  /* background-color: slateblue; */
+  width: 50%;
+  height: 75%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
 }
 
 #cont_buttons button {
@@ -574,7 +688,7 @@ defineExpose({
 }
 
 #cont_buttons {
-  background-color: tomato;
+  /* background-color: tomato; */
   display: flex;
   justify-content: flex-start;
   gap: 10px;
@@ -587,11 +701,20 @@ defineExpose({
   background-color: #fff;
 }
 
+.button_rep:hover {
+  background-color: #b4b2b2;
+}
+
 .button_info {
   display: flex;
   align-items: center;
-  background-color: #958f8f;
+  /* background-color: #958f8f; */
+  background-color: rgba(163, 161, 161, 0.5);
   color: #fff;
+}
+
+.button_info:hover {
+  background-color: rgba(119, 117, 117, 0.5);
 }
 
 .icon {
@@ -604,10 +727,12 @@ defineExpose({
   color: #fff;
   /* oculta el texto cuando este se desborda */
   overflow: hidden;
+  /* punto suspensivo al aplicar el overflow hidden del texto */
+  text-overflow: ellipsis;
 }
 
 .cont_sinopsis p {
-  font-size: 23px;
+  /* font-size: 23px; */
   font-weight: 500;
   cursor: default;
 }
@@ -616,23 +741,56 @@ defineExpose({
   color: #fff;
   font-size: 50px;
   cursor: default;
+  text-align: left;
 }
 
 #sinopsis {
-  /* font-size: 15px; */
+  font-size: 1.4vw;
   transition: font-size 2.5s;
   /* opacity: 1; */
-  text-shadow: 0.1em 0.1em 0.1em rgb(65, 64, 64)
+  text-shadow: 0.1em 0.1em 0.1em rgb(65, 64, 64);
 }
 
-/* #sinopsis:hover{
-  font-size: 0px;
-} */
+.cont-cert {
+  /* color de fondo transparente */
+  background-color: rgba(97, 96, 96, 0.5);
+  padding: 0.7rem 4.3rem 0.7rem 1rem;
+  border-left: 3px solid #bdbdbd;
+}
+
+.cont-cert p {
+  color: #fff;
+  font-size: 20px;
+}
+
+.cont-play-mute button {
+  font-size: 20px;
+  color: #fff;
+  background-color: rgba(147, 146, 146, 0);
+  border-style: none;
+  padding: 10px;
+  margin-right: 0.5rem;
+  border-radius: 50%;
+  border: 1px solid #c1c1c1;
+}
+
+#button-mute {
+  display: none;
+}
+
+#button-unMute {
+  display: none;
+}
+
+#button-playVideo {
+  display: none;
+}
 
 @media screen and (min-width: 390px) and (max-width: 889px) {
   .info_movie {
-    background-color: yellow;
+    /* background-color: yellow; */
     margin-left: 2rem;
+    height: 100%;
   }
 
   #cont_buttons button {
@@ -649,14 +807,36 @@ defineExpose({
     margin-right: 1rem;
   }
 
-  #container_info_movie {
-    width: 60%;
+  .box-left {
+    width: 50%;
+    height: 80%;
+  }
+
+  .box-right {
+    height: 80%;
+  }
+
+  .title_movie h1 {
+    font-size: 30px;
+  }
+
+  .cont-cert {
+    padding: 0.3rem 1.5rem 0.3rem 1rem;
+  }
+
+  .cont-cert p {
+    color: #fff;
+    font-size: 18px;
+  }
+
+  .cont-play-mute button {
+    font-size: 10px;
   }
 }
 
 @media screen and (min-width: 890px) and (max-width: 1129px) {
   .info_movie {
-    background-color: purple;
+    /* background-color: salmon; */
     margin-left: 2rem;
   }
 
@@ -673,11 +853,33 @@ defineExpose({
     font-size: 1.5rem;
     margin-right: 1rem;
   }
+
+  .box-left {
+    width: 50%;
+    height: 80%;
+  }
+
+  .box-right {
+    height: 80%;
+  }
+
+  .title_movie h1 {
+    font-size: 40px;
+  }
+
+  .cont-cert {
+    padding: 0.5rem 4rem 0.5rem 1rem;
+  }
+
+  .cont-play-mute button {
+    font-size: 15px;
+  }
+
 }
 
 @media (min-width: 1130px) and (max-width: 1330px) {
   .info_movie {
-    background-color: springgreen;
+    /* background-color: springgreen; */
     margin-left: 2rem;
   }
 
@@ -694,5 +896,27 @@ defineExpose({
     font-size: 1.5rem;
     margin-right: 1rem;
   }
+
+  #sinopsis {
+    font-size: 18px;
+  }
+
+  .box-left {
+    width: 50%;
+    height: 80%;
+  }
+
+  .box-right {
+    height: 80%;
+  }
+
+  .cont-cert {
+    padding: 0.5rem 4rem 0.5rem 1rem;
+  }
+
+  .cont-play-mute button {
+    font-size: 15px;
+  }
+
 }
 </style>

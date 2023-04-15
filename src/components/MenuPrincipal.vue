@@ -637,9 +637,6 @@ export default {
     display: block;
   }
 
-  .principal_menu {
-    position: relative;
-  }
   /* FIN MENU IZQUIERDO */
 
   /* INICIO MENU DERECHO */

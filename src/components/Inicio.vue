@@ -1,29 +1,19 @@
 <template>
   <h1>este es el inicio de la pagina</h1>
-  <p>texto para hacer el commit</p>
+  <h1>este es el inicio de la pagina</h1>
+  <h1>este es el inicio de la pagina</h1>
+  <h1>este es el inicio de la pagina</h1>
+  <h1>este es el inicio de la pagina</h1>
+  <h1>este es el inicio de la pagina</h1>
+  <h1>este es el inicio de la pagina</h1>
+  <h1>este es el inicio de la pagina</h1>
+  <h1>este es el inicio de la pagina</h1>
+  <h1>este es el inicio de la pagina</h1>
   <img v-bind:src="imagen" alt="" />
-  <iframe
-    width="560"
-    height="315"
-    v-bind:src="video"
-    title="YouTube video player"
-    frameborder="0"
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-    allowfullscreen
-  ></iframe>
-  <!-- <iframe
-    width="640"
-    height="360"
-    src="https://player.vimeo.com/video/401102477"
-    frameborder="0"
-    allow="autoplay; fullscreen; picture-in-picture"
-    allowfullscreen
-  ></iframe> -->
 </template>
 
 <script>
 import service from "@/helpers/services/services.js";
-import img_poster from "@/assets/poster-oficial-spider-man-no-way-home.jpg";
 
 export default {
   props: {},
@@ -36,7 +26,6 @@ export default {
       url_img: "https://www.themoviedb.org/t/p/w220_and_h330_face",
       // url_img: 'https://image.tmdb.org/t/p/original'
       video: "https://www.youtube-nocookie.com/embed/F5ApJc5sSkk",
-      img_poster,
     };
   },
   computed: {

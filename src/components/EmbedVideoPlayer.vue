@@ -81,13 +81,15 @@ const resp_certification = ref(null);
 const datos = ref([]);
 const resp_cert = ref("");
 const flagCertification = ref(false);
-// 
+//
 const cont_info_movie = ref(null);
 const cont_img = ref(null);
 const sinopsis = ref(null);
 const mutear = ref(null);
 const desmutear = ref(null);
 const reproducir = ref(null);
+//
+const flagEstate = ref(null);
 
 // utilizamos el onBeforeMount ya que es el que se renderiza primero dentro del Ciclo de Vida de los componentes
 onBeforeMount(async () => {
@@ -108,7 +110,8 @@ onBeforeMount(async () => {
     // obtenemos la key del fondo de la imagen
     movie_backdrop_key.value = dataSorted.value[0].backdrop_path;
     // tomamos el link anterior y lo unimos al resto de la ruta para generar el link de la imagen completa
-    movie_backdrop_image.value = movie_backdrop_link.value + movie_backdrop_key.value;
+    movie_backdrop_image.value =
+      movie_backdrop_link.value + movie_backdrop_key.value;
     getImageBackground();
     // retrasamos 0.5seg la respuesta a los datos del titulo y la sinopsis
     // para sincronizarlo de mejor manera con el fondo de la pelicula
@@ -133,7 +136,9 @@ onBeforeMount(async () => {
       movie_key.value = params_movie.value[0].key;
     }, 500); //probar con 1 seg
     // obtenemos la info de la certificacion(+18, 16, 14, etc.)
-    resp_certification.value = await services.movie_certification(idSorted.value);
+    resp_certification.value = await services.movie_certification(
+      idSorted.value
+    );
     datos.value = resp_certification.value.data.results[0].release_dates;
     // obtenemos el valor string de la certificacion
     resp_cert.value = datos.value[0].certification;
@@ -144,7 +149,6 @@ onBeforeMount(async () => {
     resp_cert.value === "" ? (resp_cert.value = "vacío") : resp_cert.value;
     // una vez obtenida la info de la certificacion(+18, 16, 14, etc.) esta se muestra en pantalla
     flagCertification.value = true;
-
   } catch (error) {
     console.log("error", error);
   }
@@ -281,6 +285,11 @@ function createPlayer() {
 // 4. The API will call this function when the video player is ready.
 function onPlayerReady(event) {
   emit("ready", event.target);
+
+
+  console.log("iframe -", getIframe());
+
+
   // esperamos 5 segundos a visualizar el fondo de la pelicula
   // para luego reproducir el trailer
   setTimeout(() => {
@@ -296,6 +305,7 @@ function onPlayerStateChange(event) {
   switch (event.data) {
     case window.YT.PlayerState.PLAYING:
       emit("playing", event.target);
+      flagEstate.value = window.YT.PlayerState.PLAYING;
       // SE OCULTA LA INFO DE LA PELICULA AL REPRODUCIRSE EL VIDEO
       // capturamos el elemento contenedor con los datos de la pelicula visualizada
       cont_info_movie.value = document.getElementById("container_info_movie");
@@ -324,10 +334,13 @@ function onPlayerStateChange(event) {
       } else {
         mutear.value.style.display = "block";
       }
+      // flagEstate.value = window.YT.PlayerState.PLAYING;
+      console.log("primera repro -", flagEstate.value);
       pauseVideoIfNotActivePage();
       break;
     case window.YT.PlayerState.PAUSED:
       emit("paused", event.target);
+      flagEstate.value = window.YT.PlayerState.PAUSED;
       break;
     case window.YT.PlayerState.ENDED:
       emit("ended", event.target);
@@ -343,6 +356,8 @@ function onPlayerStateChange(event) {
       mutear.value.style.display = "none";
       // es visible el boton de volver a reproducir al finalizar el video
       reproducir.value.style.display = "block";
+      flagEstate.value = window.YT.PlayerState.ENDED;
+      console.log("valor Vfinalizado -", flagEstate.value);
       break;
   }
   emit("stateChange", event.target);
@@ -378,10 +393,16 @@ function playVideoAgain() {
 // defecto cuando se vuelva a la pestaña el video continuara con normalidad
 function pauseVideoIfNotActivePage() {
   document.addEventListener("visibilitychange", () => {
-    if (document.visibilityState === "visible") {
-      playVideo();
+    // estado del video 0
+    // cuando se cambie de pestaña si el video ya finalizo este no se reproduzca 
+    // a no ser que el usuario realize la accion con el boton
+    if (flagEstate.value == 0) {
+      null;
     } else {
-      pauseVideo();
+      // si la pestaña es visible se reproducira el video, en caso contrario
+      // el video se pausara automaticamente al cambiar de pestaña, que es como
+      // funciona actualmente la visualizacion en Netflix
+      (document.visibilityState === "visible") ? playVideo() : pauseVideo();
     }
   });
 }
@@ -414,28 +435,7 @@ function playVideo() {
 function pauseVideo() {
   player.value.pauseVideo();
 }
-/**
- * @see https://developers.google.com/youtube/iframe_api_reference#stopVideo
- */
-function stopVideo() {
-  player.value.stopVideo();
-}
-/**
- * @param {Number} seconds
- * @param {Boolean} allowSeekAhead
- *
- * @see https://developers.google.com/youtube/iframe_api_reference#seekTo
- */
-function seekTo(seconds, allowSeekAhead) {
-  player.value.seekTo(seconds, allowSeekAhead);
-}
-/**
- * @param {Number} index
- * @see https://developers.google.com/youtube/iframe_api_reference#playVideoAt
- */
-function playVideoAt(index) {
-  player.value.playVideoAt(index);
-}
+
 /**
  * @see https://developers.google.com/youtube/iframe_api_reference#mute
  */
@@ -456,21 +456,6 @@ function isMuted() {
   return player.value.isMuted();
 }
 /**
- * @param {Number} volume
- *
- * @see https://developers.google.com/youtube/iframe_api_reference#setVolume
- */
-function setVolume(volume) {
-  player.value.setVolume(volume);
-}
-/**
- * @see https://developers.google.com/youtube/iframe_api_reference#getVolume
- * @returns {Number}
- */
-function getVolume() {
-  return player.value.getVolume();
-}
-/**
  * @returns {Number}
  * @see https://developers.google.com/youtube/iframe_api_reference#getDuration
  */
@@ -479,65 +464,10 @@ function getDuration() {
 }
 /**
  * @returns {Number}
- * @see https://developers.google.com/youtube/iframe_api_reference#getCurrentTime
- */
-function getCurrentTime() {
-  return player.value.getCurrentTime();
-}
-/**
- * @returns {String}
- * @see https://developers.google.com/youtube/iframe_api_reference#getVideoEmbedCode
- */
-function getVideoEmbedCode() {
-  return player.value.getVideoEmbedCode();
-}
-/**
- * @returns {Number} Floating point number between 0 and 1
- * @see https://developers.google.com/youtube/iframe_api_reference#getVideoLoadedFraction
- */
-function getVideoLoadedFraction() {
-  return player.value.getVideoLoadedFraction();
-}
-/**
- * @returns {Number}
  * @see https://developers.google.com/youtube/iframe_api_reference#getPlayerState
  */
 function getPlayerState() {
   return player.value.getPlayerState();
-}
-/**
- * retrieves an array of module names for which you can set player options
- *
- * @returns {Object}
- * @see https://developers.google.com/youtube/iframe_api_reference#onApiChange
- */
-function getOptions() {
-  return player.value.getOptions();
-}
-/**
- * retrieves the value of a specific player option
- *
- * @param module
- * @param option
- *
- * @return {*}
- * @see https://developers.google.com/youtube/iframe_api_reference#onApiChange
- */
-function getAnOption(module, option) {
-  return player.value.getOption(module, option);
-}
-/**
- * sets the value of a specific player option
- *
- * @param module
- * @param option
- * @param value
- *
- * @returns void
- * @see https://developers.google.com/youtube/iframe_api_reference#onApiChange
- */
-function setAnOption(module, option, value) {
-  player.value.setOption(module, option, value);
 }
 /**
  * @return {Object}
@@ -578,27 +508,15 @@ defineExpose({
   player,
   playVideo,
   pauseVideo,
-  stopVideo,
-  seekTo,
-  playVideoAt,
   mute,
   unMute,
   isMuted,
-  setVolume,
-  getVolume,
   getDuration,
-  getCurrentTime,
-  getVideoEmbedCode,
-  getVideoLoadedFraction,
   getPlayerState,
-  getOptions,
-  getAnOption,
-  setAnOption,
   getIframe,
   destroy,
   loadVideoById,
   cueVideoById,
-  //
 });
 </script>
 

@@ -55,103 +55,101 @@ import { onMounted, ref, onBeforeMount } from "vue";
 import services from "@/helpers/services/services.js";
 
 /// inicializacion de las variables a usar
-//variable contenedora del reproductor
+// variable contenedora del reproductor
 const player = ref(null);
-//id del <iframe>
+// id del <iframe>
 const playerId = ref(null);
-//variables de la cantidad de paginas existentes en la API
+// variables de la cantidad de paginas existentes en la API
 let numMax = 501;
 let numMin = 1;
-//variables que contienen los datos de la API
-const respAxios = ref(null);
-const dataArray = ref([]);
-const dataSorted = ref([]);
-const idSorted = ref(0);
-const resp_video_movie = ref(null);
+// variables que contienen los datos de la API
+const dataArray = ref([]); //
+const dataSorted = ref([]); //
+const idSorted = ref(0); //
 const params_movie = ref([]);
 const movie_key = ref("");
-const movie_title = ref("");
-const movie_overview = ref("");
-const movie_backdrop_link = ref("https://image.tmdb.org/t/p/original");
-const movie_backdrop_key = ref("");
-const movie_backdrop_image = ref("");
+const movie_title = ref(""); //
+const movie_overview = ref(""); //
+const movie_backdrop_link = ref("https://image.tmdb.org/t/p/original"); //
+const movie_backdrop_key = ref(""); //
+const movie_backdrop_image = ref(""); //
 // variables que muestran los datos en pantalla
-const buttons = ref(null);
+const buttons = ref(null); //
 const resp_certification = ref(null);
-const datos = ref([]);
 const resp_cert = ref("");
 const flagCertification = ref(false);
-//
+// contenido de info de las peliculas
 const cont_info_movie = ref(null);
 const cont_img = ref(null);
 const sinopsis = ref(null);
+// botones de accion de silenciar/activar sonido/reproducir
 const mutear = ref(null);
 const desmutear = ref(null);
 const reproducir = ref(null);
-//
+// bandera para tener el estado de reproduccion del video
 const flagEstate = ref(null);
 
 // utilizamos el onBeforeMount ya que es el que se renderiza primero dentro del Ciclo de Vida de los componentes
 onBeforeMount(async () => {
-  try {
-    // accedemos al endpoint pasandole por parametro la funcion que manda la pagina aleatoria
-    respAxios.value = await services.movie_info(getPageRandom(numMax, numMin));
-    dataArray.value = respAxios.value.data.results;
-    // se toma el array con los datos de las peliculas y este se "mezcla" con la funcion getNumberRandom
-    // para que el valor que tomemos sea al azar que seria el de la primera posicion [0]
-    dataSorted.value = dataArray.value.sort(getNumberRandom);
-    // existen algunas imagenes de fondo que vienen vacias, en caso de ser asi, se vuelve a generar una mezcla
-    // del array para obtener otro resultado
-    if (dataSorted.value[0].backdrop_path === null) {
+  // accedemos al endpoint pasandole por parametro la funcion que manda la pagina aleatoria
+  await services.movie_info(getPageRandom(numMax, numMin))
+    .then((response) => {
+      dataArray.value = response.data.results;
+      // se toma el array con los datos de las peliculas y este se "mezcla" con la funcion getNumberRandom
+      // para que el valor que tomemos sea al azar que seria el de la primera posicion [0]
       dataSorted.value = dataArray.value.sort(getNumberRandom);
-    }
-    // obtenemos el id de la pelicula, el cual sera usado mas abajo
-    idSorted.value = dataSorted.value[0].id;
-    // obtenemos la key del fondo de la imagen
-    movie_backdrop_key.value = dataSorted.value[0].backdrop_path;
-    // tomamos el link anterior y lo unimos al resto de la ruta para generar el link de la imagen completa
-    movie_backdrop_image.value =
-      movie_backdrop_link.value + movie_backdrop_key.value;
-    getImageBackground();
-    // retrasamos 0.5seg la respuesta a los datos del titulo y la sinopsis
-    // para sincronizarlo de mejor manera con el fondo de la pelicula
-    setTimeout(() => {
-      // capturamos el id del contenedor de los botones
-      buttons.value = document.getElementById("cont_buttons");
-      // hacemos visible los botones
-      buttons.value.style.visibility = "visible";
-      // titulo de la pelicula
-      movie_title.value = dataSorted.value[0].title;
-      // sinopsis de la pelicula
-      movie_overview.value = dataSorted.value[0].overview;
-    }, 500);
-    // le pasamos la variable idSorted que es la que contiene el id de la pelicula
-    resp_video_movie.value = await services.movie_video_start(idSorted.value);
-    // usamos el setTimeout y esperamos 0.5seg para evitar que la variable params_movie no quede vacia
-    // al momento de tener que recoger los datos
-    // ERROR: error TypeError: params_movie.value[0] is undefined
-    setTimeout(() => {
-      params_movie.value = resp_video_movie.value.data.results;
-      // obtenemos la key(YouTube) del trailer de la pelicula
+      // existen algunas imagenes de fondo que vienen vacias, en caso de ser asi, se vuelve a generar una mezcla
+      // del array para obtener otro resultado
+      (dataSorted.value[0].backdrop_path === null) ? dataSorted.value = dataArray.value.sort(getNumberRandom) : null;
+      // obtenemos el id de la pelicula, el cual sera usado mas abajo
+      idSorted.value = dataSorted.value[0].id;
+      // obtenemos la key del fondo de la imagen
+      movie_backdrop_key.value = dataSorted.value[0].backdrop_path;
+      // tomamos el link anterior y lo unimos al resto de la ruta para generar el link de la imagen completa
+      movie_backdrop_image.value = movie_backdrop_link.value + movie_backdrop_key.value;
+      getImageBackground();
+      setTimeout(() => {
+        // capturamos el id del contenedor de los botones
+        buttons.value = document.getElementById("cont_buttons");
+        // hacemos visible los botones
+        buttons.value.style.visibility = "visible";
+        // titulo de la pelicula
+        movie_title.value = dataSorted.value[0].title;
+        // sinopsis de la pelicula
+        movie_overview.value = dataSorted.value[0].overview;
+      }, 500);
+    })
+    .catch((error) => {
+      throw error.message;
+    });
+
+  // le pasamos la variable idSorted que es la que contiene el id de la pelicula
+  await services.movie_video_start(idSorted.value)
+    .then((response) => {
+      params_movie.value = response.data.results;
       movie_key.value = params_movie.value[0].key;
-    }, 500); //probar con 1 seg
-    // obtenemos la info de la certificacion(+18, 16, 14, etc.)
-    resp_certification.value = await services.movie_certification(
-      idSorted.value
-    );
-    datos.value = resp_certification.value.data.results[0].release_dates;
-    // obtenemos el valor string de la certificacion
-    resp_cert.value = datos.value[0].certification;
-    // operador ternario
-    // si el contenido de la variable resp_cert que es .certification esta vacia
-    // a la variable resp_cert se le pasara el valor "vacio", por el contrario,
-    // si la variable ya contiene informacion, esta se retornara con su valor correspondiente
-    resp_cert.value === "" ? (resp_cert.value = "vacío") : resp_cert.value;
-    // una vez obtenida la info de la certificacion(+18, 16, 14, etc.) esta se muestra en pantalla
-    flagCertification.value = true;
-  } catch (error) {
-    console.log("error", error);
-  }
+    })
+    .catch((error) => {
+      throw error.message;
+    });
+
+  // obtenemos la info de la certificacion(+18, 16, 14, etc.)
+  await services.movie_certification(idSorted.value)
+    .then((response) => {
+      resp_certification.value = response.data.results[0].release_dates;
+      // obtenemos el valor string de la certificacion
+      resp_cert.value = resp_certification.value[0].certification;
+      // operador ternario
+      // si el contenido de la variable resp_cert que es .certification esta vacia
+      // a la variable resp_cert se le pasara el valor "vacio", por el contrario,
+      // si la variable ya contiene informacion, esta se retornara con su valor correspondiente
+      resp_cert.value === "" ? (resp_cert.value = "vacío") : resp_cert.value;
+      // una vez obtenida la info de la certificacion(+18, 16, 14, etc.) esta se muestra en pantalla
+      flagCertification.value = true;
+    })
+    .catch((error) => {
+      throw error.message;
+    });
 });
 
 onMounted(async () => {
@@ -286,9 +284,7 @@ function createPlayer() {
 function onPlayerReady(event) {
   emit("ready", event.target);
 
-
   console.log("iframe -", getIframe());
-
 
   // esperamos 5 segundos a visualizar el fondo de la pelicula
   // para luego reproducir el trailer
@@ -305,7 +301,6 @@ function onPlayerStateChange(event) {
   switch (event.data) {
     case window.YT.PlayerState.PLAYING:
       emit("playing", event.target);
-      flagEstate.value = window.YT.PlayerState.PLAYING;
       // SE OCULTA LA INFO DE LA PELICULA AL REPRODUCIRSE EL VIDEO
       // capturamos el elemento contenedor con los datos de la pelicula visualizada
       cont_info_movie.value = document.getElementById("container_info_movie");
@@ -334,12 +329,15 @@ function onPlayerStateChange(event) {
       } else {
         mutear.value.style.display = "block";
       }
-      // flagEstate.value = window.YT.PlayerState.PLAYING;
-      console.log("primera repro -", flagEstate.value);
+      // asignamos el valor de reproduciendo del estado del reproductor a la variable para 
+      // usarla en la funcion pauseVideoIfNotActivePage()
+      flagEstate.value = window.YT.PlayerState.PLAYING;
       pauseVideoIfNotActivePage();
       break;
     case window.YT.PlayerState.PAUSED:
       emit("paused", event.target);
+      // asignamos el valor de pausa del estado del reproductor a la variable para 
+      // usarla en la funcion pauseVideoIfNotActivePage()
       flagEstate.value = window.YT.PlayerState.PAUSED;
       break;
     case window.YT.PlayerState.ENDED:
@@ -356,8 +354,9 @@ function onPlayerStateChange(event) {
       mutear.value.style.display = "none";
       // es visible el boton de volver a reproducir al finalizar el video
       reproducir.value.style.display = "block";
+      // asignamos el valor de pausa del estado del reproductor a la variable para 
+      // usarla en la funcion pauseVideoIfNotActivePage()
       flagEstate.value = window.YT.PlayerState.ENDED;
-      console.log("valor Vfinalizado -", flagEstate.value);
       break;
   }
   emit("stateChange", event.target);
@@ -390,11 +389,11 @@ function playVideoAgain() {
 
 // pausa la reproduccion del trailer del video si no esta activa la pagina
 // esto quiere decir que si se mueve a otra pestaña se pausara el video, en su
-// defecto cuando se vuelva a la pestaña el video continuara con normalidad
+// defecto cuando se vuelva a la pestaña el video continuara su reproduccion
 function pauseVideoIfNotActivePage() {
   document.addEventListener("visibilitychange", () => {
     // estado del video 0
-    // cuando se cambie de pestaña si el video ya finalizo este no se reproduzca 
+    // cuando se cambie de pestaña si el video ya finalizo este no se reproduzca
     // a no ser que el usuario realize la accion con el boton
     if (flagEstate.value == 0) {
       null;
@@ -402,7 +401,7 @@ function pauseVideoIfNotActivePage() {
       // si la pestaña es visible se reproducira el video, en caso contrario
       // el video se pausara automaticamente al cambiar de pestaña, que es como
       // funciona actualmente la visualizacion en Netflix
-      (document.visibilityState === "visible") ? playVideo() : pauseVideo();
+      document.visibilityState === "visible" ? playVideo() : pauseVideo();
     }
   });
 }
@@ -477,12 +476,6 @@ function getIframe() {
   return player.value.getIframe();
 }
 /**
- * @see https://developers.google.com/youtube/iframe_api_reference#destroy
- */
-function destroy() {
-  player.value.destroy();
-}
-/**
  * @param {String} videoId
  * @param {Number} startSeconds
  * @param {Number} endSeconds
@@ -492,17 +485,6 @@ function destroy() {
  */
 function loadVideoById({ videoId, startSeconds, endSeconds } = {}) {
   player.value.loadVideoById({ videoId, startSeconds, endSeconds });
-}
-/**
- * @param {String} videoId
- * @param {Number} startSeconds
- * @param {Number} endSeconds
- *
- * @returns void
- * @see https://developers.google.com/youtube/iframe_api_reference#cueVideoById
- */
-function cueVideoById({ videoId, startSeconds, endSeconds } = {}) {
-  player.value.cueVideoById({ videoId, startSeconds, endSeconds });
 }
 defineExpose({
   player,
@@ -514,9 +496,7 @@ defineExpose({
   getDuration,
   getPlayerState,
   getIframe,
-  destroy,
   loadVideoById,
-  cueVideoById,
 });
 </script>
 
@@ -720,6 +700,10 @@ defineExpose({
 
   .cont-play-mute button {
     font-size: 10px;
+  }
+
+  .cont_sinopsis {
+    display: none;
   }
 }
 

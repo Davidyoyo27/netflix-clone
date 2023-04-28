@@ -15,7 +15,7 @@
                 <font-awesome-icon class="icon" icon="fa-solid fa-play" />
                 <span>Reproducir</span>
               </button>
-              <button class="button_info">
+              <button v-on:click="openInfoMovie" class="button_info">
                 <font-awesome-icon
                   class="icon"
                   icon="fa-solid fa-circle-info"
@@ -46,6 +46,29 @@
     </div>
     <!-- 1. The <iframe> (and video player) will replace this <div> tag. -->
     <div ref="youtube" :id="playerId"></div>
+    <!-- ================================= mas informacion ================================= -->
+    <!-- <div class="cont-info">
+      <div ref="youtube" :id="playerId"></div>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quasi, placeat
+        porro culpa ullam quae inventore odit ipsam eligendi quisquam architecto
+        non! A et dolores, optio autem veniam repellat ut assumenda. Libero ab
+        aut provident saepe pariatur a sunt? Aliquam consectetur blanditiis
+        recusandae nobis maiores eum mollitia sit vel dignissimos voluptatibus.
+        Mollitia quas officia non, fugit quae dolores nihil magni laudantium?
+        Culpa error cumque laborum voluptas velit officiis harum inventore minus
+        optio eaque? Laborum blanditiis impedit beatae! Tenetur cumque sequi
+        enim, cum non doloremque? Modi quisquam ullam vero quod reprehenderit
+        maxime? Eveniet labore, nulla saepe est fugiat dignissimos ad
+        necessitatibus error consectetur ipsa natus aperiam eaque quas similique
+        illum minima! Cumque nulla ab dignissimos unde dolorum, rerum natus
+        ullam maiores eos. Beatae voluptates enim itaque. Alias similique quia
+        harum accusamus consequatur voluptas exercitationem vero aut velit ipsum
+        debitis, possimus odit aliquam fugit quasi eius mollitia ab laborum
+        dolore adipisci repudiandae voluptatibus.
+      </p>
+    </div> -->
+    <!-- =============================== fin mas informacion =============================== -->
   </div>
 </template>
 
@@ -53,28 +76,27 @@
 <script setup>
 import { onMounted, ref, onBeforeMount } from "vue";
 import services from "@/helpers/services/services.js";
+import { getPageRandom, getNumberRandom } from "@/helpers/js/functions.js";
+import { numMax, numMin } from "@/helpers/js/variables.js"
 
 /// inicializacion de las variables a usar
 // variable contenedora del reproductor
 const player = ref(null);
 // id del <iframe>
 const playerId = ref(null);
-// variables de la cantidad de paginas existentes en la API
-let numMax = 501;
-let numMin = 1;
 // variables que contienen los datos de la API
-const dataArray = ref([]); //
-const dataSorted = ref([]); //
-const idSorted = ref(0); //
+const dataArray = ref([]);
+const dataSorted = ref([]);
+const idSorted = ref(0);
 const params_movie = ref([]);
 const movie_key = ref("");
-const movie_title = ref(""); //
-const movie_overview = ref(""); //
-const movie_backdrop_link = ref("https://image.tmdb.org/t/p/original"); //
-const movie_backdrop_key = ref(""); //
-const movie_backdrop_image = ref(""); //
+const movie_title = ref("");
+const movie_overview = ref("");
+const movie_backdrop_link = ref("https://image.tmdb.org/t/p/original");
+const movie_backdrop_key = ref("");
+const movie_backdrop_image = ref("");
 // variables que muestran los datos en pantalla
-const buttons = ref(null); //
+const buttons = ref(null);
 const resp_certification = ref(null);
 const resp_cert = ref("");
 const flagCertification = ref(false);
@@ -106,7 +128,8 @@ onBeforeMount(async () => {
       // obtenemos la key del fondo de la imagen
       movie_backdrop_key.value = dataSorted.value[0].backdrop_path;
       // tomamos el link anterior y lo unimos al resto de la ruta para generar el link de la imagen completa
-      movie_backdrop_image.value = movie_backdrop_link.value + movie_backdrop_key.value;
+      movie_backdrop_image.value =
+        movie_backdrop_link.value + movie_backdrop_key.value;
       getImageBackground();
       setTimeout(() => {
         // capturamos el id del contenedor de los botones
@@ -124,7 +147,8 @@ onBeforeMount(async () => {
     });
 
   // le pasamos la variable idSorted que es la que contiene el id de la pelicula
-  await services.movie_video_start(idSorted.value)
+  await services
+    .movie_video_start(idSorted.value)
     .then((response) => {
       params_movie.value = response.data.results;
       movie_key.value = params_movie.value[0].key;
@@ -134,7 +158,8 @@ onBeforeMount(async () => {
     });
 
   // obtenemos la info de la certificacion(+18, 16, 14, etc.)
-  await services.movie_certification(idSorted.value)
+  await services
+    .movie_certification(idSorted.value)
     .then((response) => {
       resp_certification.value = response.data.results[0].release_dates;
       // obtenemos el valor string de la certificacion
@@ -172,7 +197,7 @@ function loadAPI() {
   if (
     document.querySelector("script[src='https://www.youtube.com/iframe_api']")
   ) {
-    console.info("Youtube API script already added");
+    // Youtube API script already added
     return Promise.resolve();
   }
   // 2. This code loads the IFrame Player API code asynchronously.
@@ -212,18 +237,6 @@ const emit = defineEmits([
   "apiChange",
 ]);
 
-// generamos un numero random entre una cantidad especifica
-// max: 500, min: 1
-// estos valores son la cantidad de paginas de la API
-function getPageRandom(max, min) {
-  return Math.floor(Math.random() * (max - min) + min);
-}
-
-// funcion para mezclar el array aleatoriamente con el sort
-function getNumberRandom() {
-  return 0.5 - Math.random();
-}
-
 // creamos el elemento img que es el que contendra la imagen de fondo
 function getImageBackground() {
   let url = movie_backdrop_image.value;
@@ -261,7 +274,7 @@ function createPlayer() {
   player.value = new YT.Player(playerElement, {
     videoId: videoID,
     playerVars: {
-      start: 5,
+      start: 7,
       end: 65,
       mute: 1,
       autoplay: 0,
@@ -283,9 +296,6 @@ function createPlayer() {
 // 4. The API will call this function when the video player is ready.
 function onPlayerReady(event) {
   emit("ready", event.target);
-
-  console.log("iframe -", getIframe());
-
   // esperamos 5 segundos a visualizar el fondo de la pelicula
   // para luego reproducir el trailer
   setTimeout(() => {
@@ -329,14 +339,14 @@ function onPlayerStateChange(event) {
       } else {
         mutear.value.style.display = "block";
       }
-      // asignamos el valor de reproduciendo del estado del reproductor a la variable para 
+      // asignamos el valor de reproduciendo del estado del reproductor a la variable para
       // usarla en la funcion pauseVideoIfNotActivePage()
       flagEstate.value = window.YT.PlayerState.PLAYING;
       pauseVideoIfNotActivePage();
       break;
     case window.YT.PlayerState.PAUSED:
       emit("paused", event.target);
-      // asignamos el valor de pausa del estado del reproductor a la variable para 
+      // asignamos el valor de pausa del estado del reproductor a la variable para
       // usarla en la funcion pauseVideoIfNotActivePage()
       flagEstate.value = window.YT.PlayerState.PAUSED;
       break;
@@ -354,7 +364,7 @@ function onPlayerStateChange(event) {
       mutear.value.style.display = "none";
       // es visible el boton de volver a reproducir al finalizar el video
       reproducir.value.style.display = "block";
-      // asignamos el valor de pausa del estado del reproductor a la variable para 
+      // asignamos el valor de pausa del estado del reproductor a la variable para
       // usarla en la funcion pauseVideoIfNotActivePage()
       flagEstate.value = window.YT.PlayerState.ENDED;
       break;
@@ -380,8 +390,8 @@ function deactivateVolumeVideo() {
 function playVideoAgain() {
   loadVideoById({
     videoId: movie_key.value,
-    // establecemos el inicio del video en el segundo 5
-    startSeconds: 5,
+    // establecemos el inicio del video en el segundo 7
+    startSeconds: 7,
     // y su finalizacion al minuto y 5 segundos
     endSeconds: 65,
   });
@@ -404,6 +414,11 @@ function pauseVideoIfNotActivePage() {
       document.visibilityState === "visible" ? playVideo() : pauseVideo();
     }
   });
+}
+
+function openInfoMovie() {
+  let video = document.getElementById("reproductor");
+  video.style.height = "600px"
 }
 
 function onPlaybackQualityChange(event) {
@@ -434,7 +449,12 @@ function playVideo() {
 function pauseVideo() {
   player.value.pauseVideo();
 }
-
+/**
+ * @see https://developers.google.com/youtube/iframe_api_reference#stopVideo
+ */
+ function stopVideo() {
+	player.value.stopVideo()
+}
 /**
  * @see https://developers.google.com/youtube/iframe_api_reference#mute
  */
@@ -490,6 +510,7 @@ defineExpose({
   player,
   playVideo,
   pauseVideo,
+  stopVideo,
   mute,
   unMute,
   isMuted,
@@ -504,6 +525,8 @@ defineExpose({
 .container {
   position: relative;
   width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 /* contenedor que se superpone */
@@ -656,6 +679,19 @@ defineExpose({
   display: none;
 }
 
+/* ===================================== mas informacion =================================== */
+/* .cont-info {
+  background-color: cadetblue;
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  position: absolute;
+  top: 2rem;
+  z-index: 1;
+} */
+/* =================================== fin mas informacion ================================= */
+
 @media screen and (min-width: 390px) and (max-width: 889px) {
   .info_movie {
     margin-left: 2rem;
@@ -705,6 +741,12 @@ defineExpose({
   .cont_sinopsis {
     display: none;
   }
+
+  /* ===================================== mas informacion =================================== */
+  /* .cont-info {
+    width: 80%;
+  } */
+  /* =================================== fin mas informacion ================================= */
 }
 
 @media screen and (min-width: 890px) and (max-width: 1129px) {
@@ -746,6 +788,12 @@ defineExpose({
   .cont-play-mute button {
     font-size: 15px;
   }
+
+  /* ===================================== mas informacion =================================== */
+  /* .cont-info {
+    width: 80%;
+  } */
+  /* =================================== fin mas informacion ================================= */
 }
 
 @media (min-width: 1130px) and (max-width: 1330px) {
@@ -787,5 +835,11 @@ defineExpose({
   .cont-play-mute button {
     font-size: 15px;
   }
+
+  /* ===================================== mas informacion =================================== */
+  /* .cont-info {
+    width: 70%;
+  } */
+  /* =================================== fin mas informacion ================================= */
 }
 </style>

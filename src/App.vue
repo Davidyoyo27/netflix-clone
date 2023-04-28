@@ -44,7 +44,8 @@ export default {
 }
 
 .body {
-  background-color: coral;
+  /* background-color: #000; */
+  background-color: violet;
 }
 
 /* --------------- scrollbar -------------------- */

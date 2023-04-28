@@ -10,6 +10,8 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 /* import specific icons */
 import {
   faBell,
+  faChevronLeft,
+  faChevronRight,
   faCircleInfo,
   faMagnifyingGlass,
   faPlay,
@@ -42,7 +44,9 @@ library.add(
   faVolumeOff,
   faVolumeTimes,
   faVolumeUp,
-  faVolumeXmark
+  faVolumeXmark,
+  faChevronRight,
+  faChevronLeft
 );
 
 createApp(App)

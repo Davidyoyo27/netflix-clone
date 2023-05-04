@@ -16,14 +16,8 @@ export default {
   name: "App",
   components: {
     //                                    LazyLoad
-    MenuPrincipal: defineAsyncComponent(() =>
-      import(
-        /* webpackChunkName: "MenuPrincipal.vue" */ "@/components/MenuPrincipal.vue"
-      )
-    ),
-    Inicio: defineAsyncComponent(() =>
-      import(/* webpackChunkName: "Inicio.vue" */ "@/components/Inicio.vue")
-    ),
+    MenuPrincipal: defineAsyncComponent(() => import(/* webpackChunkName: "MenuPrincipal.vue" */ "@/components/MenuPrincipal.vue")),
+    Inicio: defineAsyncComponent(() => import(/* webpackChunkName: "Inicio.vue" */ "@/components/Inicio.vue")),
   },
 };
 </script>
@@ -35,7 +29,6 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  /* margin-top: 60px; */
 }
 
 * {
@@ -44,8 +37,7 @@ export default {
 }
 
 .body {
-  /* background-color: #000; */
-  background-color: violet;
+  background-color: #000;
 }
 
 /* --------------- scrollbar -------------------- */
@@ -72,5 +64,4 @@ export default {
   background-color: #000;
 }
 /* ----------------- fin scrollbar -----------------*/
-
 </style>

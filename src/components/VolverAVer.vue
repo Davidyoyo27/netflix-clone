@@ -1,9 +1,5 @@
 <template>
-  <h1>aca va el carrusel</h1>
-  <h1>aca va el carrusel</h1>
-  <h1>aca va el carrusel</h1>
-  <h1>aca va el carrusel</h1>
-  <div class="container">
+  <div v-if="flagRenderShadow" class="container">
     <div class="cont_info_carousel">
       <div class="cont_title">
         <h3 class="title">Volver a verlo</h3>
@@ -20,6 +16,7 @@
         :slides-per-view="9"
         :slides-per-group="5"
         :loop="true"
+        :speed="500"
         :navigation="cont_navigation"
         :pagination="cont_pagination"
         :breakpoints="cont_breakpoints"
@@ -80,6 +77,7 @@ export default {
     // de la pantalla, usar la misma logica que en el modulo pasado controlando con js y un operador
     // ternario el tamaño de la pantalla
     const data = ref(null);
+    const flagRenderShadow = ref(false);
     // variable contenedora del formato del tamaño de imagen de la caratula
     const link_img = ref("https://image.tmdb.org/t/p/w500");
     //
@@ -115,6 +113,7 @@ export default {
           // para luego ser recorrida en el v-for de mas arriba y tener las caratulas
           // de las peliculas
           data.value = response.data.results;
+          flagRenderShadow.value = true;
         })
         .catch((error) => {
           throw error.message;
@@ -128,6 +127,7 @@ export default {
       cont_pagination,
       cont_breakpoints,
       cont_navigation,
+      flagRenderShadow,
     };
   },
 };
@@ -150,6 +150,10 @@ img:hover {
 
 .container_carousel {
   position: relative;
+  /* NOTA: el z-index tambien puede ser 0(cero), que en este caso
+    es para que las imagenes del carrusel no esten por encima del submenu 
+    de la derecha (Menu Principal) */
+  z-index: 0;
 }
 
 .container_carousel:hover .pagination_elements,
@@ -189,6 +193,7 @@ img:hover {
 .cont_title {
   display: flex;
   align-items: center;
+  z-index: 1;
 }
 
 /* NOTA: para que al hacer hover sobre el titulo se vea el texto, 

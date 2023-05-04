@@ -269,7 +269,7 @@ function createPlayer() {
   // asignamos el style con el heigh con viewport width, esto quiere decir que su "altura"
   // cambiara cuando se haga mas pequeña el tamaño de la ventana en base al ancho de la pantalla
   // como se especifica con el vw(viewport width)
-  video_style.style.height = "58.25vw";
+  video_style.style.height = "50.25vw";
   // eslint-disable-next-line no-undef
   player.value = new YT.Player(playerElement, {
     videoId: videoID,
@@ -533,7 +533,7 @@ defineExpose({
 #container_image {
   position: absolute;
   width: 100%;
-  height: 58.5vw;
+  height: 50.5vw;
 }
 
 #container_info_movie {

@@ -1,13 +1,13 @@
 <template>
-  <div class="container_principal">
+  <div v-on:scroll="handleScroll" class="container_principal">
     <div class="cont_video">
       <EmbedVideoPlayer></EmbedVideoPlayer>
     </div>
     <div class="cont_carousels">
-        <div class="carousels">
-            <VolverAVer></VolverAVer>
-          </div>
-          <TopDramas></TopDramas>
+      <div class="carousels">
+        <VolverAVer></VolverAVer>
+      </div>
+      <TopDramas></TopDramas>
     </div>
   </div>
 </template>
@@ -26,7 +26,10 @@ export default {
     TopDramas,
   },
   setup() {
-    return {};
+
+    return {
+
+    };
   },
 };
 </script>

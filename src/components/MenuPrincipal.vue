@@ -1,6 +1,6 @@
 <template>
   <nav>
-    <div class="principal_menu">
+    <div id="principal_menu">
       <!-- INICIO MENU IZQUIERDO -->
       <div class="first_option_menu">
         <img v-bind:src="img_logo_principal_menu" alt="" />
@@ -159,11 +159,14 @@
       </div>
       <!-- FIN MENU DERECHO -->
     </div>
-    <div class="prueba"></div>
+    <!-- INICIO DIFUMINADO MENU -->
+    <div class="principal_menu_gradient"></div>
+    <!-- FIN DIFUMINADO MENU -->
   </nav>
 </template>
 
 <script>
+import { ref, watch, onMounted, onBeforeUnmount } from "vue";
 import img_logo_principal_menu from "@/assets/Netflix_2015_logo.svg.png";
 import img_perfil_menu from "@/assets/image-icon-netflix.png";
 import img_perfil_2_right_menu from "@/assets/image-icon-netflix-2.png";
@@ -178,9 +181,50 @@ import BuscarPelicula from "@/components/BuscarPelicula.vue";
 
 export default {
   components: {
+    // input
     BuscarPelicula,
   },
   setup() {
+    // variable que contendra el valor del scroll al moverse
+    // inicializada en 0
+    const scrollTop = ref(0);
+
+    onMounted(() => {
+      // agregamos un escuchador que este atento a la interaccion del scroll
+      // y le pasamos la funcion handleScroll
+      window.addEventListener("scroll", handleScroll);
+    });
+
+    // removemos el escuchador una vez que la accion de la funcion handleScroll fue tomada
+    onBeforeUnmount(() => {
+      window.removeEventListener("scroll", handleScroll);
+    });
+
+    // observamos la variable scrollTop la cual detectaremos cualquier cambio que tenga
+    watch(scrollTop, () => {
+      // tomamos el id del div principal menu
+      let menu_principal = document.getElementById("principal_menu");
+      // si scrollTop es mayor a 0
+      if (scrollTop.value > 0) {
+        // le pasaremos al CSS del div principal_menu la propiedad backgroundColor
+        // esto quiere decir que cuando se haga scroll hacia abajo la barra difuminada
+        // del menu principal dejara de serlo y se vera del color solido asignado, en este caso negro(#000)
+        menu_principal.style.backgroundColor = "#000";
+      } else {
+        // en su defecto si el scrollTop es 0 se removera la propiedad CSS "background-color"
+        // del div menu_principal dejando la barra del menu con el difuminado
+        menu_principal.style.removeProperty("background-color");
+      }
+    });
+
+    // creamos la funcion
+    function handleScroll() {
+      // que contendra el valor del scrollY que en este caso es cuando
+      // se haga scroll vertical para luego asignarsela a la variable
+      // scrollTop
+      scrollTop.value = window.scrollY;
+    }
+
     return {
       // logo netflix menu principal
       img_logo_principal_menu,
@@ -195,14 +239,15 @@ export default {
       img_icon_transfer_perfil,
       img_icon_account,
       img_icon_center_of_help,
+      scrollTop,
+      handleScroll,
     };
   },
 };
 </script>
 
 <style scoped>
-.principal_menu {
-  /* background-color: #000; */
+#principal_menu {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -212,12 +257,10 @@ export default {
   width: 100%;
 }
 
-.prueba {
+.principal_menu_gradient {
   position: absolute;
   width: 100%;
-  background-color: teal;
   box-shadow: rgb(0, 0, 0) 0px 0px 50px 80px;
-  background: #fff;
   z-index: 1;
 }
 

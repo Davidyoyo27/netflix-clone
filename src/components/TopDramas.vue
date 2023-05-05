@@ -28,10 +28,10 @@
           </swiper-slide>
         </swiper>
         <div class="cont_buttons">
-          <div class="button-prev">
+          <div class="button-p">
             <font-awesome-icon class="icon_right" icon="fa-solid fa-chevron-left" />
           </div>
-          <div class="button-next">
+          <div class="button-n">
             <font-awesome-icon class="icon_left" icon="fa-solid fa-chevron-right" />
           </div>
           <div v-if="flagRenderShadow" class="cont_shadow">
@@ -101,8 +101,8 @@
       // variable contenedora de los botones que permiten avanzar o retroceder al carrusel
       // dejando :navigation="true" o solo navigation permite usar las flechas de direccion por default
       const cont_navigation = reactive({
-        nextEl: ".button-next",
-        prevEl: ".button-prev",
+        nextEl: ".button-n",
+        prevEl: ".button-p",
       });
   
       onMounted(async () => {
@@ -250,8 +250,8 @@
     align-items: center;
   }
   
-  .button-prev,
-  .button-next {
+  .button-p,
+  .button-n {
     font-size: 2rem;
     color: #fff;
     background-color: rgba(0, 0, 0, 0);
@@ -265,16 +265,16 @@
     transition: .2s;
   }
   
-  .button-prev {
+  .button-p {
     border-radius: 0px 5px 5px 0px;
   }
   
-  .button-next {
+  .button-n {
     border-radius: 5px 0px 0px 5px;
   }
   
-  .button-prev:hover,
-  .button-next:hover {
+  .button-p:hover,
+  .button-n:hover {
     font-size: 2.5rem;
     background-color: rgba(0, 0, 0, 0.2);
   }

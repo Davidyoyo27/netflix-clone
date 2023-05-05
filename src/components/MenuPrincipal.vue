@@ -17,9 +17,13 @@
                 <router-link to="/"><li>Inicio</li></router-link>
                 <router-link to="/series"><li>Series</li></router-link>
                 <router-link to="/peliculas"><li>Películas</li></router-link>
-                <router-link to="/novedades"><li>Novedades populares</li></router-link>
+                <router-link to="/novedades"
+                  ><li>Novedades populares</li></router-link
+                >
                 <router-link to="/mi_lista"><li>Mi lista</li></router-link>
-                <router-link to="/explora_por_idiomas"><li>Explora por idiomas</li></router-link>
+                <router-link to="/explora_por_idiomas"
+                  ><li>Explora por idiomas</li></router-link
+                >
               </ul>
             </div>
           </li>
@@ -49,32 +53,9 @@
       <!-- FIN MENU IZQUIERDO -->
       <!-- INICIO MENU DERECHO -->
       <div class="second_option_menu">
-        <div class="input-cont">
-          <!-- ICONO BUSCAR -->
-          <font-awesome-icon
-            class="icon_input"
-            icon="fa-solid fa-magnifying-glass"
-          />
-          <!-- ICONO BUSCAR -->
-          <!-- INPUT TEXT -->
-          <input
-            v-model="input_value"
-            ref="clear_input"
-            id="click_input"
-            class="input_search"
-            type="search"
-            placeholder="Títulos, personas, géneros"
-          />
-          <!-- INPUT TEXT -->
-          <!-- ICONO(X) BORRAR TEXTO -->
-          <font-awesome-icon
-            icon="fa-solid fa-rectangle-xmark"
-            id="icon_clear_text"
-            v-on:click="clearInputText()"
-            v-show="icon_visible"
-          />
-          <!-- ICONO(X) BORRAR TEXTO -->
-        </div>
+        <!-- INICIO INPUT -->
+        <BuscarPelicula></BuscarPelicula>
+        <!-- FIN INPUT -->
         <router-link class="link-second-menu" to="">Niños</router-link>
         <font-awesome-icon class="icon" icon="fa-solid fa-bell" />
         <!-- INICIO PERFIL MENU -->
@@ -82,11 +63,7 @@
           <li>
             <div class="cont-menu">
               <div class="cont-img-icon">
-                <img
-                  class="img-icon"
-                  v-bind:src="img_perfil_menu"
-                  alt=""
-                />
+                <img class="img-icon" v-bind:src="img_perfil_menu" alt="" />
                 <div class="figure"></div>
               </div>
               <ul class="submenu">
@@ -182,30 +159,31 @@
       </div>
       <!-- FIN MENU DERECHO -->
     </div>
+    <div class="prueba"></div>
   </nav>
 </template>
 
 <script>
-import img_logo_principal_menu from '@/assets/Netflix_2015_logo.svg.png'
-import img_perfil_menu from '@/assets/image-icon-netflix.png'
-import img_perfil_2_right_menu from '@/assets/image-icon-netflix-2.png'
-import img_perfil_3_right_menu from '@/assets/image-icon-netflix-3.png'
-import img_perfil_4_right_menu from '@/assets/image-icon-netflix-4.png'
-import img_perfil_ninos_right_menu from '@/assets/image-icon-netflix-5.png'
-import img_icon_admin_perfil_menu from '@/assets/pencil-icon.jpg'
-import img_icon_transfer_perfil from '@/assets/transfer-perfil-icon.jpg'
-import img_icon_account from '@/assets/perfil-icon.png'
-import img_icon_center_of_help from '@/assets/interrogation-icon.png'
+import img_logo_principal_menu from "@/assets/Netflix_2015_logo.svg.png";
+import img_perfil_menu from "@/assets/image-icon-netflix.png";
+import img_perfil_2_right_menu from "@/assets/image-icon-netflix-2.png";
+import img_perfil_3_right_menu from "@/assets/image-icon-netflix-3.png";
+import img_perfil_4_right_menu from "@/assets/image-icon-netflix-4.png";
+import img_perfil_ninos_right_menu from "@/assets/image-icon-netflix-5.png";
+import img_icon_admin_perfil_menu from "@/assets/pencil-icon.jpg";
+import img_icon_transfer_perfil from "@/assets/transfer-perfil-icon.jpg";
+import img_icon_account from "@/assets/perfil-icon.png";
+import img_icon_center_of_help from "@/assets/interrogation-icon.png";
+import BuscarPelicula from "@/components/BuscarPelicula.vue";
 
 export default {
-  data() {
+  components: {
+    BuscarPelicula,
+  },
+  setup() {
     return {
-      input_value: "",
-      // icono de X dentro del input no visible
-      icon_visible: false,
       // logo netflix menu principal
       img_logo_principal_menu,
-      // imagen principal icon perfil right menu
       img_perfil_menu,
       // imagen icon perfil right menu
       img_perfil_2_right_menu,
@@ -216,49 +194,31 @@ export default {
       img_icon_admin_perfil_menu,
       img_icon_transfer_perfil,
       img_icon_account,
-      img_icon_center_of_help
-    }
-  },
-  watch: {
-    input_value(newValue, oldValue) {
-      console.log(`primer valor ${newValue} segundo valor ${oldValue}`);
-      if (newValue != "") {
-        this.closeIconAppears();
-      } else {
-        this.icon_visible = false
-      }
-    },
-  },
-  methods: {
-    // funcion para que muestre el icono X del input
-    closeIconAppears() {
-      // si el input no esta vacio
-      if (this.input_value != "") {
-        // si se encuentra algun caracter en el input el icono pasa a ser visible
-        this.icon_visible = true
-      }
-    },
-
-    clearInputText() {
-      this.icon_visible = false
-      this.input_value = ""
-      // setea el focus en el input, la relacion se establece con el ref="clear_input"
-      this.$refs.clear_input.focus()
-    },
+      img_icon_center_of_help,
+    };
   },
 };
 </script>
 
 <style scoped>
 .principal_menu {
-  background-color: #000;
+  /* background-color: #000; */
   display: flex;
   justify-content: space-between;
   align-items: center;
   height: 4.2rem;
-  z-index: 1;
+  z-index: 2;
   position: fixed;
   width: 100%;
+}
+
+.prueba {
+  position: absolute;
+  width: 100%;
+  background-color: teal;
+  box-shadow: rgb(0, 0, 0) 0px 0px 50px 80px;
+  background: #fff;
+  z-index: 1;
 }
 
 .first_option_menu {
@@ -285,18 +245,6 @@ export default {
   color: #d3d3d3;
 }
 
-.second_option_menu a,
-.second_option_menu .icon_input,
-.icon,
-.input_search:focus::placeholder,
-.input_search,
-.submenu, 
-#icon_clear_text,
-/* cuando se active el link se cambiara el color */
-.normal_options_menu .router-link-exact-active li {
-  color: #fff;
-}
-
 .normal_options_menu .router-link-exact-active li {
   cursor: default;
 }
@@ -305,23 +253,15 @@ export default {
   color: #fff;
 }
 
-#icon_clear_text {
-  position: absolute;
-  font-size: 20px;
-  cursor: pointer;
-  right: 0;
-  margin-right: 0.5rem;
-}
-
 .first_option_menu img {
   width: 5.8rem;
   margin-right: 3rem;
 }
 
-.second_option_menu .icon_input,
 .icon {
   font-size: 20px;
   cursor: pointer;
+  color: #edebeb;
 }
 
 .normal_options_menu {
@@ -337,47 +277,7 @@ export default {
 
 .normal_options_menu a li:hover {
   color: #8d8a8a;
-  transition: .5s;
-}
-
-.input_search::placeholder {
-  color: #000;
-}
-
-.icon_input {
-  position: absolute;
-  margin-left: 0.4rem;
-}
-
-.input_search {
-  border: 1px solid #555;
-  width: 2rem;
-  padding: 0.4rem 0rem 0.4rem 2rem;
-  background-color: #000;
-  opacity: 0;
-  cursor: pointer;
-}
-
-.input-cont {
-  position: relative;
-  display: flex;
-  align-items: center;
-}
-
-.input-cont:focus {
-  border: 1px solid #fff;
-}
-
-/* el :focus se activa cuando se le hace click al input */
-.input_search:focus {
-  width: 17rem;
-  font-size: 14px;
-  /* transicion del input cuando se abre */
-  transition: width 0.3s ease-in-out;
-  outline: none;
-  border: 1px solid #fff;
-  opacity: 1;
-  cursor: auto;
+  transition: 0.5s;
 }
 
 .right_menu > li {
@@ -431,6 +331,10 @@ export default {
   margin-left: 0.5rem;
   font-size: 13px;
   font-weight: 600;
+}
+
+.submenu p {
+  color: #edebeb;
 }
 
 .session-close {
@@ -617,6 +521,10 @@ export default {
   font-weight: 600;
 }
 
+.link-second-menu {
+  color: #edebeb;
+}
+
 /* =========================== FIN MENU RESPONSIVE =========================== */
 
 @media screen and (max-width: 890px) {
@@ -642,10 +550,6 @@ export default {
   /* INICIO MENU DERECHO */
   .link-second-menu {
     display: none;
-  }
-
-  .input_search:focus {
-    width: 16rem;
   }
 
   .second_option_menu {
@@ -688,10 +592,6 @@ export default {
     display: none;
   }
 
-  .input_search:focus {
-    width: 16rem;
-  }
-
   .second_option_menu {
     margin-right: 2rem;
   }
@@ -712,10 +612,6 @@ export default {
   /* INICIO MENU DERECHO */
   .link-second-menu {
     display: none;
-  }
-
-  .input_search:focus {
-    width: 16rem;
   }
 
   .second_option_menu {

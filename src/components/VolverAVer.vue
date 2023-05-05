@@ -193,7 +193,6 @@ img:hover {
 .cont_title {
   display: flex;
   align-items: center;
-  z-index: 1;
 }
 
 /* NOTA: para que al hacer hover sobre el titulo se vea el texto, 
@@ -232,6 +231,7 @@ img:hover {
   /* posicionamiento usado para que la propiedad z-index funcione */
   position: relative;
   z-index: 1;
+  background-color: aqua;
 }
 
 .pagination_elements {

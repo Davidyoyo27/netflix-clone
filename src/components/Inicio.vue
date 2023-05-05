@@ -6,7 +6,8 @@
     <div class="cont_carousels">
         <div class="carousels">
             <VolverAVer></VolverAVer>
-        </div>
+          </div>
+          <TopDramas></TopDramas>
     </div>
   </div>
 </template>
@@ -14,6 +15,7 @@
 <script>
 import EmbedVideoPlayer from "@/components/EmbedVideoPlayer.vue";
 import VolverAVer from "@/components/VolverAVer.vue";
+import TopDramas from "@/components/TopDramas.vue";
 
 export default {
   // En caso de querer llamar a algun componente con el Composition API
@@ -21,6 +23,7 @@ export default {
   components: {
     VolverAVer,
     EmbedVideoPlayer,
+    TopDramas,
   },
   setup() {
     return {};

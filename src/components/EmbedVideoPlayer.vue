@@ -77,7 +77,7 @@
 import { onMounted, ref, onBeforeMount } from "vue";
 import services from "@/helpers/services/services.js";
 import { getPageRandom, getNumberRandom } from "@/helpers/js/functions.js";
-import { numMax, numMin } from "@/helpers/js/variables.js"
+import { numMax, numMin } from "@/helpers/js/variables.js";
 
 /// inicializacion de las variables a usar
 // variable contenedora del reproductor
@@ -147,8 +147,7 @@ onBeforeMount(async () => {
     });
 
   // le pasamos la variable idSorted que es la que contiene el id de la pelicula
-  await services
-    .movie_video_start(idSorted.value)
+  await services.movie_video_start(idSorted.value)
     .then((response) => {
       params_movie.value = response.data.results;
       movie_key.value = params_movie.value[0].key;
@@ -158,8 +157,7 @@ onBeforeMount(async () => {
     });
 
   // obtenemos la info de la certificacion(+18, 16, 14, etc.)
-  await services
-    .movie_certification(idSorted.value)
+  await services.movie_certification(idSorted.value)
     .then((response) => {
       resp_certification.value = response.data.results[0].release_dates;
       // obtenemos el valor string de la certificacion
@@ -269,7 +267,8 @@ function createPlayer() {
   // asignamos el style con el heigh con viewport width, esto quiere decir que su "altura"
   // cambiara cuando se haga mas pequeña el tamaño de la ventana en base al ancho de la pantalla
   // como se especifica con el vw(viewport width)
-  video_style.style.height = "50.25vw";
+  //                          50.25vw
+  video_style.style.height = "54.25vw";
   // eslint-disable-next-line no-undef
   player.value = new YT.Player(playerElement, {
     videoId: videoID,
@@ -418,7 +417,7 @@ function pauseVideoIfNotActivePage() {
 
 function openInfoMovie() {
   let video = document.getElementById("reproductor");
-  video.style.height = "600px"
+  video.style.height = "600px";
 }
 
 function onPlaybackQualityChange(event) {
@@ -452,8 +451,8 @@ function pauseVideo() {
 /**
  * @see https://developers.google.com/youtube/iframe_api_reference#stopVideo
  */
- function stopVideo() {
-	player.value.stopVideo()
+function stopVideo() {
+  player.value.stopVideo();
 }
 /**
  * @see https://developers.google.com/youtube/iframe_api_reference#mute
@@ -692,7 +691,7 @@ defineExpose({
 } */
 /* =================================== fin mas informacion ================================= */
 
-@media screen and (min-width: 390px) and (max-width: 889px) {
+@media (min-width: 390px) and (max-width: 889px) {
   .info_movie {
     margin-left: 2rem;
     height: 100%;
@@ -714,11 +713,11 @@ defineExpose({
 
   .box-left {
     width: 50%;
-    height: 80%;
+    height: 60%;
   }
 
   .box-right {
-    height: 80%;
+    height: 60%;
   }
 
   .title_movie h1 {
@@ -749,7 +748,7 @@ defineExpose({
   /* =================================== fin mas informacion ================================= */
 }
 
-@media screen and (min-width: 890px) and (max-width: 1129px) {
+@media (min-width: 890px) and (max-width: 1129px) {
   .info_movie {
     margin-left: 2rem;
   }

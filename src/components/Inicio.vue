@@ -26,10 +26,7 @@ export default {
     TopDramas,
   },
   setup() {
-
-    return {
-
-    };
+    return {};
   },
 };
 </script>
@@ -48,7 +45,7 @@ export default {
   background-color: #000;
   width: 100%;
   height: 100vh;
-  box-shadow: rgb(0, 0, 0) 0px -50px 200px 100px;
+  box-shadow: rgb(0, 0, 0) 0px -50px 100px 30px;
   position: absolute;
   z-index: 1;
 }
@@ -56,5 +53,35 @@ export default {
 .carousels {
   position: relative;
   bottom: 9rem;
+}
+
+@media screen and (min-width: 390px) and (max-width: 889px) {
+  .cont_carousels {
+    box-shadow: rgb(0, 0, 0) 0px -30px 100px 20px;
+  }
+  
+  .carousels {
+    bottom: 5rem;
+  }
+}
+
+@media screen and (min-width: 890px) and (max-width: 1129px) {
+  .cont_carousels {
+    box-shadow: rgb(0, 0, 0) 0px -30px 100px 20px;
+  }
+  
+  .carousels {
+    bottom: 6rem;
+  }
+}
+
+@media (min-width: 1130px) and (max-width: 1330px) {
+  .cont_carousels {
+    box-shadow: rgb(0, 0, 0) 0px -50px 100px 20px;
+  }
+
+  .carousels {
+    bottom: 7rem;
+  }
 }
 </style>

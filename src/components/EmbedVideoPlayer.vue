@@ -15,7 +15,8 @@
                 <font-awesome-icon class="icon" icon="fa-solid fa-play" />
                 <span>Reproducir</span>
               </button>
-              <button v-on:click="openInfoMovie" class="button_info">
+              <!-- v-on:click="openInfoMovie" -->
+              <button class="button_info">
                 <font-awesome-icon
                   class="icon"
                   icon="fa-solid fa-circle-info"
@@ -268,7 +269,7 @@ function createPlayer() {
   // cambiara cuando se haga mas pequeña el tamaño de la ventana en base al ancho de la pantalla
   // como se especifica con el vw(viewport width)
   //                          50.25vw
-  video_style.style.height = "54.25vw";
+  video_style.style.height = "50.25vw";
   // eslint-disable-next-line no-undef
   player.value = new YT.Player(playerElement, {
     videoId: videoID,

@@ -2,4 +2,7 @@
 const numMax = 501;
 const numMin = 1;
 
-export { numMax, numMin }
+const numMaxTR = 143;
+const numMinTR = 1;
+
+export { numMax, numMin, numMaxTR, numMinTR }

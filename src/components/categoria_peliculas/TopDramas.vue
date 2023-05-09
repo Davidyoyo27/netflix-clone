@@ -2,9 +2,11 @@
   <div v-if="flagRenderShadow" class="container">
     <div class="cont_info_carousel">
       <div class="cont_title">
-        <h3 class="title">Volver a verlo</h3>
+        <h3 class="title">Sugerencias de hoy</h3>
+        <div class="cont_icon">
+          <font-awesome-icon class="icon" icon="fa-solid fa-chevron-right" />
+        </div>
         <p class="sub_text">Explorar todos</p>
-        <font-awesome-icon class="icon" icon="fa-solid fa-chevron-right" />
       </div>
     </div>
     <!-- NOTA: solo el "navigation" es lo mismo que decir navigation="true" -->
@@ -28,30 +30,28 @@
         </swiper-slide>
       </swiper>
       <div class="cont_buttons">
-        <div class="button-prev">
-          <font-awesome-icon class="icon_right" icon="fa-solid fa-chevron-left" />
+        <div class="button-p">
+          <font-awesome-icon
+            class="icon_right"
+            icon="fa-solid fa-chevron-left"
+          />
         </div>
-        <div class="button-next">
-          <font-awesome-icon class="icon_left" icon="fa-solid fa-chevron-right" />
+        <div class="button-n">
+          <font-awesome-icon
+            class="icon_left"
+            icon="fa-solid fa-chevron-right"
+          />
         </div>
-        <div class="cont_shadow">
+        <div v-if="flagRenderShadow" class="cont_shadow">
           <div class="box_shadow"></div>
           <div class="box_shadow"></div>
         </div>
       </div>
     </div>
   </div>
-  <!-- solucion del gradient del menu inicio -->
-  <!-- <div class="prueba"></div> -->
-  <!-- /* .prueba {
-    background-color: teal;
-    height: 100px;
-    box-shadow: 0 0 100px #000000;
-    background: #fff;
-  } */ -->
 </template>
-
-<script>
+  
+  <script>
 import { onMounted, reactive, ref } from "vue";
 import services from "@/helpers/services/services.js";
 import { getPageRandom } from "@/helpers/js/functions.js";
@@ -101,13 +101,12 @@ export default {
     // variable contenedora de los botones que permiten avanzar o retroceder al carrusel
     // dejando :navigation="true" o solo navigation permite usar las flechas de direccion por default
     const cont_navigation = reactive({
-      nextEl: ".button-next",
-      prevEl: ".button-prev",
+      nextEl: ".button-n",
+      prevEl: ".button-p",
     });
 
     onMounted(async () => {
-      await services
-        .movie_info(getPageRandom(numMax, numMin))
+      await services.movie_info(getPageRandom(numMax, numMin))
         .then((response) => {
           // pasamos el array de objetos que contiene las peliculas y su informacion
           // para luego ser recorrida en el v-for de mas arriba y tener las caratulas
@@ -132,8 +131,12 @@ export default {
   },
 };
 </script>
-
+  
 <style scoped>
+.container {
+  margin-bottom: 4rem;
+}
+
 img {
   height: 18.75rem;
   border-radius: 0.3rem;
@@ -145,7 +148,6 @@ img:hover {
 
 .container:hover .icon {
   display: block;
-  left: 16rem;
 }
 
 .container_carousel {
@@ -157,7 +159,7 @@ img:hover {
 }
 
 .container_carousel:hover .pagination_elements,
-.container_carousel:hover .icon_right, 
+.container_carousel:hover .icon_right,
 .container_carousel:hover .icon_left {
   visibility: visible;
 }
@@ -169,8 +171,10 @@ img:hover {
 }
 
 .title {
+  position: relative;
   color: #e6dfdf;
   font-size: 30px;
+  font-weight: 600;
 }
 
 .title:hover {
@@ -179,15 +183,22 @@ img:hover {
 }
 
 .sub_text {
-  padding-left: 1rem;
   font-size: 1rem;
   font-weight: 600;
   color: #00d9ff;
-  position: absolute;
-  left: 15rem;
+  position: relative;
   opacity: 0;
   transition: 1s;
   cursor: pointer;
+}
+
+/* NOTA: para que al hacer hover sobre el titulo se vea el texto, 
+ el texto que se desea visualizar debe estar dentro del mismo contenedor */
+.cont_title:hover .sub_text {
+  /* usar margenes para mover los elementos en el :hover es mejor que left, right, etc.*/
+  margin-left: 2rem;
+  transition: 1s;
+  opacity: 1;
 }
 
 .cont_title {
@@ -195,17 +206,8 @@ img:hover {
   align-items: center;
 }
 
-/* NOTA: para que al hacer hover sobre el titulo se vea el texto, 
- el texto que se desea visualizar debe estar dentro del mismo contenedor */
-.cont_title:hover .sub_text {
-  display: block;
-  left: 16rem;
-  transition: 0.8s;
-  opacity: 1;
-}
-
 .cont_title:hover .icon {
-  left: 24rem;
+  margin-left: 9.2rem;
   font-size: 15px;
   display: block;
 }
@@ -214,13 +216,19 @@ img:hover {
   color: #fff;
 }
 
+.cont_icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background-color: tomato;
+}
+
 .icon {
   color: #00d9ff;
   font-size: 20px;
   display: none;
   margin-left: 0.2rem;
   position: absolute;
-  left: 16.3rem;
   transition: 0.8s;
   cursor: pointer;
 }
@@ -231,7 +239,6 @@ img:hover {
   /* posicionamiento usado para que la propiedad z-index funcione */
   position: relative;
   z-index: 1;
-  background-color: aqua;
 }
 
 .pagination_elements {
@@ -250,8 +257,8 @@ img:hover {
   align-items: center;
 }
 
-.button-prev,
-.button-next {
+.button-p,
+.button-n {
   font-size: 2rem;
   color: #fff;
   background-color: rgba(0, 0, 0, 0);
@@ -262,19 +269,19 @@ img:hover {
   align-items: center;
   z-index: 2;
   cursor: pointer;
-  transition: .2s;
+  transition: 0.2s;
 }
 
-.button-prev {
+.button-p {
   border-radius: 0px 5px 5px 0px;
 }
 
-.button-next {
+.button-n {
   border-radius: 5px 0px 0px 5px;
 }
 
-.button-prev:hover,
-.button-next:hover {
+.button-p:hover,
+.button-n:hover {
   font-size: 2.5rem;
   background-color: rgba(0, 0, 0, 0.2);
 }

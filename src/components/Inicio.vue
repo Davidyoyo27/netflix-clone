@@ -5,23 +5,26 @@
     </div>
     <div class="cont_carousels">
       <div class="carousels">
-        <VolverAVer></VolverAVer>
+        <SeriesEmocionantes></SeriesEmocionantes>
+        <TopDramas></TopDramas>
       </div>
-      <TopDramas></TopDramas>
     </div>
   </div>
 </template>
 
 <script>
-import EmbedVideoPlayer from "@/components/EmbedVideoPlayer.vue";
-import VolverAVer from "@/components/VolverAVer.vue";
-import TopDramas from "@/components/TopDramas.vue";
+// RECOMENDACION: al importar un componente no usar la extension .vue, ya que
+// al traer 2 componentes de la misma ruta con la extension .vue este generara un error
+// si bien el error no afecta el funcionamiento del modulo es molesto visualmente dentro del modulo
+import EmbedVideoPlayer from "@/components/EmbedVideoPlayer";
+import SeriesEmocionantes from "@/components/categoria_peliculas/SeriesEmocionantes";
+import TopDramas from "@/components/categoria_peliculas/TopDramas";
 
 export default {
   // En caso de querer llamar a algun componente con el Composition API
   // es de esta manera, fuera del setup()
   components: {
-    VolverAVer,
+    SeriesEmocionantes,
     EmbedVideoPlayer,
     TopDramas,
   },

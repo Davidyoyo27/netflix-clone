@@ -6,7 +6,8 @@
     <div class="cont_carousels">
       <div class="carousels">
         <SeriesEmocionantes></SeriesEmocionantes>
-        <TopDramas></TopDramas>
+        <SugerenciasHoy></SugerenciasHoy>
+        <SeriesSuspenso></SeriesSuspenso>
       </div>
     </div>
   </div>
@@ -18,7 +19,8 @@
 // si bien el error no afecta el funcionamiento del modulo es molesto visualmente dentro del modulo
 import EmbedVideoPlayer from "@/components/EmbedVideoPlayer";
 import SeriesEmocionantes from "@/components/categoria_peliculas/SeriesEmocionantes";
-import TopDramas from "@/components/categoria_peliculas/TopDramas";
+import SugerenciasHoy from "@/components/categoria_peliculas/SugerenciasHoy";
+import SeriesSuspenso from "@/components/categoria_peliculas/SeriesSuspenso";
 
 export default {
   // En caso de querer llamar a algun componente con el Composition API
@@ -26,7 +28,8 @@ export default {
   components: {
     SeriesEmocionantes,
     EmbedVideoPlayer,
-    TopDramas,
+    SugerenciasHoy,
+    SeriesSuspenso,
   },
   setup() {
     return {};
@@ -47,7 +50,7 @@ export default {
 .cont_carousels {
   background-color: #000;
   width: 100%;
-  height: 100vh;
+  height: auto;
   box-shadow: rgb(0, 0, 0) 0px -50px 100px 30px;
   position: absolute;
   z-index: 1;

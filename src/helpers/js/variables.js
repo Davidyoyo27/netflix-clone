@@ -5,4 +5,7 @@ const numMin = 1;
 const numMaxTR = 143;
 const numMinTR = 1;
 
-export { numMax, numMin, numMaxTR, numMinTR }
+const numMaxSS = 238;
+const numMinSS = 1;
+
+export { numMax, numMin, numMaxTR, numMinTR, numMaxSS, numMinSS }

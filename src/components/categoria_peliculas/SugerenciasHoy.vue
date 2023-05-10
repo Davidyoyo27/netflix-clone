@@ -12,7 +12,7 @@
     <!-- NOTA: solo el "navigation" es lo mismo que decir navigation="true" -->
     <div class="container_carousel">
       <div class="cont_pagination">
-        <div class="pagination_elements"></div>
+        <div class="pagination_elSH"></div>
       </div>
       <swiper
         :slides-per-view="9"
@@ -30,13 +30,13 @@
         </swiper-slide>
       </swiper>
       <div class="cont_buttons">
-        <div class="button-p">
+        <div class="button-pSH">
           <font-awesome-icon
             class="icon_right"
             icon="fa-solid fa-chevron-left"
           />
         </div>
-        <div class="button-n">
+        <div class="button-nSH">
           <font-awesome-icon
             class="icon_left"
             icon="fa-solid fa-chevron-right"
@@ -80,10 +80,10 @@ export default {
     const flagRenderShadow = ref(false);
     // variable contenedora del formato del tamaño de imagen de la caratula
     const link_img = ref("https://image.tmdb.org/t/p/w500");
-    //
+    // variable contenedora de las propiedades de la paginacion del carousel
     const cont_pagination = reactive({
       clickable: false,
-      el: ".pagination_elements",
+      el: ".pagination_elSH",
       type: "bullets",
     });
     // variable contenedora de los tamaños de pantalla (responsive de el slider) y
@@ -101,17 +101,29 @@ export default {
     // variable contenedora de los botones que permiten avanzar o retroceder al carrusel
     // dejando :navigation="true" o solo navigation permite usar las flechas de direccion por default
     const cont_navigation = reactive({
-      nextEl: ".button-n",
-      prevEl: ".button-p",
+      nextEl: ".button-nSH",
+      prevEl: ".button-pSH",
     });
 
     onMounted(async () => {
-      await services.movie_info(getPageRandom(numMax, numMin))
+      await services.movie_popular(getPageRandom(numMax, numMin))
         .then((response) => {
           // pasamos el array de objetos que contiene las peliculas y su informacion
           // para luego ser recorrida en el v-for de mas arriba y tener las caratulas
           // de las peliculas
-          data.value = response.data.results;
+          let array = response.data.results;
+          // pasamos el array a un .filter() ya que este contiene elementos
+          // con el poster_path en null, asi que para que no muestre una
+          // imagen vacia en el carrusel se quitaran estos elementos con null
+          data.value = array.filter((item) => {
+            // retornamos todos los elementos que contengan datos en
+            // el poster_path, esto es lo mismo que decir
+            // return item.poster_path != null
+            // que serian todos los elementos que no tengan datos null
+            return item.poster_path;
+          });
+          // cambiamos el estado de la bandera a true una vez que los datos se 
+          // hayan consultado correctamente para visualizar el carrusel de peliculas 
           flagRenderShadow.value = true;
         })
         .catch((error) => {
@@ -131,7 +143,7 @@ export default {
   },
 };
 </script>
-  
+
 <style scoped>
 .container {
   margin-bottom: 4rem;
@@ -158,7 +170,7 @@ img:hover {
   z-index: 0;
 }
 
-.container_carousel:hover .pagination_elements,
+.container_carousel:hover .pagination_elSH,
 .container_carousel:hover .icon_right,
 .container_carousel:hover .icon_left {
   visibility: visible;
@@ -241,7 +253,7 @@ img:hover {
   z-index: 1;
 }
 
-.pagination_elements {
+.pagination_elSH {
   display: flex;
   justify-content: flex-end;
   visibility: hidden;
@@ -257,8 +269,8 @@ img:hover {
   align-items: center;
 }
 
-.button-p,
-.button-n {
+.button-pSH,
+.button-nSH {
   font-size: 2rem;
   color: #fff;
   background-color: rgba(0, 0, 0, 0);
@@ -272,16 +284,16 @@ img:hover {
   transition: 0.2s;
 }
 
-.button-p {
+.button-pSH {
   border-radius: 0px 5px 5px 0px;
 }
 
-.button-n {
+.button-nSH {
   border-radius: 5px 0px 0px 5px;
 }
 
-.button-p:hover,
-.button-n:hover {
+.button-pSH:hover,
+.button-nSH:hover {
   font-size: 2.5rem;
   background-color: rgba(0, 0, 0, 0.2);
 }

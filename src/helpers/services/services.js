@@ -1,7 +1,8 @@
 import axios from "axios";
 
 export default {
-
+  
+  // endpoint del video inicial al cargar en el inicio de la pagina
   movie_video_start: async (id_pelicula) => {
     try {
       const API_KEY = "api_key=ef6f33754f4bdb2e45fe025d71c82878";
@@ -52,6 +53,7 @@ export default {
     }
   },
 
+//   ======================================================================================
   movie_info: async (page) => {
     try {
       const API_KEY = "api_key=ef6f33754f4bdb2e45fe025d71c82878";
@@ -75,14 +77,40 @@ export default {
       return { ok: false, error: err.message };
     }
   },
+  //   ======================================================================================
 
-  // 
-  movie_top_rated: async(page) => {
+  // endpoint de carrusel de peliculas "series emocionantes aclamadas por la critica"
+  movie_top_rated: async (page) => {
+    try {
+      const API_KEY = "api_key=ef6f33754f4bdb2e45fe025d71c82878";
+      const axiosConfig = {
+        baseURL: "https://api.themoviedb.org/3",
+        url: `/tv/top_rated?${API_KEY}&language=es-MX`,
+
+        headers: {
+          Authorization: `Token ${API_KEY}`,
+        },
+
+        method: "get",
+        params: {
+          page: page,
+        },
+      };
+
+      const respuesta = await axios.request(axiosConfig);
+      return { ok: true, data: respuesta.data };
+    } catch (err) {
+      return { ok: false, error: err.message };
+    }
+  },
+
+  // endpoint de carrusel de peliculas "sugerencias de hoy"
+  movie_popular: async(page) => {
     try {
         const API_KEY = "api_key=ef6f33754f4bdb2e45fe025d71c82878";
         const axiosConfig = {
             baseURL: "https://api.themoviedb.org/3",
-            url: `/tv/top_rated?${API_KEY}&language=es-MX&page=1`,
+            url: `/tv/popular?${API_KEY}&language=es-MX`,
 
             headers: {
                 Authorization: `Token ${API_KEY}`,
@@ -91,7 +119,32 @@ export default {
             method: "get",
             params: {
                 page: page,
-            }
+            },
+        }
+
+        const respuesta = await axios.request(axiosConfig);
+        return { ok:true, data: respuesta.data };
+    } catch (err) {
+        return { ok: false, error: err.message };
+    }
+  },
+
+  // 
+  serie_suspense: async(page) => {
+    try {
+        const API_KEY = "api_key=ef6f33754f4bdb2e45fe025d71c82878";
+        const axiosConfig = {
+            baseURL: "https://api.themoviedb.org/3",
+            url: `/discover/tv?${API_KEY}&language=es-MX&sort_by=popularity.desc&with_genres=9648`,
+
+            headers: {
+                Authorization: `Token ${API_KEY}`,
+            },
+
+            method: "get",
+            params: {
+                page: page
+            },
         }
 
         const respuesta = await axios.request(axiosConfig);
@@ -99,7 +152,6 @@ export default {
     } catch (err) {
         return { ok: false, error: err.message }
     }
-  }
+  },
 
-  
 };

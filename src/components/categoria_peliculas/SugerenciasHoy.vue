@@ -93,10 +93,10 @@ export default {
       1680: { slidesPerView: 8 },
       1480: { slidesPerView: 7 },
       1250: { slidesPerView: 6 },
-      1040: { slidesPerView: 5 },
-      840: { slidesPerView: 4 },
-      640: { slidesPerView: 3 },
-      400: { slidesPerView: 2 },
+      760: { slidesPerView: 5 },
+      590: { slidesPerView: 4 },
+      440: { slidesPerView: 3 },
+      300: { slidesPerView: 2 },
     });
     // variable contenedora de los botones que permiten avanzar o retroceder al carrusel
     // dejando :navigation="true" o solo navigation permite usar las flechas de direccion por default
@@ -318,5 +318,25 @@ img:hover {
   box-shadow: rgb(0, 0, 0) 0px -5px 50px 40px;
   background: #fff;
   visibility: visible;
+}
+
+@media (min-width: 300px) and (max-width: 889px) {
+  img {
+    height: 12.75rem;
+  }
+
+  .title {
+    font-size: 20px;
+  }
+}
+
+@media (min-width: 890px) and (max-width: 1129px) {
+  img {
+    height: 15.75rem;
+  }
+
+  .title {
+    font-size: 25px;
+  }
 }
 </style>

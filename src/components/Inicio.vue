@@ -61,7 +61,7 @@ export default {
   bottom: 9rem;
 }
 
-@media screen and (min-width: 390px) and (max-width: 889px) {
+@media (min-width: 300px) and (max-width: 889px) {
   .cont_carousels {
     box-shadow: rgb(0, 0, 0) 0px -30px 100px 20px;
   }
@@ -71,7 +71,7 @@ export default {
   }
 }
 
-@media screen and (min-width: 890px) and (max-width: 1129px) {
+@media (min-width: 890px) and (max-width: 1129px) {
   .cont_carousels {
     box-shadow: rgb(0, 0, 0) 0px -30px 100px 20px;
   }

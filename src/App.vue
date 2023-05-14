@@ -16,8 +16,14 @@ export default {
   name: "App",
   components: {
     //                                    LazyLoad
-    MenuPrincipal: defineAsyncComponent(() => import(/* webpackChunkName: "MenuPrincipal.vue" */ "@/components/MenuPrincipal.vue")),
-    Inicio: defineAsyncComponent(() => import(/* webpackChunkName: "Inicio.vue" */ "@/components/Inicio.vue")),
+    MenuPrincipal: defineAsyncComponent(() =>
+      import(
+        /* webpackChunkName: "MenuPrincipal.vue" */ "@/components/MenuPrincipal.vue"
+      )
+    ),
+    Inicio: defineAsyncComponent(() =>
+      import(/* webpackChunkName: "Inicio.vue" */ "@/components/Inicio.vue")
+    ),
   },
 };
 </script>
@@ -55,7 +61,7 @@ export default {
 }
 
 /* boton flecha arriba y abajo de scroll bar */
-*::-webkit-scrollbar-button{
+*::-webkit-scrollbar-button {
   background-color: #000;
 }
 

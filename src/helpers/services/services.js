@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export default {
-  
+
   // endpoint del video inicial al cargar en el inicio de la pagina
   movie_video_start: async (id_pelicula) => {
     try {
@@ -53,7 +53,7 @@ export default {
     }
   },
 
-//   ======================================================================================
+  //   ======================================================================================
   movie_info: async (page) => {
     try {
       const API_KEY = "api_key=ef6f33754f4bdb2e45fe025d71c82878";
@@ -105,53 +105,190 @@ export default {
   },
 
   // endpoint de carrusel de peliculas "sugerencias de hoy"
-  movie_popular: async(page) => {
+  movie_popular: async (page) => {
     try {
-        const API_KEY = "api_key=ef6f33754f4bdb2e45fe025d71c82878";
-        const axiosConfig = {
-            baseURL: "https://api.themoviedb.org/3",
-            url: `/tv/popular?${API_KEY}&language=es-MX`,
+      const API_KEY = "api_key=ef6f33754f4bdb2e45fe025d71c82878";
+      const axiosConfig = {
+        baseURL: "https://api.themoviedb.org/3",
+        url: `/tv/popular?${API_KEY}&language=es-MX`,
 
-            headers: {
-                Authorization: `Token ${API_KEY}`,
-            },
+        headers: {
+          Authorization: `Token ${API_KEY}`,
+        },
 
-            method: "get",
-            params: {
-                page: page,
-            },
-        }
+        method: "get",
+        params: {
+          page: page,
+        },
+      };
 
-        const respuesta = await axios.request(axiosConfig);
-        return { ok:true, data: respuesta.data };
+      const respuesta = await axios.request(axiosConfig);
+      return { ok: true, data: respuesta.data };
     } catch (err) {
-        return { ok: false, error: err.message };
+      return { ok: false, error: err.message };
     }
   },
 
-  // 
-  serie_suspense: async(page) => {
+  // endpoint de carrusel de peliculas "series de suspenso"
+  serie_suspense: async (page) => {
     try {
-        const API_KEY = "api_key=ef6f33754f4bdb2e45fe025d71c82878";
-        const axiosConfig = {
-            baseURL: "https://api.themoviedb.org/3",
-            url: `/discover/tv?${API_KEY}&language=es-MX&sort_by=popularity.desc&with_genres=9648`,
+      const API_KEY = "api_key=ef6f33754f4bdb2e45fe025d71c82878";
+      const axiosConfig = {
+        baseURL: "https://api.themoviedb.org/3",
+        url: `/discover/tv?${API_KEY}&language=es-MX&sort_by=popularity.desc&with_genres=9648`,
 
-            headers: {
-                Authorization: `Token ${API_KEY}`,
-            },
+        headers: {
+          Authorization: `Token ${API_KEY}`,
+        },
 
-            method: "get",
-            params: {
-                page: page
-            },
-        }
+        method: "get",
+        params: {
+          page: page,
+        },
+      };
 
-        const respuesta = await axios.request(axiosConfig);
-        return { ok: true, data: respuesta.data };
+      const respuesta = await axios.request(axiosConfig);
+      return { ok: true, data: respuesta.data };
     } catch (err) {
-        return { ok: false, error: err.message }
+      return { ok: false, error: err.message };
     }
   },
 
+  // NOTA: RECUERDA ELIMINAR LAS &page=x DE LOS ENDPOINT DE LAS SERIES/PELICULAS
+
+  // ============================================== PELICULAS ===================================================
+  // peliculas anime | NO GENEROS
+  // https://api.themoviedb.org/3/discover/movie?api_key=ef6f33754f4bdb2e45fe025d71c82878&language=es-MX&page=1&with_genres=16&with_keywords=210024|287501
+
+  // las 10 películas más populares en Chile hoy
+  //
+
+  // películas de hollywood para reír
+  // https://api.themoviedb.org/3/discover/movie?api_key=ef6f33754f4bdb2e45fe025d71c82878&with_genres=35&language=es-MX&page=1
+
+  // ciencia ficción y fantasía imaginativa de acción
+  // https://api.themoviedb.org/3/discover/movie?api_key=ef6f33754f4bdb2e45fe025d71c82878&with_genres=14 | 878&language=es-MX&page=1
+
+  // Lanzamientos del último año
+  // https://api.themoviedb.org/3/discover/movie?api_key=ef6f33754f4bdb2e45fe025d71c82878&release_date.gte=2022-01-12&sort_by=popularity.desc&vote_average.gte=7&vote_average.lte=10&vote_count.gte=100&with_release_type=4%7C5&language=es-MX&page=1
+
+  // Proximos estrenos
+  // https://api.themoviedb.org/3/movie/upcoming?api_key=ef6f33754f4bdb2e45fe025d71c82878&language=es-MX&page=1
+
+  // Películas sobre crímenes
+  // https://api.themoviedb.org/3/discover/movie?api_key=ef6f33754f4bdb2e45fe025d71c82878&with_genres=80&language=es-MX&page=1
+
+  //// Series documentales 
+  // https://api.themoviedb.org/3/discover/movie?api_key=ef6f33754f4bdb2e45fe025d71c82878&language=es-MX&sort_by=popularity.desc&page=1&primary_release_year=2020&with_original_language=au|ca|gb|ie|nz|us
+
+  //// Películas de documentales
+  // https://api.themoviedb.org/3/discover/movie?api_key=ef6f33754f4bdb2e45fe025d71c82878&with_genres=99&language=es-MX&page=1
+
+  // Películas de acción
+  // https://api.themoviedb.org/3/discover/movie?api_key=ef6f33754f4bdb2e45fe025d71c82878&with_genres=28&language=es-MX&page=1
+
+  // Películas de animación
+  // https://api.themoviedb.org/3/discover/movie?api_key=ef6f33754f4bdb2e45fe025d71c82878&with_genres=16&language=es-MX&page=1
+
+  // Películas de anime romance
+  // https://api.themoviedb.org/3/discover/movie?api_key=ef6f33754f4bdb2e45fe025d71c82878&with_genres=10749&language=es-MX&page=1&with_keywords=210024
+
+  // Películas de drama
+  // https://api.themoviedb.org/3/discover/movie?api_key=ef6f33754f4bdb2e45fe025d71c82878&with_genres=18&language=es-MX&page=1
+
+  // Películas para ver en familia
+  // https://api.themoviedb.org/3/discover/movie?api_key=ef6f33754f4bdb2e45fe025d71c82878&with_genres=10751&language=es-MX&page=1
+
+  // Películas de historia
+  // https://api.themoviedb.org/3/discover/movie?api_key=ef6f33754f4bdb2e45fe025d71c82878&with_genres=36&language=es-MX&page=1
+
+  // Películas de terror
+  // https://api.themoviedb.org/3/discover/movie?api_key=ef6f33754f4bdb2e45fe025d71c82878&with_genres=27&language=es-MX&page=1
+
+  // Películas de música
+  // https://api.themoviedb.org/3/discover/movie?api_key=ef6f33754f4bdb2e45fe025d71c82878&with_genres=10402&language=es-MX&page=1
+
+  // Películas de misterio
+  // https://api.themoviedb.org/3/discover/movie?api_key=ef6f33754f4bdb2e45fe025d71c82878&with_genres=9648&language=es-MX&without_genres=27&page=1
+
+  // Películas de romance
+  // https://api.themoviedb.org/3/discover/movie?api_key=ef6f33754f4bdb2e45fe025d71c82878&with_genres=10749&language=es-MX&without_genres=16&page=1
+
+  ///// Películas de TV
+  // https://api.themoviedb.org/3/discover/movie?api_key=ef6f33754f4bdb2e45fe025d71c82878&with_genres=10770&language=es-MX&page=1
+
+  // Películas de suspenso
+  // https://api.themoviedb.org/3/discover/movie?api_key=ef6f33754f4bdb2e45fe025d71c82878&with_genres=53&language=es-MX&page=1
+
+  // Películas belicas/guerra
+  // https://api.themoviedb.org/3/discover/movie?api_key=ef6f33754f4bdb2e45fe025d71c82878&with_genres=10752&language=es-MX&page=1
+
+  // Películas occidentales
+  // https://api.themoviedb.org/3/discover/movie?api_key=ef6f33754f4bdb2e45fe025d71c82878&with_genres=37&language=es-MX&page=1
+
+  // Acción, sci-fi y fantasía
+  // https://api.themoviedb.org/3/discover/movie?api_key=ef6f33754f4bdb2e45fe025d71c82878&with_genres=37|28|878|14&language=es-MX&without_genres=10751|10749|10752&page=1
+  // ============================================== PELICULAS ===================================================
+
+  // ========================================== PELICULAS+SERIES ===================================================
+  // lanzamientos de ultimo año
+  // nuevos lanzamientos
+  // Animes japoneses
+  // ========================================== PELICULAS+SERIES ===================================================
+
+  // ============================================== SERIES ===================================================
+  // animes shonen | accion & aventura
+  // https://api.themoviedb.org/3/discover/tv?api_key=ef6f33754f4bdb2e45fe025d71c82878&language=es-MX&sort_by=popularity.desc&with_genres=10759&page=1&with_keywords=210024|287501
+
+  // animes comedia
+  // https://api.themoviedb.org/3/discover/tv?api_key=ef6f33754f4bdb2e45fe025d71c82878&language=es-MX&sort_by=popularity.desc&with_genres=35&page=1&with_keywords=210024|287501&without_genres=10759
+
+  // animes de crimen
+  // https://api.themoviedb.org/3/discover/tv?api_key=ef6f33754f4bdb2e45fe025d71c82878&language=es-MX&sort_by=popularity.desc&with_genres=80&page=1&with_keywords=210024|287501
+
+  // animes de drama
+  // https://api.themoviedb.org/3/discover/tv?api_key=ef6f33754f4bdb2e45fe025d71c82878&language=es-MX&sort_by=popularity.desc&with_genres=18&page=1&with_keywords=210024|287501&without_genres=10759
+
+  // animes de misterio
+  // https://api.themoviedb.org/3/discover/tv?api_key=ef6f33754f4bdb2e45fe025d71c82878&language=es-MX&sort_by=popularity.desc&with_genres=9648&page=1&with_keywords=210024|287501
+
+  // animes de sci-fi y fantasía
+  // https://api.themoviedb.org/3/discover/tv?api_key=ef6f33754f4bdb2e45fe025d71c82878&language=es-MX&sort_by=popularity.desc&with_genres=10765&page=1&with_keywords=210024|287501&without_genres=10759
+
+  // Series anime japonesas
+  // https://api.themoviedb.org/3/discover/tv?api_key=ef6f33754f4bdb2e45fe025d71c82878&language=es-MX&page=1&with_keywords=210024
+
+  // las 10 series más populares en Chile hoy
+  //
+
+  // Series de Sci-Fi y Fantasía
+  // https://api.themoviedb.org/3/discover/tv?api_key=ef6f33754f4bdb2e45fe025d71c82878&language=es-MX&sort_by=popularity.desc&with_genres=10765
+
+  // Telenovelas
+  // https://api.themoviedb.org/3/discover/tv?api_key=ef6f33754f4bdb2e45fe025d71c82878&language=es-MX&page=1&with_keywords=199262
+
+  // TV infantil y familiar
+  // https://api.themoviedb.org/3/discover/tv?api_key=ef6f33754f4bdb2e45fe025d71c82878&language=es-MX&sort_by=popularity.desc&with_genres=10751|10762&page=1&with_keywords=210024|287501
+
+  // Series de animacion occidental
+  // https://api.themoviedb.org/3/discover/tv?api_key=ef6f33754f4bdb2e45fe025d71c82878&language=es-MX&sort_by=popularity.desc&with_genres=37|16&page=1&without_genres=10759&without_keywords=210024
+
+  // Series occidentales de acción y aventura
+  // https://api.themoviedb.org/3/discover/tv?api_key=ef6f33754f4bdb2e45fe025d71c82878&language=es-MX&sort_by=popularity.desc&with_genres=37|10759&page=1&without_keywords=210024
+
+  // Series de comedia
+  // https://api.themoviedb.org/3/discover/tv?api_key=ef6f33754f4bdb2e45fe025d71c82878&language=es-MX&sort_by=popularity.desc&with_genres=37|35&page=1&without_keywords=210024
+
+  // Series de crimen
+  // https://api.themoviedb.org/3/discover/tv?api_key=ef6f33754f4bdb2e45fe025d71c82878&language=es-MX&sort_by=popularity.desc&with_genres=37|80&page=1&without_genres=10765&without_keywords=210024
+
+  // Series documentales
+  // https://api.themoviedb.org/3/discover/tv?api_key=ef6f33754f4bdb2e45fe025d71c82878&language=es-MX&sort_by=popularity.desc&with_genres=37|99&page=1&without_genres=10765|18|10762|10751|16|10759|35|10767&without_keywords=210024
+
+  // Series de misterio
+  // https://api.themoviedb.org/3/discover/tv?api_key=ef6f33754f4bdb2e45fe025d71c82878&language=es-MX&sort_by=popularity.desc&with_genres=37|9648&page=1&without_keywords=210024
+
+  // Series de guerra y politica
+  // https://api.themoviedb.org/3/discover/tv?api_key=ef6f33754f4bdb2e45fe025d71c82878&language=es-MX&sort_by=popularity.desc&with_genres=10768&page=1&without_keywords=210024
+  // ============================================== SERIES ===================================================
 };

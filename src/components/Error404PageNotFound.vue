@@ -108,7 +108,7 @@ h1, p, .text, .cont-movie{
     color: #fff;
 }
 
-@media screen and (max-width: 890px) {
+@media (min-width: 300px) and (max-width: 889px) {
   .item {
     height: auto;
     width: 55rem;

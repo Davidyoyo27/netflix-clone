@@ -115,13 +115,13 @@ export default {
   cursor: auto;
 }
 
-@media screen and (max-width: 890px) {
+@media (min-width: 300px) and (max-width: 889px) {
   .input_search:focus {
     width: 16rem;
   }
 }
 
-@media (min-width: 891px) and (max-width: 1129px) {
+@media (min-width: 890px) and (max-width: 1129px) {
   .input_search:focus {
     width: 16rem;
   }

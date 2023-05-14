@@ -121,10 +121,13 @@ onBeforeMount(async () => {
       // se toma el array con los datos de las peliculas y este se "mezcla" con la funcion getNumberRandom
       // para que el valor que tomemos sea al azar que seria el de la primera posicion [0]
       dataSorted.value = dataArray.value.sort(getNumberRandom);
+
       // existen algunas imagenes de fondo que vienen vacias, en caso de ser asi, se vuelve a generar una mezcla
       // del array para obtener otro resultado
-      (dataSorted.value[0].backdrop_path === null) ? dataSorted.value = dataArray.value.sort(getNumberRandom) : null;
+      // linea de codigo genera imagen duplicada
+      // (dataSorted.value[0].backdrop_path === null) ? dataSorted.value = dataArray.value.sort(getNumberRandom) : null;
       // obtenemos el id de la pelicula, el cual sera usado mas abajo
+      
       idSorted.value = dataSorted.value[0].id;
       // obtenemos la key del fondo de la imagen
       movie_backdrop_key.value = dataSorted.value[0].backdrop_path;

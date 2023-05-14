@@ -31,10 +31,16 @@
       </swiper>
       <div class="cont_buttons">
         <div class="button-prev">
-          <font-awesome-icon class="icon_right" icon="fa-solid fa-chevron-left" />
+          <font-awesome-icon
+            class="icon_right"
+            icon="fa-solid fa-chevron-left"
+          />
         </div>
         <div class="button-next">
-          <font-awesome-icon class="icon_left" icon="fa-solid fa-chevron-right" />
+          <font-awesome-icon
+            class="icon_left"
+            icon="fa-solid fa-chevron-right"
+          />
         </div>
         <div class="cont_shadow">
           <div class="box_shadow"></div>
@@ -87,10 +93,10 @@ export default {
       1680: { slidesPerView: 8 },
       1480: { slidesPerView: 7 },
       1250: { slidesPerView: 6 },
-      1040: { slidesPerView: 5 },
-      840: { slidesPerView: 4 },
-      640: { slidesPerView: 3 },
-      400: { slidesPerView: 2 },
+      760: { slidesPerView: 5 },
+      590: { slidesPerView: 4 },
+      440: { slidesPerView: 3 },
+      300: { slidesPerView: 2 },
     });
     // variable contenedora de los botones que permiten avanzar o retroceder al carrusel
     // dejando :navigation="true" o solo navigation permite usar las flechas de direccion por default
@@ -100,7 +106,8 @@ export default {
     });
 
     onMounted(async () => {
-      await services.movie_top_rated(getPageRandom(numMaxTR, numMinTR))
+      await services
+        .movie_top_rated(getPageRandom(numMaxTR, numMinTR))
         .then((response) => {
           // pasamos el array de objetos que contiene las peliculas y su informacion
           // para luego ser recorrida en el v-for de mas arriba y tener las caratulas
@@ -153,7 +160,7 @@ img:hover {
 }
 
 .container_carousel:hover .pagination_elements,
-.container_carousel:hover .icon_right, 
+.container_carousel:hover .icon_right,
 .container_carousel:hover .icon_left {
   visibility: visible;
 }
@@ -188,7 +195,7 @@ img:hover {
 
 /* NOTA: para que al hacer hover sobre el titulo se vea el texto, 
  el texto que se desea visualizar debe estar dentro del mismo contenedor */
- .cont_title:hover .sub_text {
+.cont_title:hover .sub_text {
   /* usar margenes para mover los elementos en el :hover es mejor que left, right, etc.*/
   margin-left: 2rem;
   transition: 1s;
@@ -263,7 +270,7 @@ img:hover {
   align-items: center;
   z-index: 2;
   cursor: pointer;
-  transition: .2s;
+  transition: 0.2s;
 }
 
 .button-prev {
@@ -300,5 +307,25 @@ img:hover {
   box-shadow: rgb(0, 0, 0) 0px -5px 50px 35px;
   background: #fff;
   visibility: visible;
+}
+
+@media (min-width: 300px) and (max-width: 889px) {
+  img {
+    height: 12.75rem;
+  }
+
+  .title {
+    font-size: 20px;
+  }
+}
+
+@media (min-width: 890px) and (max-width: 1129px) {
+  img {
+    height: 15.75rem;
+  }
+
+  .title {
+    font-size: 25px;
+  }
 }
 </style>

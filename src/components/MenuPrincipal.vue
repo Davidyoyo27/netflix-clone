@@ -570,7 +570,7 @@ export default {
 
 /* =========================== FIN MENU RESPONSIVE =========================== */
 
-@media screen and (max-width: 890px) {
+@media (min-width: 300px) and (max-width: 889px) {
   /* INICIO MENU IZQUIERDO */
   .first_option_menu {
     margin-left: 2rem;
@@ -611,7 +611,7 @@ export default {
   /* FIN MENU DERECHO */
 }
 
-@media (min-width: 891px) and (max-width: 1129px) {
+@media (min-width: 890px) and (max-width: 1129px) {
   /* INICIO MENU IZQUIERDO */
   .first_option_menu {
     margin-left: 2rem;

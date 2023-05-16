@@ -55,7 +55,7 @@
 import { onMounted, reactive, ref } from "vue";
 import services from "@/helpers/services/services.js";
 import { getPageRandom } from "@/helpers/js/functions.js";
-import { numMaxTR, numMinTR } from "@/helpers/js/variables.js";
+import { numMaxTR, numMin } from "@/helpers/js/variables.js";
 // import Swiper core and required modules
 import { Navigation, Pagination, Scrollbar, A11y } from "swiper";
 // Import Swiper Vue.js components
@@ -107,7 +107,7 @@ export default {
 
     onMounted(async () => {
       await services
-        .movie_top_rated(getPageRandom(numMaxTR, numMinTR))
+        .movie_top_rated(getPageRandom(numMaxTR, numMin))
         .then((response) => {
           // pasamos el array de objetos que contiene las peliculas y su informacion
           // para luego ser recorrida en el v-for de mas arriba y tener las caratulas
@@ -317,6 +317,11 @@ img:hover {
   .title {
     font-size: 20px;
   }
+
+  .box_shadow {
+    height: 160px;
+    box-shadow: rgb(0, 0, 0) 0px -5px 50px 35px;
+  }
 }
 
 @media (min-width: 890px) and (max-width: 1129px) {
@@ -326,6 +331,11 @@ img:hover {
 
   .title {
     font-size: 25px;
+  }
+
+  .box_shadow {
+    height: 210px;
+    box-shadow: rgb(0, 0, 0) 0px -5px 50px 35px;
   }
 }
 </style>

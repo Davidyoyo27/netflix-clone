@@ -1,7 +1,7 @@
 import axios from "axios";
+import { getDateMovieReleaseLastYear } from "@/helpers/js/functions";
 
 export default {
-
   // endpoint del video inicial al cargar en el inicio de la pagina
   movie_video_start: async (id_pelicula) => {
     try {
@@ -154,12 +154,109 @@ export default {
     }
   },
 
+  // endpoint de carrusel de peliculas "películas de anime"
+  movie_anime: async (page) => {
+    try {
+      const API_KEY = "api_key=ef6f33754f4bdb2e45fe025d71c82878";
+      const axiosConfig = {
+        baseURL: "https://api.themoviedb.org/3",
+        url: `/discover/movie?${API_KEY}&language=es-MX&with_genres=16&with_keywords=210024|287501`,
+
+        headers: {
+          Authorization: `Token ${API_KEY}`,
+        },
+
+        method: "get",
+        params: {
+          page: page,
+        },
+      };
+
+      const respuesta = await axios.request(axiosConfig);
+      return { ok: true, data: respuesta.data };
+    } catch (err) {
+      return { ok: false, error: err.message };
+    }
+  },
+
+  // endpoint de carrusel de peliculas "películas de hollywood para reír"
+  movie_comedy: async (page) => {
+    try {
+      const API_KEY = "api_key=ef6f33754f4bdb2e45fe025d71c82878";
+      const axiosConfig = {
+        baseURL: "https://api.themoviedb.org/3",
+        url: `/discover/movie?${API_KEY}&with_genres=35&language=es-MX&without_genres=16&primary_release_date.gte=2010`,
+
+        headers: {
+          Authorization: `Token ${API_KEY}`,
+        },
+
+        method: "get",
+        params: {
+          page: page,
+        },
+      };
+
+      const respuesta = await axios.request(axiosConfig);
+      return { ok: true, data: respuesta.data };
+    } catch (err) {
+      return { ok: false, error: err.message };
+    }
+  },
+
+  // endpoint de carrusel de peliculas "ciencia ficción y fantasía imaginativa de acción"
+  movie_science_fiction_fantasy: async (page) => {
+    try {
+      const API_KEY = "api_key=ef6f33754f4bdb2e45fe025d71c82878";
+      const axiosConfig = {
+        baseURL: "https://api.themoviedb.org/3",
+        url: `/discover/movie?${API_KEY}&with_genres=14 | 878&language=es-MX&without_keywords=210024&primary_release_date.gte=2010&without_genres=16|27`,
+
+        headers: {
+          Authorization: `Token ${API_KEY}`,
+        },
+
+        method: "get",
+        params: {
+          page: page,
+        },
+      };
+
+      const respuesta = await axios.request(axiosConfig);
+      return { ok: true, data: respuesta.data };
+    } catch (err) {
+      return { ok: false, error: err.message };
+    }
+  },
+
+  // endpoint de carrusel de peliculas "Lanzamientos del último año"
+  movie_realeses_last_year: async (page) => {
+    try {
+      const API_KEY = "api_key=ef6f33754f4bdb2e45fe025d71c82878";
+      const axiosConfig = {
+        baseURL: "https://api.themoviedb.org/3",
+        url: `/discover/movie?${API_KEY}&sort_by=popularity.desc&vote_average.gte=7&vote_average.lte=10&vote_count.gte=100&language=es-MX&primary_release_date.gte=${getDateMovieReleaseLastYear()}`,
+
+        headers: {
+          Authorization: `Token ${API_KEY}`,
+        },
+
+        method: "get",
+        params: {
+          page: page,
+        },
+      };
+
+      const respuesta = await axios.request(axiosConfig);
+      return { ok: true, data: respuesta.data };
+    } catch (err) {
+      return { ok: false, error: err.message };
+    }
+  },
+
   // NOTA: RECUERDA ELIMINAR LAS &page=x DE LOS ENDPOINT DE LAS SERIES/PELICULAS
 
   // ============================================== PELICULAS ===================================================
-  // peliculas anime | NO GENEROS
-  // https://api.themoviedb.org/3/discover/movie?api_key=ef6f33754f4bdb2e45fe025d71c82878&language=es-MX&page=1&with_genres=16&with_keywords=210024|287501
-
   // las 10 películas más populares en Chile hoy
   //
 
@@ -178,7 +275,7 @@ export default {
   // Películas sobre crímenes
   // https://api.themoviedb.org/3/discover/movie?api_key=ef6f33754f4bdb2e45fe025d71c82878&with_genres=80&language=es-MX&page=1
 
-  //// Series documentales 
+  //// Series documentales
   // https://api.themoviedb.org/3/discover/movie?api_key=ef6f33754f4bdb2e45fe025d71c82878&language=es-MX&sort_by=popularity.desc&page=1&primary_release_year=2020&with_original_language=au|ca|gb|ie|nz|us
 
   //// Películas de documentales

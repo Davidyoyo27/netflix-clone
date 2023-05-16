@@ -108,9 +108,7 @@ export default {
     onMounted(async () => {
       await services.movie_popular(getPageRandom(numMax, numMin))
         .then((response) => {
-          // pasamos el array de objetos que contiene las peliculas y su informacion
-          // para luego ser recorrida en el v-for de mas arriba y tener las caratulas
-          // de las peliculas
+          // traemos los resultados y los pasamos a una variable array
           let array = response.data.results;
           // pasamos el array a un .filter() ya que este contiene elementos
           // con el poster_path en null, asi que para que no muestre una
@@ -328,6 +326,11 @@ img:hover {
   .title {
     font-size: 20px;
   }
+
+  .box_shadow {
+    height: 160px;
+    box-shadow: rgb(0, 0, 0) 0px -5px 50px 35px;
+  }
 }
 
 @media (min-width: 890px) and (max-width: 1129px) {
@@ -337,6 +340,11 @@ img:hover {
 
   .title {
     font-size: 25px;
+  }
+
+  .box_shadow {
+    height: 210px;
+    box-shadow: rgb(0, 0, 0) 0px -5px 50px 35px;
   }
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div v-on:scroll="handleScroll" class="container_principal">
+  <div class="container_principal">
     <div class="cont_video">
       <EmbedVideoPlayer></EmbedVideoPlayer>
     </div>
@@ -8,6 +8,10 @@
         <SeriesEmocionantes></SeriesEmocionantes>
         <SugerenciasHoy></SugerenciasHoy>
         <SeriesSuspenso></SeriesSuspenso>
+        <PeliculasAnime></PeliculasAnime>
+        <PeliculasComedia></PeliculasComedia>
+        <PeliculasFiccionFantasia></PeliculasFiccionFantasia>
+        <PeliculasUltimoAnio></PeliculasUltimoAnio>
       </div>
     </div>
   </div>
@@ -21,6 +25,10 @@ import EmbedVideoPlayer from "@/components/EmbedVideoPlayer";
 import SeriesEmocionantes from "@/components/categoria_peliculas/SeriesEmocionantes";
 import SugerenciasHoy from "@/components/categoria_peliculas/SugerenciasHoy";
 import SeriesSuspenso from "@/components/categoria_peliculas/SeriesSuspenso";
+import PeliculasAnime from "@/components/categoria_peliculas/PeliculasAnime";
+import PeliculasComedia from "@/components/categoria_peliculas/PeliculasComedia";
+import PeliculasFiccionFantasia from "@/components/categoria_peliculas/PeliculasCienciaFiccionFantasia";
+import PeliculasUltimoAnio from "@/components/categoria_peliculas/PeliculasLanzamientoUltimoAnio.vue";
 
 export default {
   // En caso de querer llamar a algun componente con el Composition API
@@ -30,6 +38,10 @@ export default {
     EmbedVideoPlayer,
     SugerenciasHoy,
     SeriesSuspenso,
+    PeliculasAnime,
+    PeliculasComedia,
+    PeliculasFiccionFantasia,
+    PeliculasUltimoAnio,
   },
   setup() {
     return {};
@@ -63,11 +75,11 @@ export default {
 
 @media (min-width: 300px) and (max-width: 889px) {
   .cont_carousels {
-    box-shadow: rgb(0, 0, 0) 0px -30px 100px 20px;
+    box-shadow: rgb(0, 0, 0) 0px -10px 40px 20px;
   }
   
   .carousels {
-    bottom: 5rem;
+    bottom: 2rem;
   }
 }
 

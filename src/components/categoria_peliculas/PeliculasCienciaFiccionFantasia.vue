@@ -2,7 +2,7 @@
   <div v-if="flagRenderShadow" class="container">
     <div class="cont_info_carousel">
       <div class="cont_title">
-        <h3 class="title">Series de suspenso</h3>
+        <h3 class="title">Ciencia Ficción y Fantasía imaginativa de acción</h3>
         <div class="cont_icon">
           <font-awesome-icon class="icon" icon="fa-solid fa-chevron-right" />
         </div>
@@ -12,7 +12,7 @@
     <!-- NOTA: solo el "navigation" es lo mismo que decir navigation="true" -->
     <div class="container_carousel">
       <div class="cont_pagination">
-        <div class="pagination_elSS"></div>
+        <div class="pagination_elCFF"></div>
       </div>
       <swiper
         :slides-per-view="9"
@@ -26,38 +26,36 @@
         id="mySlider"
       >
         <swiper-slide v-for="item in data" :key="item">
-          <img :src="link_img + item.poster_path" :alt="item.original_title" />
+          <img :src="link_img + item.poster_path" :alt="item.name" />
         </swiper-slide>
       </swiper>
       <div class="cont_buttons">
-        <div class="button-pSS">
+        <div class="button-pCFF">
           <font-awesome-icon
             class="icon_right"
             icon="fa-solid fa-chevron-left"
           />
         </div>
-        <div class="button-nSS">
+        <div class="button-nCFF">
           <font-awesome-icon
             class="icon_left"
             icon="fa-solid fa-chevron-right"
           />
         </div>
-        <div v-if="flagRenderShadow" class="cont_shadow">
+        <div class="cont_shadow">
           <div class="box_shadow"></div>
           <div class="box_shadow"></div>
         </div>
       </div>
     </div>
   </div>
-  <!-- SKELETON: "loading" cuando aun no se muestran los datos -->
-  <!-- <div v-else class="skeleton"></div> -->
 </template>
-    
+
 <script>
 import { onMounted, reactive, ref } from "vue";
 import services from "@/helpers/services/services.js";
 import { getPageRandom } from "@/helpers/js/functions.js";
-import { numMaxSS, numMin } from "@/helpers/js/variables.js";
+import { numMaxCFF, numMin } from "@/helpers/js/variables.js";
 // import Swiper core and required modules
 import { Navigation, Pagination, Scrollbar, A11y } from "swiper";
 // Import Swiper Vue.js components
@@ -85,7 +83,7 @@ export default {
     // variable contenedora de las propiedades de la paginacion del carousel
     const cont_pagination = reactive({
       clickable: false,
-      el: ".pagination_elSS",
+      el: ".pagination_elCFF",
       type: "bullets",
     });
     // variable contenedora de los tamaños de pantalla (responsive de el slider) y
@@ -103,13 +101,12 @@ export default {
     // variable contenedora de los botones que permiten avanzar o retroceder al carrusel
     // dejando :navigation="true" o solo navigation permite usar las flechas de direccion por default
     const cont_navigation = reactive({
-      nextEl: ".button-nSS",
-      prevEl: ".button-pSS",
+      nextEl: ".button-nCFF",
+      prevEl: ".button-pCFF",
     });
 
     onMounted(async () => {
-      await services
-        .serie_suspense(getPageRandom(numMaxSS, numMin))
+      await services.movie_science_fiction_fantasy(getPageRandom(numMaxCFF, numMin))
         .then((response) => {
           // traemos los resultados y los pasamos a una variable array
           let array = response.data.results;
@@ -144,23 +141,8 @@ export default {
   },
 };
 </script>
-    
+
 <style scoped>
-/* .skeleton {
-  width: 100%;
-  height: 10rem;
-  animation: skeleton-loading 1s linear infinite alternate;
-}
-
-@keyframes skeleton-loading {
-  0% {
-    background-color: hsl(200, 20%, 80%);
-  }
-  100% {
-    background-color: hsl(200, 20%, 95%);
-  }
-} */
-
 .container {
   margin-bottom: 4rem;
 }
@@ -181,12 +163,12 @@ img:hover {
 .container_carousel {
   position: relative;
   /* NOTA: el z-index tambien puede ser 0(cero), que en este caso
-      es para que las imagenes del carrusel no esten por encima del submenu 
-      de la derecha (Menu Principal) */
+  es para que las imagenes del carrusel no esten por encima del submenu 
+  de la derecha (Menu Principal) */
   z-index: 0;
 }
 
-.container_carousel:hover .pagination_elSS,
+.container_carousel:hover .pagination_elCFF,
 .container_carousel:hover .icon_right,
 .container_carousel:hover .icon_left {
   visibility: visible;
@@ -221,7 +203,7 @@ img:hover {
 }
 
 /* NOTA: para que al hacer hover sobre el titulo se vea el texto, 
-   el texto que se desea visualizar debe estar dentro del mismo contenedor */
+el texto que se desea visualizar debe estar dentro del mismo contenedor */
 .cont_title:hover .sub_text {
   /* usar margenes para mover los elementos en el :hover es mejor que left, right, etc.*/
   margin-left: 2rem;
@@ -269,7 +251,7 @@ img:hover {
   z-index: 1;
 }
 
-.pagination_elSS {
+.pagination_elCFF {
   display: flex;
   justify-content: flex-end;
   visibility: hidden;
@@ -285,8 +267,8 @@ img:hover {
   align-items: center;
 }
 
-.button-pSS,
-.button-nSS {
+.button-pCFF,
+.button-nCFF {
   font-size: 2rem;
   color: #fff;
   background-color: rgba(0, 0, 0, 0);
@@ -300,16 +282,16 @@ img:hover {
   transition: 0.2s;
 }
 
-.button-pSS {
+.button-pCFF {
   border-radius: 0px 5px 5px 0px;
 }
 
-.button-nSS {
+.button-nCFF {
   border-radius: 5px 0px 0px 5px;
 }
 
-.button-pSS:hover,
-.button-nSS:hover {
+.button-pCFF:hover,
+.button-nCFF:hover {
   font-size: 2.5rem;
   background-color: rgba(0, 0, 0, 0.2);
 }
@@ -331,7 +313,7 @@ img:hover {
 .box_shadow {
   position: relative;
   height: 270px;
-  box-shadow: rgb(0, 0, 0) 0px -5px 50px 40px;
+  box-shadow: rgb(0, 0, 0) 0px -5px 50px 35px;
   background: #fff;
   visibility: visible;
 }

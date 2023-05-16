@@ -11,4 +11,11 @@ function getNumberRandom() {
   return 0.5 - Math.random();
 }
 
-export { getPageRandom, getNumberRandom }
+// funcion que obtiene la fecha de año anterior para pasarsela al endpoint
+function getDateMovieReleaseLastYear(){
+  const date = new Date();
+  const dateYear = (date.getFullYear()) - 1;
+  return dateYear;
+}
+
+export { getPageRandom, getNumberRandom, getDateMovieReleaseLastYear }

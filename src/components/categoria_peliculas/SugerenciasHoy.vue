@@ -52,10 +52,10 @@
 </template>
   
   <script>
-import { onMounted, reactive, ref } from "vue";
+import { onMounted, reactive, ref, onBeforeMount } from "vue";
 import services from "@/helpers/services/services.js";
 import { getPageRandom } from "@/helpers/js/functions.js";
-import { numMax, numMin } from "@/helpers/js/variables.js";
+import { numMin } from "@/helpers/js/variables.js";
 // import Swiper core and required modules
 import { Navigation, Pagination, Scrollbar, A11y } from "swiper";
 // Import Swiper Vue.js components
@@ -78,6 +78,7 @@ export default {
     // ternario el tamaño de la pantalla
     const data = ref(null);
     const flagRenderShadow = ref(false);
+    const pageNumMax = ref(null);
     // variable contenedora del formato del tamaño de imagen de la caratula
     const link_img = ref("https://image.tmdb.org/t/p/w500");
     // variable contenedora de las propiedades de la paginacion del carousel
@@ -105,8 +106,31 @@ export default {
       prevEl: ".button-pSH",
     });
 
-    onMounted(async () => {
-      await services.movie_popular(getPageRandom(numMax, numMin))
+    onBeforeMount(() => {
+      // se llama al endpoint con el valor 1 para obtener la cantidad total 
+      // de paginas que este contiene
+      services.serie_popular(1)
+        .then((response) => {
+          // tomamos la cantidad de paginas y la pasamos a la variable a evaluar
+          let valuePage = response.data.total_pages;
+          // si el valuePage es mayor a 500
+          if(valuePage > 500){
+            // le asignaremos el valor de 500 a la variable pageNumMax
+            pageNumMax.value = 500;
+          }else{
+            // en caso de que el valor sea menor a 500, se pasara ese valor
+            // al pageNumMax
+            pageNumMax.value = response.data.total_pages;
+          }
+        })
+        .catch((error) => {
+          throw error.message;
+        });
+    });
+
+    onMounted(() => {
+      setTimeout( async() => {
+        await services.serie_popular(getPageRandom(pageNumMax.value, numMin))
         .then((response) => {
           // traemos los resultados y los pasamos a una variable array
           let array = response.data.results;
@@ -127,6 +151,7 @@ export default {
         .catch((error) => {
           throw error.message;
         });
+      }, 1000);
     });
 
     return {

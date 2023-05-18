@@ -2,7 +2,7 @@
   <div v-if="flagRenderShadow" class="container">
     <div class="cont_info_carousel">
       <div class="cont_title">
-        <h3 class="title">Lanzamientos del último año</h3>
+        <h3 class="title">Proximos estrenos</h3>
         <div class="cont_icon">
           <font-awesome-icon class="icon" icon="fa-solid fa-chevron-right" />
         </div>
@@ -12,7 +12,7 @@
     <!-- NOTA: solo el "navigation" es lo mismo que decir navigation="true" -->
     <div class="container_carousel">
       <div class="cont_pagination">
-        <div class="pagination_elLUA"></div>
+        <div class="pagination_elPE"></div>
       </div>
       <swiper
         :slides-per-view="9"
@@ -26,23 +26,23 @@
         id="mySlider"
       >
         <swiper-slide v-for="item in data" :key="item">
-          <img :src="link_img + item.poster_path" :alt="item.name" />
+          <img :src="link_img + item.poster_path" :alt="item.original_title" />
         </swiper-slide>
       </swiper>
       <div class="cont_buttons">
-        <div class="button-pLUA">
+        <div class="button-pPE">
           <font-awesome-icon
             class="icon_right"
             icon="fa-solid fa-chevron-left"
           />
         </div>
-        <div class="button-nLUA">
+        <div class="button-nPE">
           <font-awesome-icon
             class="icon_left"
             icon="fa-solid fa-chevron-right"
           />
         </div>
-        <div class="cont_shadow">
+        <div v-if="flagRenderShadow" class="cont_shadow">
           <div class="box_shadow"></div>
           <div class="box_shadow"></div>
         </div>
@@ -84,7 +84,7 @@ export default {
     // variable contenedora de las propiedades de la paginacion del carousel
     const cont_pagination = reactive({
       clickable: false,
-      el: ".pagination_elLUA",
+      el: ".pagination_elPE",
       type: "bullets",
     });
     // variable contenedora de los tamaños de pantalla (responsive de el slider) y
@@ -102,14 +102,14 @@ export default {
     // variable contenedora de los botones que permiten avanzar o retroceder al carrusel
     // dejando :navigation="true" o solo navigation permite usar las flechas de direccion por default
     const cont_navigation = reactive({
-      nextEl: ".button-nLUA",
-      prevEl: ".button-pLUA",
+      nextEl: ".button-nPE",
+      prevEl: ".button-pPE",
     });
 
     onBeforeMount(() => {
       // se llama al endpoint con el valor 1 para obtener la cantidad total 
       // de paginas que este contiene
-      services.movie_realeses_last_year(1)
+      services.movie_next_upcoming(1)
         .then((response) => {
           // tomamos la cantidad de paginas y la pasamos a la variable a evaluar
           let valuePage = response.data.total_pages;
@@ -129,28 +129,28 @@ export default {
     });
 
     onMounted(() => {
-      setTimeout( async() => {
-        await services.movie_realeses_last_year(getPageRandom(pageNumMax.value, numMin))
-        .then((response) => {
-          // traemos los resultados y los pasamos a una variable array
-          let array = response.data.results;
-          // pasamos el array a un .filter() ya que este contiene elementos
-          // con el poster_path en null, asi que para que no muestre una
-          // imagen vacia en el carrusel se quitaran estos elementos con null
-          data.value = array.filter((item) => {
-            // retornamos todos los elementos que contengan datos en
-            // el poster_path, esto es lo mismo que decir
-            // return item.poster_path != null
-            // que serian todos los elementos que no tengan datos null
-            return item.poster_path;
+      setTimeout(async () => {
+        await services.movie_next_upcoming(getPageRandom(pageNumMax.value, numMin))
+          .then((response) => {
+            // traemos los resultados y los pasamos a una variable array
+            let array = response.data.results;
+            // pasamos el array a un .filter() ya que este contiene elementos
+            // con el poster_path en null, asi que para que no muestre una
+            // imagen vacia en el carrusel se quitaran estos elementos con null
+            data.value = array.filter((item) => {
+                // retornamos todos los elementos que contengan datos en
+              // el poster_path, esto es lo mismo que decir
+              // return item.poster_path != null
+              // que serian todos los elementos que no tengan datos null
+              return item.poster_path;
+            });
+            // cambiamos el estado de la bandera a true una vez que los datos se 
+            // hayan consultado correctamente para visualizar el carrusel de peliculas 
+            flagRenderShadow.value = true;
+          })
+          .catch((error) => {
+            throw error.message;
           });
-          // cambiamos el estado de la bandera a true una vez que los datos se
-          // hayan consultado correctamente para visualizar el carrusel de peliculas
-          flagRenderShadow.value = true;
-        })
-        .catch((error) => {
-          throw error.message;
-        });
       }, 1000);
     });
 
@@ -166,8 +166,8 @@ export default {
   },
 };
 </script>
-
-<style scoped>
+  
+  <style scoped>
 .container {
   margin-bottom: 4rem;
 }
@@ -188,12 +188,12 @@ img:hover {
 .container_carousel {
   position: relative;
   /* NOTA: el z-index tambien puede ser 0(cero), que en este caso
-  es para que las imagenes del carrusel no esten por encima del submenu 
-  de la derecha (Menu Principal) */
+      es para que las imagenes del carrusel no esten por encima del submenu 
+      de la derecha (Menu Principal) */
   z-index: 0;
 }
 
-.container_carousel:hover .pagination_elLUA,
+.container_carousel:hover .pagination_elPE,
 .container_carousel:hover .icon_right,
 .container_carousel:hover .icon_left {
   visibility: visible;
@@ -228,7 +228,7 @@ img:hover {
 }
 
 /* NOTA: para que al hacer hover sobre el titulo se vea el texto, 
-el texto que se desea visualizar debe estar dentro del mismo contenedor */
+   el texto que se desea visualizar debe estar dentro del mismo contenedor */
 .cont_title:hover .sub_text {
   /* usar margenes para mover los elementos en el :hover es mejor que left, right, etc.*/
   margin-left: 2rem;
@@ -276,7 +276,7 @@ el texto que se desea visualizar debe estar dentro del mismo contenedor */
   z-index: 1;
 }
 
-.pagination_elLUA {
+.pagination_elPE {
   display: flex;
   justify-content: flex-end;
   visibility: hidden;
@@ -292,8 +292,8 @@ el texto que se desea visualizar debe estar dentro del mismo contenedor */
   align-items: center;
 }
 
-.button-pLUA,
-.button-nLUA {
+.button-pPE,
+.button-nPE {
   font-size: 2rem;
   color: #fff;
   background-color: rgba(0, 0, 0, 0);
@@ -307,16 +307,16 @@ el texto que se desea visualizar debe estar dentro del mismo contenedor */
   transition: 0.2s;
 }
 
-.button-pLUA {
+.button-pPE {
   border-radius: 0px 5px 5px 0px;
 }
 
-.button-nLUA {
+.button-nPE {
   border-radius: 5px 0px 0px 5px;
 }
 
-.button-pLUA:hover,
-.button-nLUA:hover {
+.button-pPE:hover,
+.button-nPE:hover {
   font-size: 2.5rem;
   background-color: rgba(0, 0, 0, 0.2);
 }
@@ -338,7 +338,7 @@ el texto que se desea visualizar debe estar dentro del mismo contenedor */
 .box_shadow {
   position: relative;
   height: 270px;
-  box-shadow: rgb(0, 0, 0) 0px -5px 50px 35px;
+  box-shadow: rgb(0, 0, 0) 0px -5px 50px 40px;
   background: #fff;
   visibility: visible;
 }

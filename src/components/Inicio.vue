@@ -12,6 +12,7 @@
         <PeliculasComedia></PeliculasComedia>
         <PeliculasFiccionFantasia></PeliculasFiccionFantasia>
         <PeliculasUltimoAnio></PeliculasUltimoAnio>
+        <PeliculasProximosEstrenos></PeliculasProximosEstrenos>
       </div>
     </div>
   </div>
@@ -28,7 +29,8 @@ import SeriesSuspenso from "@/components/categoria_peliculas/SeriesSuspenso";
 import PeliculasAnime from "@/components/categoria_peliculas/PeliculasAnime";
 import PeliculasComedia from "@/components/categoria_peliculas/PeliculasComedia";
 import PeliculasFiccionFantasia from "@/components/categoria_peliculas/PeliculasCienciaFiccionFantasia";
-import PeliculasUltimoAnio from "@/components/categoria_peliculas/PeliculasLanzamientoUltimoAnio.vue";
+import PeliculasUltimoAnio from "@/components/categoria_peliculas/PeliculasLanzamientoUltimoAnio";
+import PeliculasProximosEstrenos from  "@/components/categoria_peliculas/PeliculaProximosEstrenos";
 
 export default {
   // En caso de querer llamar a algun componente con el Composition API
@@ -42,6 +44,7 @@ export default {
     PeliculasComedia,
     PeliculasFiccionFantasia,
     PeliculasUltimoAnio,
+    PeliculasProximosEstrenos
   },
   setup() {
     return {};

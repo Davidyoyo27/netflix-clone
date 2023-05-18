@@ -53,7 +53,7 @@ export default {
     }
   },
 
-  //   ======================================================================================
+  // endpoint desde donde se extraen los datos para la carga inicial del video en el Inicio
   movie_info: async (page) => {
     try {
       const API_KEY = "api_key=ef6f33754f4bdb2e45fe025d71c82878";
@@ -77,10 +77,9 @@ export default {
       return { ok: false, error: err.message };
     }
   },
-  //   ======================================================================================
 
   // endpoint de carrusel de peliculas "series emocionantes aclamadas por la critica"
-  movie_top_rated: async (page) => {
+  serie_top_rated: async (page) => {
     try {
       const API_KEY = "api_key=ef6f33754f4bdb2e45fe025d71c82878";
       const axiosConfig = {
@@ -104,8 +103,8 @@ export default {
     }
   },
 
-  // endpoint de carrusel de peliculas "sugerencias de hoy"
-  movie_popular: async (page) => {
+  // endpoint de carrusel de series "sugerencias de hoy"
+  serie_popular: async (page) => {
     try {
       const API_KEY = "api_key=ef6f33754f4bdb2e45fe025d71c82878";
       const axiosConfig = {
@@ -135,7 +134,7 @@ export default {
       const API_KEY = "api_key=ef6f33754f4bdb2e45fe025d71c82878";
       const axiosConfig = {
         baseURL: "https://api.themoviedb.org/3",
-        url: `/discover/tv?${API_KEY}&language=es-MX&sort_by=popularity.desc&with_genres=9648`,
+        url: `/discover/tv?${API_KEY}&language=es-MX&sort_by=popularity.desc&with_genres=9648&primary_release_date.gte=2000`,
 
         headers: {
           Authorization: `Token ${API_KEY}`,
@@ -155,12 +154,13 @@ export default {
   },
 
   // endpoint de carrusel de peliculas "películas de anime"
+  // 
   movie_anime: async (page) => {
     try {
       const API_KEY = "api_key=ef6f33754f4bdb2e45fe025d71c82878";
       const axiosConfig = {
         baseURL: "https://api.themoviedb.org/3",
-        url: `/discover/movie?${API_KEY}&language=es-MX&with_genres=16&with_keywords=210024|287501`,
+        url: `/discover/movie?${API_KEY}&language=es-MX&with_genres=16&with_keywords=210024|287501&primary_release_date.gte=2000`,
 
         headers: {
           Authorization: `Token ${API_KEY}`,
@@ -254,20 +254,36 @@ export default {
     }
   },
 
+  // PRUEBA now_playing
+  movie_now_playing: async (page) => {
+    try {
+      const API_KEY = "api_key=ef6f33754f4bdb2e45fe025d71c82878";
+      const axiosConfig = {
+        baseURL: "https://api.themoviedb.org/3",
+        url: `/movie/now_playing?${API_KEY}&language=es-MX`,
+
+        headers: {
+          Authorization: `Token ${API_KEY}`,
+        },
+
+        method: "get",
+        params: {
+          page: page,
+        },
+      };
+
+      const respuesta = await axios.request(axiosConfig);
+      return { ok: true, data: respuesta.data };
+    } catch (err) {
+      return { ok: false, error: err.message };
+    }
+  },
+
   // NOTA: RECUERDA ELIMINAR LAS &page=x DE LOS ENDPOINT DE LAS SERIES/PELICULAS
 
   // ============================================== PELICULAS ===================================================
   // las 10 películas más populares en Chile hoy
   //
-
-  // películas de hollywood para reír
-  // https://api.themoviedb.org/3/discover/movie?api_key=ef6f33754f4bdb2e45fe025d71c82878&with_genres=35&language=es-MX&page=1
-
-  // ciencia ficción y fantasía imaginativa de acción
-  // https://api.themoviedb.org/3/discover/movie?api_key=ef6f33754f4bdb2e45fe025d71c82878&with_genres=14 | 878&language=es-MX&page=1
-
-  // Lanzamientos del último año
-  // https://api.themoviedb.org/3/discover/movie?api_key=ef6f33754f4bdb2e45fe025d71c82878&release_date.gte=2022-01-12&sort_by=popularity.desc&vote_average.gte=7&vote_average.lte=10&vote_count.gte=100&with_release_type=4%7C5&language=es-MX&page=1
 
   // Proximos estrenos
   // https://api.themoviedb.org/3/movie/upcoming?api_key=ef6f33754f4bdb2e45fe025d71c82878&language=es-MX&page=1
@@ -326,6 +342,32 @@ export default {
   // Acción, sci-fi y fantasía
   // https://api.themoviedb.org/3/discover/movie?api_key=ef6f33754f4bdb2e45fe025d71c82878&with_genres=37|28|878|14&language=es-MX&without_genres=10751|10749|10752&page=1
   // ============================================== PELICULAS ===================================================
+
+  // Proximos estrenos
+  movie_next_upcoming: async (page) => {
+    try {
+      const API_KEY = "api_key=ef6f33754f4bdb2e45fe025d71c82878";
+      const axiosConfig = {
+        baseURL: "https://api.themoviedb.org/3",
+        url: `/movie/upcoming?${API_KEY}&language=es-MX`,
+
+        headers: {
+          Authorization: `Token ${API_KEY}`,
+        },
+
+        method: "get",
+        params: {
+          page: page,
+        },
+      };
+
+      const respuesta = await axios.request(axiosConfig);
+      return { ok: true, data: respuesta.data };
+    } catch (err) {
+      return { ok: false, error: err.message };
+    }
+  },
+
 
   // ========================================== PELICULAS+SERIES ===================================================
   // lanzamientos de ultimo año

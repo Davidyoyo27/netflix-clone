@@ -1,13 +1,14 @@
 import axios from "axios";
 import { getDateMovieReleaseLastYear } from "@/helpers/js/functions";
+import { api_key, baseURLmoviedb } from "../js/variables";
 
 export default {
   // endpoint del video inicial al cargar en el inicio de la pagina
   movie_video_start: async (id_pelicula) => {
     try {
-      const API_KEY = "api_key=ef6f33754f4bdb2e45fe025d71c82878";
+      const API_KEY = api_key;
       const axiosConfig = {
-        baseURL: "https://api.themoviedb.org/3",
+        baseURL: baseURLmoviedb,
         url: `/movie/${id_pelicula}/videos?${API_KEY}&sort_by=popularity.desc`,
 
         headers: {
@@ -31,9 +32,9 @@ export default {
   // trae la certificacion de la pelicula EJ: para mayores de 18 años, 16, 14, 10, etc.
   movie_certification: async (id_pelicula) => {
     try {
-      const API_KEY = "api_key=ef6f33754f4bdb2e45fe025d71c82878";
+      const API_KEY = api_key;
       const axiosConfig = {
-        baseURL: "https://api.themoviedb.org/3",
+        baseURL: baseURLmoviedb,
         url: `/movie/${id_pelicula}/release_dates?${API_KEY}`,
 
         headers: {
@@ -56,9 +57,9 @@ export default {
   // endpoint desde donde se extraen los datos para la carga inicial del video en el Inicio
   movie_info: async (page) => {
     try {
-      const API_KEY = "api_key=ef6f33754f4bdb2e45fe025d71c82878";
+      const API_KEY = api_key;
       const axiosConfig = {
-        baseURL: "https://api.themoviedb.org/3",
+        baseURL: baseURLmoviedb,
         url: `/discover/movie?${API_KEY}&primary_release_date.gte=2014-09-15&primary_release_date.lte=2022-10-22&language=es-ES`,
 
         headers: {
@@ -81,9 +82,9 @@ export default {
   // endpoint de carrusel de peliculas "series emocionantes aclamadas por la critica"
   serie_top_rated: async (page) => {
     try {
-      const API_KEY = "api_key=ef6f33754f4bdb2e45fe025d71c82878";
+      const API_KEY = api_key;
       const axiosConfig = {
-        baseURL: "https://api.themoviedb.org/3",
+        baseURL: baseURLmoviedb,
         url: `/tv/top_rated?${API_KEY}&language=es-MX`,
 
         headers: {
@@ -106,9 +107,9 @@ export default {
   // endpoint de carrusel de series "sugerencias de hoy"
   serie_popular: async (page) => {
     try {
-      const API_KEY = "api_key=ef6f33754f4bdb2e45fe025d71c82878";
+      const API_KEY = api_key;
       const axiosConfig = {
-        baseURL: "https://api.themoviedb.org/3",
+        baseURL: baseURLmoviedb,
         url: `/tv/popular?${API_KEY}&language=es-MX`,
 
         headers: {
@@ -131,9 +132,9 @@ export default {
   // endpoint de carrusel de peliculas "series de suspenso"
   serie_suspense: async (page) => {
     try {
-      const API_KEY = "api_key=ef6f33754f4bdb2e45fe025d71c82878";
+      const API_KEY = api_key;
       const axiosConfig = {
-        baseURL: "https://api.themoviedb.org/3",
+        baseURL: baseURLmoviedb,
         url: `/discover/tv?${API_KEY}&language=es-MX&sort_by=popularity.desc&with_genres=9648&primary_release_date.gte=2000`,
 
         headers: {
@@ -154,12 +155,11 @@ export default {
   },
 
   // endpoint de carrusel de peliculas "películas de anime"
-  // 
   movie_anime: async (page) => {
     try {
-      const API_KEY = "api_key=ef6f33754f4bdb2e45fe025d71c82878";
+      const API_KEY = api_key;
       const axiosConfig = {
-        baseURL: "https://api.themoviedb.org/3",
+        baseURL: baseURLmoviedb,
         url: `/discover/movie?${API_KEY}&language=es-MX&with_genres=16&with_keywords=210024|287501&primary_release_date.gte=2000`,
 
         headers: {
@@ -182,9 +182,9 @@ export default {
   // endpoint de carrusel de peliculas "películas de hollywood para reír"
   movie_comedy: async (page) => {
     try {
-      const API_KEY = "api_key=ef6f33754f4bdb2e45fe025d71c82878";
+      const API_KEY = api_key;
       const axiosConfig = {
-        baseURL: "https://api.themoviedb.org/3",
+        baseURL: baseURLmoviedb,
         url: `/discover/movie?${API_KEY}&with_genres=35&language=es-MX&without_genres=16&primary_release_date.gte=2010`,
 
         headers: {
@@ -207,9 +207,9 @@ export default {
   // endpoint de carrusel de peliculas "ciencia ficción y fantasía imaginativa de acción"
   movie_science_fiction_fantasy: async (page) => {
     try {
-      const API_KEY = "api_key=ef6f33754f4bdb2e45fe025d71c82878";
+      const API_KEY = api_key;
       const axiosConfig = {
-        baseURL: "https://api.themoviedb.org/3",
+        baseURL: baseURLmoviedb,
         url: `/discover/movie?${API_KEY}&with_genres=14 | 878&language=es-MX&without_keywords=210024&primary_release_date.gte=2010&without_genres=16|27`,
 
         headers: {
@@ -232,9 +232,9 @@ export default {
   // endpoint de carrusel de peliculas "Lanzamientos del último año"
   movie_realeses_last_year: async (page) => {
     try {
-      const API_KEY = "api_key=ef6f33754f4bdb2e45fe025d71c82878";
+      const API_KEY = api_key;
       const axiosConfig = {
-        baseURL: "https://api.themoviedb.org/3",
+        baseURL: baseURLmoviedb,
         url: `/discover/movie?${API_KEY}&sort_by=popularity.desc&vote_average.gte=7&vote_average.lte=10&vote_count.gte=100&language=es-MX&primary_release_date.gte=${getDateMovieReleaseLastYear()}`,
 
         headers: {
@@ -254,13 +254,138 @@ export default {
     }
   },
 
-  // PRUEBA now_playing
-  movie_now_playing: async (page) => {
+  // Proximos estrenos
+  movie_next_upcoming: async (page) => {
     try {
-      const API_KEY = "api_key=ef6f33754f4bdb2e45fe025d71c82878";
+      const API_KEY = api_key;
       const axiosConfig = {
-        baseURL: "https://api.themoviedb.org/3",
-        url: `/movie/now_playing?${API_KEY}&language=es-MX`,
+        baseURL: baseURLmoviedb,
+        url: `/movie/upcoming?${API_KEY}&language=es-MX`,
+
+        headers: {
+          Authorization: `Token ${API_KEY}`,
+        },
+
+        method: "get",
+        params: {
+          page: page,
+        },
+      };
+
+      const respuesta = await axios.request(axiosConfig);
+      return { ok: true, data: respuesta.data };
+    } catch (err) {
+      return { ok: false, error: err.message };
+    }
+  },
+
+  // Películas sobre crímenes
+  movie_crimen: async (page) => {
+    try {
+      const API_KEY = api_key;
+      const axiosConfig = {
+        baseURL: baseURLmoviedb,
+        url: `/discover/movie?${API_KEY}&with_genres=80&language=es-MX&primary_release_date.gte=2000`,
+
+        headers: {
+          Authorization: `Token ${API_KEY}`,
+        },
+
+        method: "get",
+        params: {
+          page: page,
+        },
+      };
+
+      const respuesta = await axios.request(axiosConfig);
+      return { ok: true, data: respuesta.data };
+    } catch (err) {
+      return { ok: false, error: err.message };
+    }
+  },
+
+  // Películas documentales EEUU
+  movie_documental_EEUU: async (page) => {
+    try {
+      const API_KEY = api_key;
+      const axiosConfig = {
+        baseURL: baseURLmoviedb,
+        url: `/discover/movie?${API_KEY}&language=es-MX&sort_by=popularity.desc&primary_release_year=2020&with_original_language=au|ca|gb|ie|nz|us`,
+
+        headers: {
+          Authorization: `Token ${API_KEY}`,
+        },
+
+        method: "get",
+        params: {
+          page: page,
+        },
+      };
+
+      const respuesta = await axios.request(axiosConfig);
+      return { ok: true, data: respuesta.data };
+    } catch (err) {
+      return { ok: false, error: err.message };
+    }
+  },
+
+  // Películas de documentales
+  movie_documental: async (page) => {
+    try {
+      const API_KEY = api_key;
+      const axiosConfig = {
+        baseURL: baseURLmoviedb,
+        url: `/discover/movie?${API_KEY}&with_genres=99&language=es-MX&primary_release_date.gte=2000`,
+
+        headers: {
+          Authorization: `Token ${API_KEY}`,
+        },
+
+        method: "get",
+        params: {
+          page: page,
+        },
+      };
+
+      const respuesta = await axios.request(axiosConfig);
+      return { ok: true, data: respuesta.data };
+    } catch (err) {
+      return { ok: false, error: err.message };
+    }
+  },
+
+  // Películas de acción
+  movie_action: async (page) => {
+    try {
+      const API_KEY = api_key;
+      const axiosConfig = {
+        baseURL: baseURLmoviedb,
+        url: `/discover/movie?${API_KEY}&with_genres=28&language=es-MX&primary_release_date.gte=2000`,
+
+        headers: {
+          Authorization: `Token ${API_KEY}`,
+        },
+
+        method: "get",
+        params: {
+          page: page,
+        },
+      };
+
+      const respuesta = await axios.request(axiosConfig);
+      return { ok: true, data: respuesta.data };
+    } catch (err) {
+      return { ok: false, error: err.message };
+    }
+  },
+
+  // Películas de animación
+  movie_animation: async (page) => {
+    try {
+      const API_KEY = api_key;
+      const axiosConfig = {
+        baseURL: baseURLmoviedb,
+        url: `/discover/movie?${API_KEY}&with_genres=16&language=es-MX&without_keywords=210024&primary_release_date.gte=2010`,
 
         headers: {
           Authorization: `Token ${API_KEY}`,
@@ -284,24 +409,6 @@ export default {
   // ============================================== PELICULAS ===================================================
   // las 10 películas más populares en Chile hoy
   //
-
-  // Proximos estrenos
-  // https://api.themoviedb.org/3/movie/upcoming?api_key=ef6f33754f4bdb2e45fe025d71c82878&language=es-MX&page=1
-
-  // Películas sobre crímenes
-  // https://api.themoviedb.org/3/discover/movie?api_key=ef6f33754f4bdb2e45fe025d71c82878&with_genres=80&language=es-MX&page=1
-
-  //// Series documentales
-  // https://api.themoviedb.org/3/discover/movie?api_key=ef6f33754f4bdb2e45fe025d71c82878&language=es-MX&sort_by=popularity.desc&page=1&primary_release_year=2020&with_original_language=au|ca|gb|ie|nz|us
-
-  //// Películas de documentales
-  // https://api.themoviedb.org/3/discover/movie?api_key=ef6f33754f4bdb2e45fe025d71c82878&with_genres=99&language=es-MX&page=1
-
-  // Películas de acción
-  // https://api.themoviedb.org/3/discover/movie?api_key=ef6f33754f4bdb2e45fe025d71c82878&with_genres=28&language=es-MX&page=1
-
-  // Películas de animación
-  // https://api.themoviedb.org/3/discover/movie?api_key=ef6f33754f4bdb2e45fe025d71c82878&with_genres=16&language=es-MX&page=1
 
   // Películas de anime romance
   // https://api.themoviedb.org/3/discover/movie?api_key=ef6f33754f4bdb2e45fe025d71c82878&with_genres=10749&language=es-MX&page=1&with_keywords=210024
@@ -343,31 +450,7 @@ export default {
   // https://api.themoviedb.org/3/discover/movie?api_key=ef6f33754f4bdb2e45fe025d71c82878&with_genres=37|28|878|14&language=es-MX&without_genres=10751|10749|10752&page=1
   // ============================================== PELICULAS ===================================================
 
-  // Proximos estrenos
-  movie_next_upcoming: async (page) => {
-    try {
-      const API_KEY = "api_key=ef6f33754f4bdb2e45fe025d71c82878";
-      const axiosConfig = {
-        baseURL: "https://api.themoviedb.org/3",
-        url: `/movie/upcoming?${API_KEY}&language=es-MX`,
-
-        headers: {
-          Authorization: `Token ${API_KEY}`,
-        },
-
-        method: "get",
-        params: {
-          page: page,
-        },
-      };
-
-      const respuesta = await axios.request(axiosConfig);
-      return { ok: true, data: respuesta.data };
-    } catch (err) {
-      return { ok: false, error: err.message };
-    }
-  },
-
+  
 
   // ========================================== PELICULAS+SERIES ===================================================
   // lanzamientos de ultimo año
@@ -375,6 +458,8 @@ export default {
   // Animes japoneses
   // ========================================== PELICULAS+SERIES ===================================================
 
+
+  
   // ============================================== SERIES ===================================================
   // animes shonen | accion & aventura
   // https://api.themoviedb.org/3/discover/tv?api_key=ef6f33754f4bdb2e45fe025d71c82878&language=es-MX&sort_by=popularity.desc&with_genres=10759&page=1&with_keywords=210024|287501

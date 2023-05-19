@@ -114,10 +114,10 @@ const flagEstate = ref(null);
 const pageNumMax = ref(null);
 
 // utilizamos el onBeforeMount ya que es el que se renderiza primero dentro del Ciclo de Vida de los componentes
-onBeforeMount(() => {
+onBeforeMount( async() => {
   // se llama al endpoint con el valor 1 para obtener la cantidad total
   // de paginas que este contiene
-  services.movie_info(1)
+  await services.movie_info(1)
     .then((response) => {
       // tomamos la cantidad de paginas y la pasamos a la variable a evaluar
       let valuePage = response.data.total_pages;
@@ -134,24 +134,26 @@ onBeforeMount(() => {
     .catch((error) => {
       throw error.message;
     });
-});
 
-onMounted(() => {
-  setTimeout(async () => {
+    setTimeout(async () => {
     // accedemos al endpoint pasandole por parametro la funcion que manda la pagina aleatoria
     await services.movie_info(getPageRandom(pageNumMax.value, numMin))
       .then((response) => {
-        dataArray.value = response.data.results;
+        // asignamos los resultados de la consulta a la variable
+        let array = response.data.results;
+        // usamos el filter para saber cuales son los elementos que contienen el backdrop_path vacio
+        // o null, en este caso es solo return item.backdrop_path; que seria lo mismo que decir
+        // return item.backdrop_path != null;, esto traeria todos los elementos que contengan datos en
+        // el backdrop_path
+        dataArray.value = array.filter((item) => {
+          // retorna los resultados a la variable dataArray
+          return item.backdrop_path;
+        });
         // se toma el array con los datos de las peliculas y este se "mezcla" con la funcion getNumberRandom
         // para que el valor que tomemos sea al azar que seria el de la primera posicion [0]
         dataSorted.value = dataArray.value.sort(getNumberRandom);
 
-        // existen algunas imagenes de fondo que vienen vacias, en caso de ser asi, se vuelve a generar una mezcla
-        // del array para obtener otro resultado
-        // linea de codigo genera imagen duplicada
-        // (dataSorted.value[0].backdrop_path === null) ? dataSorted.value = dataArray.value.sort(getNumberRandom) : null;
         // obtenemos el id de la pelicula, el cual sera usado mas abajo
-
         idSorted.value = dataSorted.value[0].id;
         // obtenemos la key del fondo de la imagen
         movie_backdrop_key.value = dataSorted.value[0].backdrop_path;
@@ -202,7 +204,9 @@ onMounted(() => {
         throw error.message;
       });
   }, 500);
+});
 
+onMounted(() => {
   // asignar el id al <iframe>
   playerId.value = "reproductor";
   loadAPI().then(() => {
@@ -348,8 +352,13 @@ function onPlayerStateChange(event) {
       // pasamos el estilo de CSS ocultando el contenedor con la imagen de la pelicula
       cont_img.value.style.visibility = "hidden";
       sinopsis.value = document.getElementById("sinopsis");
-      sinopsis.value.style.fontSize = "0vw";
-      sinopsis.value.style.opacity = "0";
+
+      // settimeout para que cuando se reprodusca el trailer, luego de 3 seg se
+      // quite el texto informativo de la pelicula
+      setTimeout(() => {
+        sinopsis.value.style.fontSize = "0vw";
+        sinopsis.value.style.opacity = "0";
+      }, 3000);
 
       // se oculta el reproducir de nuevo del video mientras este se reproduce
       reproducir.value = document.getElementById("button-playVideo");

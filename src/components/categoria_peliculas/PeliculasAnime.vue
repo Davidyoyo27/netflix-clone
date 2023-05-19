@@ -2,7 +2,7 @@
       <div v-if="flagRenderShadow" class="container">
     <div class="cont_info_carousel">
       <div class="cont_title">
-        <h3 class="title">Películas de Anime</h3>
+        <h3 class="title">Películas de anime</h3>
         <div class="cont_icon">
           <font-awesome-icon class="icon" icon="fa-solid fa-chevron-right" />
         </div>

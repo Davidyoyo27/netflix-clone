@@ -13,6 +13,11 @@
         <PeliculasFiccionFantasia></PeliculasFiccionFantasia>
         <PeliculasUltimoAnio></PeliculasUltimoAnio>
         <PeliculasProximosEstrenos></PeliculasProximosEstrenos>
+        <PeliculasAnimacion></PeliculasAnimacion>
+        <PeliculasAccion></PeliculasAccion>
+        <PeliculasDocumental></PeliculasDocumental>
+        <PeliculasDocumentalEEUU></PeliculasDocumentalEEUU>
+        <PeliculasCrimen></PeliculasCrimen>
       </div>
     </div>
   </div>
@@ -30,7 +35,12 @@ import PeliculasAnime from "@/components/categoria_peliculas/PeliculasAnime";
 import PeliculasComedia from "@/components/categoria_peliculas/PeliculasComedia";
 import PeliculasFiccionFantasia from "@/components/categoria_peliculas/PeliculasCienciaFiccionFantasia";
 import PeliculasUltimoAnio from "@/components/categoria_peliculas/PeliculasLanzamientoUltimoAnio";
-import PeliculasProximosEstrenos from  "@/components/categoria_peliculas/PeliculaProximosEstrenos";
+import PeliculasProximosEstrenos from  "@/components/categoria_peliculas/PeliculasProximosEstrenos";
+import PeliculasAnimacion from "@/components/categoria_peliculas/PeliculasAnimacion"
+import PeliculasAccion from "@/components/categoria_peliculas/PeliculasAccion"
+import PeliculasDocumental from "@/components/categoria_peliculas/PeliculasDocumental"
+import PeliculasDocumentalEEUU from "@/components/categoria_peliculas/PeliculasDocumentalEEUU"
+import PeliculasCrimen from "@/components/categoria_peliculas/PeliculasCrimen"
 
 export default {
   // En caso de querer llamar a algun componente con el Composition API
@@ -44,7 +54,12 @@ export default {
     PeliculasComedia,
     PeliculasFiccionFantasia,
     PeliculasUltimoAnio,
-    PeliculasProximosEstrenos
+    PeliculasProximosEstrenos,
+    PeliculasAnimacion,
+    PeliculasAccion,
+    PeliculasDocumental,
+    PeliculasDocumentalEEUU,
+    PeliculasCrimen,
   },
   setup() {
     return {};

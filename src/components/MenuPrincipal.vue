@@ -3,7 +3,9 @@
     <div id="principal_menu">
       <!-- INICIO MENU IZQUIERDO -->
       <div class="first_option_menu">
-        <img v-bind:src="img_logo_principal_menu" alt="" />
+        <router-link to="/">
+          <img v-bind:src="img_logo_principal_menu" alt="" />
+        </router-link>
         <!-- INICIO RESPONSIVE MENU -->
         <ul class="responsive_menu">
           <li>

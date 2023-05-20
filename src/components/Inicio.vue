@@ -18,6 +18,10 @@
         <PeliculasDocumental></PeliculasDocumental>
         <PeliculasDocumentalEEUU></PeliculasDocumentalEEUU>
         <PeliculasCrimen></PeliculasCrimen>
+        <PeliculasRomance></PeliculasRomance>
+        <PeliculasMisterio></PeliculasMisterio>
+        <PeliculasMusica></PeliculasMusica>
+        <PeliculasTerror></PeliculasTerror>
       </div>
     </div>
   </div>
@@ -36,11 +40,16 @@ import PeliculasComedia from "@/components/categoria_peliculas/PeliculasComedia"
 import PeliculasFiccionFantasia from "@/components/categoria_peliculas/PeliculasCienciaFiccionFantasia";
 import PeliculasUltimoAnio from "@/components/categoria_peliculas/PeliculasLanzamientoUltimoAnio";
 import PeliculasProximosEstrenos from  "@/components/categoria_peliculas/PeliculasProximosEstrenos";
-import PeliculasAnimacion from "@/components/categoria_peliculas/PeliculasAnimacion"
-import PeliculasAccion from "@/components/categoria_peliculas/PeliculasAccion"
-import PeliculasDocumental from "@/components/categoria_peliculas/PeliculasDocumental"
-import PeliculasDocumentalEEUU from "@/components/categoria_peliculas/PeliculasDocumentalEEUU"
-import PeliculasCrimen from "@/components/categoria_peliculas/PeliculasCrimen"
+import PeliculasAnimacion from "@/components/categoria_peliculas/PeliculasAnimacion";
+import PeliculasAccion from "@/components/categoria_peliculas/PeliculasAccion";
+import PeliculasDocumental from "@/components/categoria_peliculas/PeliculasDocumental";
+import PeliculasDocumentalEEUU from "@/components/categoria_peliculas/PeliculasDocumentalEEUU";
+import PeliculasCrimen from "@/components/categoria_peliculas/PeliculasCrimen";
+import PeliculasRomance from "@/components/categoria_peliculas/PeliculasRomance";
+import PeliculasMisterio from "@/components/categoria_peliculas/PeliculasMisterio";
+import PeliculasMusica from "@/components/categoria_peliculas/PeliculasMusica";
+import PeliculasTerror from "@/components/categoria_peliculas/PeliculasTerror";
+
 
 export default {
   // En caso de querer llamar a algun componente con el Composition API
@@ -60,6 +69,10 @@ export default {
     PeliculasDocumental,
     PeliculasDocumentalEEUU,
     PeliculasCrimen,
+    PeliculasRomance,
+    PeliculasMisterio,
+    PeliculasMusica,
+    PeliculasTerror,
   },
   setup() {
     return {};

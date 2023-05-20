@@ -411,6 +411,206 @@ export default {
   //
 
   // Películas de anime romance
+  movie_anime_romance: async (page) => {
+    try {
+      const API_KEY = api_key;
+      const axiosConfig = {
+        baseURL: baseURLmoviedb,
+        url: `/discover/movie?${API_KEY}&with_genres=10749&language=es-MX&with_keywords=210024&primary_release_date.gte=2010`,
+
+        headers: {
+          Authorization: `Token ${API_KEY}`,
+        },
+
+        method: "get",
+        params: {
+          page: page,
+        },
+      };
+
+      const respuesta = await axios.request(axiosConfig);
+      return { ok: true, data: respuesta.data };
+    } catch (err) {
+      return { ok: false, error: err.message };
+    }
+  },
+
+  // Películas de drama
+  movie_drama: async (page) => {
+    try {
+      const API_KEY = api_key;
+      const axiosConfig = {
+        baseURL: baseURLmoviedb,
+        url: `/discover/movie?${API_KEY}&with_genres=18&language=es-MX&primary_release_date.gte=2010`,
+
+        headers: {
+          Authorization: `Token ${API_KEY}`,
+        },
+
+        method: "get",
+        params: {
+          page: page,
+        },
+      };
+
+      const respuesta = await axios.request(axiosConfig);
+      return { ok: true, data: respuesta.data };
+    } catch (err) {
+      return { ok: false, error: err.message };
+    }
+  },
+
+  // Películas para ver en familia
+  movie_family: async (page) => {
+    try {
+      const API_KEY = api_key;
+      const axiosConfig = {
+        baseURL: baseURLmoviedb,
+        url: `/discover/movie?${API_KEY}&with_genres=10751&language=es-MX&primary_release_date.gte=2010`,
+
+        headers: {
+          Authorization: `Token ${API_KEY}`,
+        },
+
+        method: "get",
+        params: {
+          page: page,
+        },
+      };
+
+      const respuesta = await axios.request(axiosConfig);
+      return { ok: true, data: respuesta.data };
+    } catch (err) {
+      return { ok: false, error: err.message };
+    }
+  },
+
+  // Películas de historia
+  movie_history: async (page) => {
+    try {
+      const API_KEY = api_key;
+      const axiosConfig = {
+        baseURL: baseURLmoviedb,
+        url: `/discover/movie?${API_KEY}&with_genres=36&language=es-MX&primary_release_date.gte=2010`,
+
+        headers: {
+          Authorization: `Token ${API_KEY}`,
+        },
+
+        method: "get",
+        params: {
+          page: page,
+        },
+      };
+
+      const respuesta = await axios.request(axiosConfig);
+      return { ok: true, data: respuesta.data };
+    } catch (err) {
+      return { ok: false, error: err.message };
+    }
+  },
+
+  // Películas de terror
+  movie_terror: async (page) => {
+    try {
+      const API_KEY = api_key;
+      const axiosConfig = {
+        baseURL: baseURLmoviedb,
+        url: `/discover/movie?${API_KEY}&with_genres=27&language=es-MX&primary_release_date.gte=2010`,
+
+        headers: {
+          Authorization: `Token ${API_KEY}`,
+        },
+
+        method: "get",
+        params: {
+          page: page,
+        },
+      };
+
+      const respuesta = await axios.request(axiosConfig);
+      return { ok: true, data: respuesta.data };
+    } catch (err) {
+      return { ok: false, error: err.message };
+    }
+  },
+
+  // Películas de música
+  movie_music: async (page) => {
+    try {
+      const API_KEY = api_key;
+      const axiosConfig = {
+        baseURL: baseURLmoviedb,
+        url: `/discover/movie?${API_KEY}&with_genres=10402&language=es-MX&primary_release_date.gte=2010`,
+
+        headers: {
+          Authorization: `Token ${API_KEY}`,
+        },
+
+        method: "get",
+        params: {
+          page: page,
+        },
+      };
+
+      const respuesta = await axios.request(axiosConfig);
+      return { ok: true, data: respuesta.data };
+    } catch (err) {
+      return { ok: false, error: err.message };
+    }
+  },
+
+  // Películas de misterio
+  movie_mistery: async (page) => {
+    try {
+      const API_KEY = api_key;
+      const axiosConfig = {
+        baseURL: baseURLmoviedb,
+        url: `/discover/movie?${API_KEY}&with_genres=9648&language=es-MX&without_genres=27&primary_release_date.gte=2010`,
+
+        headers: {
+          Authorization: `Token ${API_KEY}`,
+        },
+
+        method: "get",
+        params: {
+          page: page,
+        },
+      };
+
+      const respuesta = await axios.request(axiosConfig);
+      return { ok: true, data: respuesta.data };
+    } catch (err) {
+      return { ok: false, error: err.message };
+    }
+  },
+
+  // Películas de romance
+  movie_romance: async (page) => {
+    try {
+      const API_KEY = api_key;
+      const axiosConfig = {
+        baseURL: baseURLmoviedb,
+        url: `/discover/movie?${API_KEY}&with_genres=10749&language=es-MX&without_genres=16&primary_release_date.gte=2010`,
+
+        headers: {
+          Authorization: `Token ${API_KEY}`,
+        },
+
+        method: "get",
+        params: {
+          page: page,
+        },
+      };
+
+      const respuesta = await axios.request(axiosConfig);
+      return { ok: true, data: respuesta.data };
+    } catch (err) {
+      return { ok: false, error: err.message };
+    }
+  },
+
+  // Películas de anime romance
   // https://api.themoviedb.org/3/discover/movie?api_key=ef6f33754f4bdb2e45fe025d71c82878&with_genres=10749&language=es-MX&page=1&with_keywords=210024
 
   // Películas de drama

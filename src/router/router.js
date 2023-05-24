@@ -15,8 +15,6 @@ const routes = [
     { path: '/novedades', component: () => import(/* webpackChunkName: "Novedades.vue" */ '../components/Novedades') },
     { path: '/mi_lista', component: () => import(/* webpackChunkName: "MiLista.vue" */ '../components/MiLista') },
     { path: '/explora_por_idiomas', component: () => import(/* webpackChunkName: "ExploraIdiomas.vue" */ '../components/ExploraIdiomas') },
-    // prueba componente
-    { path: '/componente_prueba', component: () => import(/* webpackChunkName: "PruebaComponente.vue" */ '../components/categoria_peliculas/PruebaComponente') },
     // page 404 Not Found
     // se busca cualquier url que no tenga match con los especificados aca en las rutas
     { path: '/:pathMatch(.*)*', component: () => import(/* webpackChunkName: "Error404PageNotFound.vue" */ '../components/Error404PageNotFound') },

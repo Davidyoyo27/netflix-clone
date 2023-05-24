@@ -12,6 +12,7 @@
         <PeliculasComedia></PeliculasComedia>
         <PeliculasFiccionFantasia></PeliculasFiccionFantasia>
         <PeliculasUltimoAnio></PeliculasUltimoAnio>
+        <SeriesTop10></SeriesTop10>
         <PeliculasProximosEstrenos></PeliculasProximosEstrenos>
         <PeliculasAnimacion></PeliculasAnimacion>
         <PeliculasAccion></PeliculasAccion>
@@ -21,7 +22,12 @@
         <PeliculasRomance></PeliculasRomance>
         <PeliculasMisterio></PeliculasMisterio>
         <PeliculasMusica></PeliculasMusica>
+        <PeliculasTop10></PeliculasTop10>
         <PeliculasTerror></PeliculasTerror>
+        <PeliculasHistoria></PeliculasHistoria>
+        <PeliculasFamilia></PeliculasFamilia>
+        <PeliculasDrama></PeliculasDrama>
+        <PeliculasAnimeRomance></PeliculasAnimeRomance>
       </div>
     </div>
   </div>
@@ -49,7 +55,12 @@ import PeliculasRomance from "@/components/categoria_peliculas/PeliculasRomance"
 import PeliculasMisterio from "@/components/categoria_peliculas/PeliculasMisterio";
 import PeliculasMusica from "@/components/categoria_peliculas/PeliculasMusica";
 import PeliculasTerror from "@/components/categoria_peliculas/PeliculasTerror";
-
+import PeliculasHistoria from "@/components/categoria_peliculas/PeliculasHistory";
+import PeliculasFamilia from "@/components/categoria_peliculas/PeliculasFamilia";
+import PeliculasDrama from "@/components/categoria_peliculas/PeliculasDrama";
+import PeliculasAnimeRomance from "@/components/categoria_peliculas/PeliculasAnimeRomance";
+import PeliculasTop10 from  "@/components/categoria_peliculas/PeliculasTop10";
+import SeriesTop10 from "@/components/categoria_peliculas/SeriesTop10";
 
 export default {
   // En caso de querer llamar a algun componente con el Composition API
@@ -73,6 +84,12 @@ export default {
     PeliculasMisterio,
     PeliculasMusica,
     PeliculasTerror,
+    PeliculasHistoria,
+    PeliculasFamilia,
+    PeliculasDrama,
+    PeliculasAnimeRomance,
+    PeliculasTop10,
+    SeriesTop10,
   },
   setup() {
     return {};
@@ -91,7 +108,7 @@ export default {
 }
 
 .cont_carousels {
-  background-color: #000;
+  background-color: #141414;
   width: 100%;
   height: auto;
   box-shadow: rgb(0, 0, 0) 0px -50px 100px 30px;

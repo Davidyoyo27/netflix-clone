@@ -404,12 +404,6 @@ export default {
     }
   },
 
-  // NOTA: RECUERDA ELIMINAR LAS &page=x DE LOS ENDPOINT DE LAS SERIES/PELICULAS
-
-  // ============================================== PELICULAS ===================================================
-  // las 10 películas más populares en Chile hoy
-  //
-
   // Películas de anime romance
   movie_anime_romance: async (page) => {
     try {
@@ -610,29 +604,55 @@ export default {
     }
   },
 
-  // Películas de anime romance
-  // https://api.themoviedb.org/3/discover/movie?api_key=ef6f33754f4bdb2e45fe025d71c82878&with_genres=10749&language=es-MX&page=1&with_keywords=210024
+  // las 10 películas más populares en Chile hoy
+  movie_top_10: async (page) => {
+    try {
+      const API_KEY = api_key;
+      const axiosConfig = {
+        baseURL: baseURLmoviedb,
+        url: `/discover/movie?${API_KEY}&region=CL&language=es-MX&sort_by=popularity.desc&vote_average.gte=8&vote_count.gte=5000`,
 
-  // Películas de drama
-  // https://api.themoviedb.org/3/discover/movie?api_key=ef6f33754f4bdb2e45fe025d71c82878&with_genres=18&language=es-MX&page=1
+        headers: {
+          Authorization: `Token ${API_KEY}`,
+        },
 
-  // Películas para ver en familia
-  // https://api.themoviedb.org/3/discover/movie?api_key=ef6f33754f4bdb2e45fe025d71c82878&with_genres=10751&language=es-MX&page=1
+        method: "get",
+        params: {
+          page: page,
+        },
+      };
 
-  // Películas de historia
-  // https://api.themoviedb.org/3/discover/movie?api_key=ef6f33754f4bdb2e45fe025d71c82878&with_genres=36&language=es-MX&page=1
+      const respuesta = await axios.request(axiosConfig);
+      return { ok: true, data: respuesta.data };
+    } catch (err) {
+      return { ok: false, error: err.message };
+    }
+  },
 
-  // Películas de terror
-  // https://api.themoviedb.org/3/discover/movie?api_key=ef6f33754f4bdb2e45fe025d71c82878&with_genres=27&language=es-MX&page=1
+  // las 10 series más populares en Chile hoy
+  series_top_10: async (page) => {
+    try {
+      const API_KEY = api_key;
+      const axiosConfig = {
+        baseURL: baseURLmoviedb,
+        url: `/discover/tv?${API_KEY}&region=CL&language=es-MX&sort_by=popularity.desc&vote_average.gte=8&vote_count.gte=5000`,
 
-  // Películas de música
-  // https://api.themoviedb.org/3/discover/movie?api_key=ef6f33754f4bdb2e45fe025d71c82878&with_genres=10402&language=es-MX&page=1
+        headers: {
+          Authorization: `Token ${API_KEY}`,
+        },
 
-  // Películas de misterio
-  // https://api.themoviedb.org/3/discover/movie?api_key=ef6f33754f4bdb2e45fe025d71c82878&with_genres=9648&language=es-MX&without_genres=27&page=1
+        method: "get",
+        params: {
+          page: page,
+        },
+      };
 
-  // Películas de romance
-  // https://api.themoviedb.org/3/discover/movie?api_key=ef6f33754f4bdb2e45fe025d71c82878&with_genres=10749&language=es-MX&without_genres=16&page=1
+      const respuesta = await axios.request(axiosConfig);
+      return { ok: true, data: respuesta.data };
+    } catch (err) {
+      return { ok: false, error: err.message };
+    }
+  },
 
   ///// Películas de TV
   // https://api.themoviedb.org/3/discover/movie?api_key=ef6f33754f4bdb2e45fe025d71c82878&with_genres=10770&language=es-MX&page=1
@@ -681,9 +701,6 @@ export default {
 
   // Series anime japonesas
   // https://api.themoviedb.org/3/discover/tv?api_key=ef6f33754f4bdb2e45fe025d71c82878&language=es-MX&page=1&with_keywords=210024
-
-  // las 10 series más populares en Chile hoy
-  //
 
   // Series de Sci-Fi y Fantasía
   // https://api.themoviedb.org/3/discover/tv?api_key=ef6f33754f4bdb2e45fe025d71c82878&language=es-MX&sort_by=popularity.desc&with_genres=10765

@@ -26,6 +26,7 @@ import {
   faVolumeUp,
   faVolumeXmark,
 } from "@fortawesome/free-solid-svg-icons";
+import { faFacebookF, faInstagram, faTwitter, faYoutube } from '@fortawesome/free-brands-svg-icons';
 // import {  } from '@fortawesome/free-regular-svg-icons'
 
 /* add icons to the library */
@@ -46,7 +47,11 @@ library.add(
   faVolumeUp,
   faVolumeXmark,
   faChevronRight,
-  faChevronLeft
+  faChevronLeft,
+  faFacebookF,
+  faInstagram,
+  faTwitter,
+  faYoutube,
 );
 
 createApp(App)

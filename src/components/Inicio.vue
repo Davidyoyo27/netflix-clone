@@ -29,6 +29,7 @@
         <PeliculasDrama></PeliculasDrama>
         <PeliculasAnimeRomance></PeliculasAnimeRomance>
       </div>
+      <Footer></Footer>
     </div>
   </div>
 </template>
@@ -61,6 +62,7 @@ import PeliculasDrama from "@/components/categoria_peliculas/PeliculasDrama";
 import PeliculasAnimeRomance from "@/components/categoria_peliculas/PeliculasAnimeRomance";
 import PeliculasTop10 from  "@/components/categoria_peliculas/PeliculasTop10";
 import SeriesTop10 from "@/components/categoria_peliculas/SeriesTop10";
+import Footer from "@/components/Footer";
 
 export default {
   // En caso de querer llamar a algun componente con el Composition API
@@ -90,6 +92,7 @@ export default {
     PeliculasAnimeRomance,
     PeliculasTop10,
     SeriesTop10,
+    Footer,
   },
   setup() {
     return {};
@@ -119,6 +122,11 @@ export default {
 .carousels {
   position: relative;
   bottom: 9rem;
+}
+
+.footer{
+  position: relative;
+  bottom: 0;
 }
 
 @media (min-width: 300px) and (max-width: 889px) {

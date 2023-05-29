@@ -18,7 +18,7 @@ export default {
     //                                    LazyLoad
     MenuPrincipal: defineAsyncComponent(() =>
       import(
-        /* webpackChunkName: "MenuPrincipal.vue" */ "@/components/MenuPrincipal.vue"
+        /* webpackChunkName: "MenuPrincipal.vue" */ "@/components/menu_principal/MenuPrincipal.vue"
       )
     ),
     Inicio: defineAsyncComponent(() =>

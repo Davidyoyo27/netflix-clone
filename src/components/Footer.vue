@@ -158,7 +158,7 @@ li{
   text-decoration: none;
   font-size: .9rem;
   margin: .5rem;
-  color: #d5d5d5;
+  color: #7c7c7c;
   display: inline-block;
 }
 
@@ -174,7 +174,7 @@ button{
   padding: .4rem;
   background-color: rgba(222, 11, 11, 0);
   border-style: none;
-  border: 1px solid #d5d5d5;
+  border: 1px solid #7c7c7c;
   cursor: pointer;
   margin-top: 1rem;
 }
@@ -184,8 +184,7 @@ button:hover span{
 }
 
 span{
-  /* color: #d5d5d5; */
-  color: #d5d5d5;
+  color: #7c7c7c;
 }
 
 p {
@@ -193,6 +192,6 @@ p {
   font-size: .8rem;
   cursor: default;
   margin-top: 1rem;
-  color: #d5d5d5;
+  color: #7c7c7c;
 }
 </style>

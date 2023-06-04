@@ -1,6 +1,6 @@
 import axios from "axios";
 import { getDateMovieReleaseLastYear } from "@/helpers/js/functions";
-import { api_key, baseURLmoviedb } from "../js/variables";
+import { api_key, baseURLmoviedb, ACCESS_TOKEN } from "../js/variables";
 
 export default {
   // endpoint del video inicial al cargar en el inicio de la pagina
@@ -79,13 +79,13 @@ export default {
     }
   },
 
-  // endpoint de carrusel de peliculas "series emocionantes aclamadas por la critica"
+  // endpoint de carrusel de series "series emocionantes aclamadas por la critica"
   serie_top_rated: async (page) => {
     try {
       const API_KEY = api_key;
       const axiosConfig = {
         baseURL: baseURLmoviedb,
-        url: `/tv/top_rated?${API_KEY}&language=es-MX`,
+        url: `/tv/top_rated?&language=es-MX`,
 
         headers: {
           Authorization: `Token ${API_KEY}`,
@@ -107,13 +107,12 @@ export default {
   // endpoint de carrusel de series "sugerencias de hoy"
   serie_popular: async (page) => {
     try {
-      const API_KEY = api_key;
       const axiosConfig = {
         baseURL: baseURLmoviedb,
-        url: `/tv/popular?${API_KEY}&language=es-MX`,
+        url: `/tv/popular?&language=es-MX`,
 
         headers: {
-          Authorization: `Token ${API_KEY}`,
+          Authorization: `Bearer ${ACCESS_TOKEN}`,
         },
 
         method: "get",
@@ -129,13 +128,13 @@ export default {
     }
   },
 
-  // endpoint de carrusel de peliculas "series de suspenso"
+  // endpoint de carrusel de series "series de suspenso"
   serie_suspense: async (page) => {
     try {
       const API_KEY = api_key;
       const axiosConfig = {
         baseURL: baseURLmoviedb,
-        url: `/discover/tv?${API_KEY}&language=es-MX&sort_by=popularity.desc&with_genres=9648&primary_release_date.gte=2000`,
+        url: `/discover/tv?&language=es-MX&sort_by=popularity.desc&with_genres=9648&primary_release_date.gte=2000`,
 
         headers: {
           Authorization: `Token ${API_KEY}`,
@@ -160,7 +159,7 @@ export default {
       const API_KEY = api_key;
       const axiosConfig = {
         baseURL: baseURLmoviedb,
-        url: `/discover/movie?${API_KEY}&language=es-MX&with_genres=16&with_keywords=210024|287501&primary_release_date.gte=2000`,
+        url: `/discover/movie?&language=es-MX&with_genres=16&with_keywords=210024|287501&primary_release_date.gte=2000`,
 
         headers: {
           Authorization: `Token ${API_KEY}`,
@@ -185,7 +184,7 @@ export default {
       const API_KEY = api_key;
       const axiosConfig = {
         baseURL: baseURLmoviedb,
-        url: `/discover/movie?${API_KEY}&with_genres=35&language=es-MX&without_genres=16&primary_release_date.gte=2010`,
+        url: `/discover/movie?&with_genres=35&language=es-MX&without_genres=16&primary_release_date.gte=2010`,
 
         headers: {
           Authorization: `Token ${API_KEY}`,
@@ -210,7 +209,7 @@ export default {
       const API_KEY = api_key;
       const axiosConfig = {
         baseURL: baseURLmoviedb,
-        url: `/discover/movie?${API_KEY}&with_genres=14 | 878&language=es-MX&without_keywords=210024&primary_release_date.gte=2010&without_genres=16|27`,
+        url: `/discover/movie?&with_genres=14 | 878&language=es-MX&without_keywords=210024&primary_release_date.gte=2010&without_genres=16|27`,
 
         headers: {
           Authorization: `Token ${API_KEY}`,
@@ -235,7 +234,7 @@ export default {
       const API_KEY = api_key;
       const axiosConfig = {
         baseURL: baseURLmoviedb,
-        url: `/discover/movie?${API_KEY}&sort_by=popularity.desc&vote_average.gte=7&vote_average.lte=10&vote_count.gte=100&language=es-MX&primary_release_date.gte=${getDateMovieReleaseLastYear()}`,
+        url: `/discover/movie?&sort_by=popularity.desc&vote_average.gte=7&vote_average.lte=10&vote_count.gte=100&language=es-MX&primary_release_date.gte=${getDateMovieReleaseLastYear()}`,
 
         headers: {
           Authorization: `Token ${API_KEY}`,
@@ -254,13 +253,13 @@ export default {
     }
   },
 
-  // Proximos estrenos
+  // endpoint de carrusel de peliculas "Proximos estrenos"
   movie_next_upcoming: async (page) => {
     try {
       const API_KEY = api_key;
       const axiosConfig = {
         baseURL: baseURLmoviedb,
-        url: `/movie/upcoming?${API_KEY}&language=es-MX`,
+        url: `/movie/upcoming?&language=es-MX`,
 
         headers: {
           Authorization: `Token ${API_KEY}`,
@@ -279,13 +278,13 @@ export default {
     }
   },
 
-  // Películas sobre crímenes
+  // endpoint de carrusel de peliculas "Películas sobre crímenes"
   movie_crimen: async (page) => {
     try {
       const API_KEY = api_key;
       const axiosConfig = {
         baseURL: baseURLmoviedb,
-        url: `/discover/movie?${API_KEY}&with_genres=80&language=es-MX&primary_release_date.gte=2000`,
+        url: `/discover/movie?&with_genres=80&language=es-MX&primary_release_date.gte=2000`,
 
         headers: {
           Authorization: `Token ${API_KEY}`,
@@ -304,13 +303,13 @@ export default {
     }
   },
 
-  // Películas documentales EEUU
+  // endpoint de carrusel de peliculas "Películas documentales de EEUU"
   movie_documental_EEUU: async (page) => {
     try {
       const API_KEY = api_key;
       const axiosConfig = {
         baseURL: baseURLmoviedb,
-        url: `/discover/movie?${API_KEY}&language=es-MX&sort_by=popularity.desc&primary_release_year=2020&with_original_language=au|ca|gb|ie|nz|us`,
+        url: `/discover/movie?&language=es-MX&sort_by=popularity.desc&primary_release_year=2020&with_original_language=au|ca|gb|ie|nz|us`,
 
         headers: {
           Authorization: `Token ${API_KEY}`,
@@ -329,13 +328,13 @@ export default {
     }
   },
 
-  // Películas de documentales
+  // endpoint de carrusel de peliculas "Películas de documentales"
   movie_documental: async (page) => {
     try {
       const API_KEY = api_key;
       const axiosConfig = {
         baseURL: baseURLmoviedb,
-        url: `/discover/movie?${API_KEY}&with_genres=99&language=es-MX&primary_release_date.gte=2000`,
+        url: `/discover/movie?&with_genres=99&language=es-MX&primary_release_date.gte=2000`,
 
         headers: {
           Authorization: `Token ${API_KEY}`,
@@ -354,13 +353,13 @@ export default {
     }
   },
 
-  // Películas de acción
+  // endpoint de carrusel de peliculas "Películas de acción"
   movie_action: async (page) => {
     try {
       const API_KEY = api_key;
       const axiosConfig = {
         baseURL: baseURLmoviedb,
-        url: `/discover/movie?${API_KEY}&with_genres=28&language=es-MX&primary_release_date.gte=2000`,
+        url: `/discover/movie?&with_genres=28&language=es-MX&primary_release_date.gte=2000`,
 
         headers: {
           Authorization: `Token ${API_KEY}`,
@@ -379,13 +378,13 @@ export default {
     }
   },
 
-  // Películas de animación
+  // endpoint de carrusel de peliculas "Películas de animación"
   movie_animation: async (page) => {
     try {
       const API_KEY = api_key;
       const axiosConfig = {
         baseURL: baseURLmoviedb,
-        url: `/discover/movie?${API_KEY}&with_genres=16&language=es-MX&without_keywords=210024&primary_release_date.gte=2010`,
+        url: `/discover/movie?&with_genres=16&language=es-MX&without_keywords=210024&primary_release_date.gte=2010`,
 
         headers: {
           Authorization: `Token ${API_KEY}`,
@@ -404,7 +403,7 @@ export default {
     }
   },
 
-  // Películas de anime romance
+  // endpoint de carrusel de peliculas "Películas de anime romance"
   movie_anime_romance: async (page) => {
     try {
       const API_KEY = api_key;
@@ -429,7 +428,7 @@ export default {
     }
   },
 
-  // Películas de drama
+  // endpoint de carrusel de peliculas "Películas de drama"
   movie_drama: async (page) => {
     try {
       const API_KEY = api_key;
@@ -454,7 +453,7 @@ export default {
     }
   },
 
-  // Películas para ver en familia
+  // endpoint de carrusel de peliculas "Películas para ver en familia"
   movie_family: async (page) => {
     try {
       const API_KEY = api_key;
@@ -479,7 +478,7 @@ export default {
     }
   },
 
-  // Películas de historia
+  // endpoint de carrusel de peliculas "Películas de historia"
   movie_history: async (page) => {
     try {
       const API_KEY = api_key;
@@ -504,7 +503,7 @@ export default {
     }
   },
 
-  // Películas de terror
+  // endpoint de carrusel de peliculas "Películas de terror"
   movie_terror: async (page) => {
     try {
       const API_KEY = api_key;
@@ -529,13 +528,13 @@ export default {
     }
   },
 
-  // Películas de música
+  // endpoint de carrusel de peliculas "Películas de música"
   movie_music: async (page) => {
     try {
       const API_KEY = api_key;
       const axiosConfig = {
         baseURL: baseURLmoviedb,
-        url: `/discover/movie?${API_KEY}&with_genres=10402&language=es-MX&primary_release_date.gte=2010`,
+        url: `/discover/movie?&with_genres=10402&language=es-MX&primary_release_date.gte=2010`,
 
         headers: {
           Authorization: `Token ${API_KEY}`,
@@ -554,13 +553,13 @@ export default {
     }
   },
 
-  // Películas de misterio
+  // endpoint de carrusel de peliculas "Películas de misterio"
   movie_mistery: async (page) => {
     try {
       const API_KEY = api_key;
       const axiosConfig = {
         baseURL: baseURLmoviedb,
-        url: `/discover/movie?${API_KEY}&with_genres=9648&language=es-MX&without_genres=27&primary_release_date.gte=2010`,
+        url: `/discover/movie?&with_genres=9648&language=es-MX&without_genres=27&primary_release_date.gte=2010`,
 
         headers: {
           Authorization: `Token ${API_KEY}`,
@@ -579,13 +578,13 @@ export default {
     }
   },
 
-  // Películas de romance
+  // endpoint de carrusel de peliculas "Películas de romance"
   movie_romance: async (page) => {
     try {
       const API_KEY = api_key;
       const axiosConfig = {
         baseURL: baseURLmoviedb,
-        url: `/discover/movie?${API_KEY}&with_genres=10749&language=es-MX&without_genres=16&primary_release_date.gte=2010`,
+        url: `/discover/movie?&with_genres=10749&language=es-MX&without_genres=16&primary_release_date.gte=2010`,
 
         headers: {
           Authorization: `Token ${API_KEY}`,
@@ -732,4 +731,29 @@ export default {
   // Series de guerra y politica
   // https://api.themoviedb.org/3/discover/tv?api_key=ef6f33754f4bdb2e45fe025d71c82878&language=es-MX&sort_by=popularity.desc&with_genres=10768&page=1&without_keywords=210024
   // ============================================== SERIES ===================================================
+
+  // endpoint que sera la base para realizar las peticiones a todas los carruseles de peliculas
+  // eso sera segun el filtro que se desee aplicar por la "url"
+  get_movie_services: async (page, url) => {
+    try {
+      const axiosConfig = {
+        baseURL: baseURLmoviedb,
+        url,
+
+        headers: {
+          Authorization: `Bearer ${ACCESS_TOKEN}`,
+        },
+
+        method: "get",
+        params: {
+          page: page,
+        },
+      };
+
+      const { data } = await axios.request(axiosConfig);
+      return { ok: true, data };
+    } catch (err) {
+      return { ok: false, error: err.message };
+    }
+  },
 };

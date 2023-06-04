@@ -22,6 +22,7 @@ import { ref, onMounted } from "vue";
 export default {
   setup() {
     // definimos en un array los nombres de los links que se mostraran en el router link con un for
+    // NOMBRE EN HTML
     const array_name_links = ref([
       "Inicio",
       "Series",
@@ -32,6 +33,7 @@ export default {
     ]);
     // definimos un array con los links donde seran redirigidos a sus respectivas rutas, esto seria como la etiqueta <a>
     // <a href="/series">Series</a>
+    // ENLACE REDIRECCION
     const array_links = ref([
       "/",
       "/series",

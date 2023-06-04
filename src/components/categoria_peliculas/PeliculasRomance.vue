@@ -144,6 +144,8 @@ setup() {
           // que serian todos los elementos que no tengan datos null
           return item.poster_path;
         });
+        // console.log("rom", data.value);
+        console.log("rom", response.data);
         // cambiamos el estado de la bandera a true una vez que los datos se
         // hayan consultado correctamente para visualizar el carrusel de peliculas
         flagRenderShadow.value = true;

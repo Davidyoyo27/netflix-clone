@@ -21,6 +21,8 @@ const routes = [
     { path: '/responsive_menu', component: () => import(/* webpackChunkName: "MenuResponsive.vue" */ '../components/menu_principal/MenuResponsive') },
     { path: '/right_menu', component: () => import(/* webpackChunkName: "RightMenuMenuPrincipal.vue" */ '../components/menu_principal/RightMenuMenuPrincipal') },
     { path: '/icon', component: () => import(/* webpackChunkName: "IconNetflixMenuPrincipal.vue" */ '../components/menu_principal/IconNetflixMenuPrincipal') },
+    { path: '/componente_carrusel_peliculas', component: () => import(/* webpackChunkName: "ComponenteCarruselPeliculas.vue" */ '../components/categoria_peliculas/ComponenteCarruselPeliculas') },
+    { path: '/inicio_de_prueba', component: () => import(/* webpackChunkName: "InicioDePrueba.vue" */ '../components/InicioDePrueba') },
     // =============================================================================
     // page 404 Not Found
     // se busca cualquier url que no tenga match con los especificados aca en las rutas

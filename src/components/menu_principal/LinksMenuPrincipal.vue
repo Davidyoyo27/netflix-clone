@@ -53,13 +53,13 @@ export default {
       // al crear el objeto
       // {
       //   number: 1
-      //   link_image: "https://image.tmdb.org/t/p/w500/jdhfasdhfjsahfjkfs.jpg"
-      //   img_number: "ihfasdhfpaoejskdjsakkjlasfkañfdasdfkasldl..."
+      //   name_link: "Series"
+      //   link: "/series"
       // },
       // {
       //   number: 2
-      //   link_image: "https://image.tmdb.org/t/p/w500/hgfkgfhpodhmkdskmfdgk.jpg"
-      //   img_number: "jotknhgpñssdfngp3dlnfsnf4ngspndif04..."
+      //   name_link: "Peliculas"
+      //   link: "/peliculas"
       // },
       const miArray = Array.from(
         { length: valor_array },

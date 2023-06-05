@@ -83,6 +83,7 @@ export default {
     const flagRenderShadow = ref(false);
     // const pageNumMax = ref(cantPages);
     const link_img = ref("https://image.tmdb.org/t/p/w500");
+    const cantPaginationElements = ref(null);
     const cont_pagination = reactive({
       clickable: false,
       el: ".pagination_elements",
@@ -109,7 +110,10 @@ export default {
 
     onMounted(() => {
       data.value = props.arrayData;
+      let largo = props.arrayData.length;
       (data.value.length != 0) ? flagRenderShadow.value = true : flagRenderShadow.value = false;
+      // console.log("data.value", data.value);
+      // console.log("largo", largo);
     });
 
     return {
@@ -122,6 +126,7 @@ export default {
       link_img,
       title: props.title,
       arrayData: props.arrayData,
+      cantPaginationElements,
     };
   },
 };

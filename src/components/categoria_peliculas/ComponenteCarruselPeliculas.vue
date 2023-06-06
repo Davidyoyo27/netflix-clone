@@ -2,7 +2,6 @@
   <div v-if="flagRenderShadow" class="container">
     <div class="cont_info_carousel">
       <div class="cont_title">
-        <!-- <h3 class="title">Series emocionantes aclamadas por la crítica</h3> -->
         <h3 class="title">{{ title }}</h3>
         <div class="cont_icon">
           <font-awesome-icon class="icon" icon="fa-solid fa-chevron-right" />
@@ -10,11 +9,11 @@
         <p class="sub_text">Explorar todos</p>
       </div>
     </div>
-    <!-- NOTA: solo el "navigation" es lo mismo que decir navigation="true" -->
     <div class="container_carousel">
       <div class="cont_pagination">
         <div class="pagination_elements"></div>
       </div>
+      <!-- NOTA: solo el "navigation" es lo mismo que decir navigation="true" -->
       <swiper
         :slides-per-view="9"
         :slides-per-group="5"
@@ -53,10 +52,7 @@
 </template>
 
 <script>
-import { ref, reactive, onMounted, defineProps } from "vue";
-import services from "@/helpers/services/services.js";
-import { getPageRandom } from "@/helpers/js/functions.js";
-import { numMin } from "@/helpers/js/variables.js";
+import { ref, reactive, onMounted, inject } from "vue";
 // import Swiper core and required modules
 import { Navigation, Pagination, Scrollbar, A11y } from "swiper";
 // Import Swiper Vue.js components
@@ -66,7 +62,6 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
-import { cantPagesMax1 } from "@/helpers/js/prueba_javascript";
 
 export default {
   props: {
@@ -78,12 +73,11 @@ export default {
     SwiperSlide,
   },
   setup(props) {
-    // const valorFunc = ref(consultaEndpoint());
     const data = ref(null);
     const flagRenderShadow = ref(false);
-    // const pageNumMax = ref(cantPages);
     const link_img = ref("https://image.tmdb.org/t/p/w500");
-    const cantPaginationElements = ref(null);
+    // aca se recibe la variable exportada con provide para luego ser usada dentro del componente
+    const cantNumbersXComponents = inject('cantElementsNavigation');
     const cont_pagination = reactive({
       clickable: false,
       el: ".pagination_elements",
@@ -110,10 +104,8 @@ export default {
 
     onMounted(() => {
       data.value = props.arrayData;
-      let largo = props.arrayData.length;
+      let valueComponent = cantNumbersXComponents.value;
       (data.value.length != 0) ? flagRenderShadow.value = true : flagRenderShadow.value = false;
-      // console.log("data.value", data.value);
-      // console.log("largo", largo);
     });
 
     return {
@@ -126,7 +118,6 @@ export default {
       link_img,
       title: props.title,
       arrayData: props.arrayData,
-      cantPaginationElements,
     };
   },
 };

@@ -609,7 +609,7 @@ export default {
       const API_KEY = api_key;
       const axiosConfig = {
         baseURL: baseURLmoviedb,
-        url: `/discover/movie?${API_KEY}&region=CL&language=es-MX&sort_by=popularity.desc&vote_average.gte=8&vote_count.gte=5000`,
+        url: `/discover/movie?region=CL&language=es-MX&sort_by=popularity.desc&vote_average.gte=8&vote_count.gte=5000`,
 
         headers: {
           Authorization: `Token ${API_KEY}`,
@@ -634,7 +634,7 @@ export default {
       const API_KEY = api_key;
       const axiosConfig = {
         baseURL: baseURLmoviedb,
-        url: `/discover/tv?${API_KEY}&region=CL&language=es-MX&sort_by=popularity.desc&vote_average.gte=8&vote_count.gte=5000`,
+        url: `/discover/tv?region=CL&language=es-MX&sort_by=popularity.desc&vote_average.gte=8&vote_count.gte=5000`,
 
         headers: {
           Authorization: `Token ${API_KEY}`,
@@ -652,37 +652,6 @@ export default {
       return { ok: false, error: err.message };
     }
   },
-
-  // ========================================== PELICULAS+SERIES ===================================================
-  // lanzamientos de ultimo año
-  // nuevos lanzamientos
-  // Animes japoneses
-  // ========================================== PELICULAS+SERIES ===================================================
-
-
-  
-  // ============================================== SERIES ===================================================
-  // Series de animacion occidental
-  // 
-
-  // Series occidentales de acción y aventura
-  // 
-
-  // Series de comedia
-  // 
-
-  // Series de crimen
-  // 
-
-  // Series documentales
-  // 
-
-  // Series de misterio
-  // 
-
-  // Series de guerra y politica
-  // 
-  // ============================================== SERIES ===================================================
 
   // endpoint que sera la base para realizar las peticiones a todas los carruseles de peliculas
   // eso sera segun el filtro que se desee aplicar por la "url"

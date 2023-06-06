@@ -1,14 +1,8 @@
 <template>
-  <p>este es el inicio de prueba</p>
-  <p>este es el inicio de prueba</p>
-  <p>este es el inicio de prueba</p>
-  <p>este es el inicio de prueba</p>
-  <p>este es el inicio de prueba</p>
-  <p>este es el inicio de prueba</p>
-  <p>este es el inicio de prueba</p>
   <div v-if="!flagPromiseData">
     <!-- los numeros solo representan la variable y su orden de creacion -->
     <!-- NO SU ORDER O POSICION a la hora de mostrar cada componente de peliculas/series -->
+
     <!-- Series emocionantes aclamadas por la crítica -->
     <componenteCarrusel :title="title1" :arrayData="dataResp1"></componenteCarrusel>
     <!-- Sugerencias de hoy -->
@@ -25,6 +19,8 @@
     <componenteCarrusel :title="title6" :arrayData="dataResp6"></componenteCarrusel>
     <!-- Lanzamientos del último año -->
     <componenteCarrusel :title="title7" :arrayData="dataResp7"></componenteCarrusel>
+    <!-- Las 10 películas más populares en Chile hoy -->
+    <componenteCarruselTop10 :title="titleTopMovie" :arrayData="dataResp43"></componenteCarruselTop10>
     <!-- Proximos estrenos -->
     <componenteCarrusel :title="title8" :arrayData="dataResp8"></componenteCarrusel>
     <!-- Telenovelas -->
@@ -53,6 +49,8 @@
     <componenteCarrusel :title="title33" :arrayData="dataResp33"></componenteCarrusel>
     <!-- Películas de música -->
     <componenteCarrusel :title="title16" :arrayData="dataResp16"></componenteCarrusel>
+    <!-- Las 10 series más populares en Chile hoy -->
+    <componenteCarruselTop10 :title="titleTopSerie" :arrayData="dataResp44"></componenteCarruselTop10>
     <!-- Películas de terror -->
     <componenteCarrusel :title="title17" :arrayData="dataResp17"></componenteCarrusel>
     <!-- Series anime de misterio -->
@@ -97,8 +95,9 @@
 </template>
 
 <script>
-import { ref, onMounted, expose } from "vue";
+import { ref, onMounted, provide } from "vue";
 import componenteCarrusel from "@/components/categoria_peliculas/ComponenteCarruselPeliculas";
+import componenteCarruselTop10 from "@/components/categoria_peliculas/CarruselTop10"
 import services from "@/helpers/services/services";
 import { numMin, numMax500, numMax290, numMax200, numMax100, numMax40, numMax20, numMax10 } from "@/helpers/js/variables.js";
 import { getPageRandom } from "@/helpers/js/functions.js";
@@ -107,10 +106,11 @@ import { getDateMovieReleaseLastYear } from "@/helpers/js/functions";
 export default {
   components: {
     componenteCarrusel,
+    componenteCarruselTop10,
   },
   setup() {
     const flagPromiseData = ref(true);
-    const cantPaginationElements = ref(null);
+    const cantNumbersXComponents = ref(null);
     // titulos de carrusels
     const title1 = ref("Series emocionantes aclamadas por la crítica");
     const title2 = ref("Sugerencias de hoy");
@@ -154,6 +154,8 @@ export default {
     const title24 = ref("Películas belicas/guerra");
     const title41 = ref("Series de misterio");
     const title36 = ref("Series de animacion occidental");
+    const titleTopMovie = ref("Las 10 películas más populares en Chile hoy");
+    const titleTopSerie = ref("Las 10 series más populares en Chile hoy");
     // data con los elementos que contienen las peliculas que seran consumidos por el componente carrusel
     const dataResp1 = ref(null);
     const dataResp2 = ref(null);
@@ -197,6 +199,8 @@ export default {
     const dataResp40 = ref(null);
     const dataResp41 = ref(null);
     const dataResp42 = ref(null);
+    const dataResp43 = ref(null);
+    const dataResp44 = ref(null);
 
     // consultamos la cantidad de paginas maxima por endpoint puesto que cada uno es diferente
     onMounted(async () => {
@@ -287,10 +291,16 @@ export default {
         services.get_movie_services(getPageRandom(numMax200, numMin),'/discover/tv?language=es-MX&sort_by=popularity.desc&with_genres=37|9648&without_keywords=210024'),
         // 77
         services.get_movie_services(getPageRandom(numMax40, numMin),'/discover/tv?language=es-MX&sort_by=popularity.desc&with_genres=10768&without_keywords=210024'),
+        // 2
+        services.get_movie_services(getPageRandom(2, numMin),'/discover/movie?region=CL&language=es-MX&sort_by=popularity.desc&vote_average.gte=8&vote_count.gte=5000'),
+        // 2
+        services.get_movie_services(getPageRandom(2, numMin),'/discover/tv?region=CL&language=es-MX&sort_by=popularity.desc&vote_average.gte=8&vote_count.gte=5000'),
       ]);
-      console.log("response", response);
-      cantPaginationElements.value = response.length;
-      console.log("largo", cantPaginationElements.value);
+
+      // asignamos el valor del largo de la respuesta a las consultas para saber cuantas peticiones a distintos endpoints se hicieron
+      // y por ende cuantos componentes de carruseles se generaron por ello
+      cantNumbersXComponents.value = response.length;
+      
       // tomamos la respuesta del servicio de response y 
       dataResp1.value = response[0].data.results
       // le pasamos un filter, esto ya que algunas imagenes del poster_path vienen vacias, osea null
@@ -346,14 +356,26 @@ export default {
       dataResp39.value = response[38].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });      
       dataResp40.value = response[39].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });      
       dataResp41.value = response[40].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });      
-      dataResp42.value = response[41].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });      
+      dataResp42.value = response[41].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });
+      dataResp43.value = response[42].data.results.filter((item) => item.poster_path !== null).slice(0, 10)
+      .map((item) => { return { poster_path: item.poster_path, name: item.title }; });
+      dataResp44.value = response[43].data.results.filter((item) => item.poster_path !== null).slice(0, 10)
+      .map((item) => { return { poster_path: item.poster_path, name: item.title }; });
 
       flagPromiseData.value = false;
     });
 
+    // utilizamos el provide/inject para enviar variables hacia otro componente que no sea pasandolo como prop directamente al componente hijo
+    // provide: Envio de la informacion (provee de la data a enviar)
+    // inject: Recibe la informacion  (se injecta la data recibida)
+    //      nombre de la data enviada
+    //                                variable que contiene la data a enviar
+    //                      IMPORTANTE: al enviar la data notar que no se debe usar el .value que se usa en el setup(), ya que esto genera un error
+    // NOTA: no se necesita pasar al return la variable que se usara con provide
+    provide('cantElementsNavigation', cantNumbersXComponents);
+
     return {
       flagPromiseData,
-      cantPaginationElements,
       title1,
       title2,
       title3,
@@ -396,6 +418,8 @@ export default {
       title40,
       title41,
       title42,
+      titleTopMovie,
+      titleTopSerie,
       dataResp1,
       dataResp2,
       dataResp3,
@@ -438,6 +462,8 @@ export default {
       dataResp40,
       dataResp41,
       dataResp42,
+      dataResp43,
+      dataResp44,
     };
   },
 };

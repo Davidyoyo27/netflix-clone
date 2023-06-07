@@ -5,7 +5,7 @@
     </div>
     <div class="cont_carousels">
       <div class="carousels">
-        <SeriesEmocionantes></SeriesEmocionantes>
+        <!-- <SeriesEmocionantes></SeriesEmocionantes>
         <SugerenciasHoy></SugerenciasHoy>
         <SeriesSuspenso></SeriesSuspenso>
         <PeliculasAnime></PeliculasAnime>
@@ -27,7 +27,7 @@
         <PeliculasHistoria></PeliculasHistoria>
         <PeliculasFamilia></PeliculasFamilia>
         <PeliculasDrama></PeliculasDrama>
-        <PeliculasAnimeRomance></PeliculasAnimeRomance>
+        <PeliculasAnimeRomance></PeliculasAnimeRomance> -->
       </div>
       <Footer></Footer>
     </div>

@@ -77,7 +77,11 @@
 <script setup>
 import { onMounted, ref, onBeforeMount } from "vue";
 import services from "@/helpers/services/services.js";
-import { getPageRandom, getNumberRandom } from "@/helpers/js/functions.js";
+import {
+  getPageRandom,
+  getNumberRandom,
+  getDataMovie,
+} from "@/helpers/js/functions.js";
 import { numMin } from "@/helpers/js/variables.js";
 
 /// inicializacion de las variables a usar
@@ -114,95 +118,60 @@ const flagEstate = ref(null);
 const pageNumMax = ref(null);
 
 // utilizamos el onBeforeMount ya que es el que se renderiza primero dentro del Ciclo de Vida de los componentes
-onBeforeMount( async() => {
-  // se llama al endpoint con el valor 1 para obtener la cantidad total
-  // de paginas que este contiene
-  await services.movie_info(1)
-    .then((response) => {
-      // tomamos la cantidad de paginas y la pasamos a la variable a evaluar
-      let valuePage = response.data.total_pages;
-      // si el valuePage es mayor a 500
-      if (valuePage > 500) {
-        // le asignaremos el valor de 500 a la variable pageNumMax
-        pageNumMax.value = 500;
-      } else {
-        // en caso de que el valor sea menor a 500, se pasara ese valor
-        // al pageNumMax
-        pageNumMax.value = response.data.total_pages;
-      }
-    })
-    .catch((error) => {
-      throw error.message;
-    });
+onBeforeMount(async () => {
+  // console.log("data", getDataMovie());
+  const dataMovie = await getDataMovie();
+  const id_movie = dataMovie[0];
+  const backdrop_key_movie = dataMovie[1];
+  const title_movie = dataMovie[2];
+  const overview_movie = dataMovie[3];
+  const video_key_movie = dataMovie[4];
+  const certification_movie = dataMovie[5];
+  console.log("x", dataMovie);
+  console.log("id", id_movie);
+  console.log("backdrop", backdrop_key_movie);
+  console.log("title", title_movie);
+  console.log("overview", overview_movie);
+  console.log("key_video", video_key_movie);
+  console.log("certification", certification_movie);
+  // console.log("a", idMovie.value);
+  // tomamos el link anterior y lo unimos al resto de la ruta para generar el link de la imagen completa
+  movie_backdrop_image.value = movie_backdrop_link.value + backdrop_key_movie;
+  getImageBackground();
+  // setTimeout para esperar .5seg y sincronizar la informacion de la pelicula con la imagen de fondo
+  setTimeout(() => {
+    // capturamos el id del contenedor de los botones
+    buttons.value = document.getElementById("cont_buttons");
+    // hacemos visible los botones
+    buttons.value.style.visibility = "visible";
+    // titulo de la pelicula
+    movie_title.value = title_movie;
+    // sinopsis de la pelicula
+    movie_overview.value = overview_movie;
+    movie_key.value = video_key_movie;
+    resp_cert.value = certification_movie;
+    flagCertification.value = true;
+  }, 250);
 
-    setTimeout(async () => {
-    // accedemos al endpoint pasandole por parametro la funcion que manda la pagina aleatoria
-    await services.movie_info(getPageRandom(pageNumMax.value, numMin))
-      .then((response) => {
-        // asignamos los resultados de la consulta a la variable
-        let array = response.data.results;
-        // usamos el filter para saber cuales son los elementos que contienen el backdrop_path vacio
-        // o null, en este caso es solo return item.backdrop_path; que seria lo mismo que decir
-        // return item.backdrop_path != null;, esto traeria todos los elementos que contengan datos en
-        // el backdrop_path
-        dataArray.value = array.filter((item) => {
-          // retorna los resultados a la variable dataArray
-          return item.backdrop_path;
-        });
-        // se toma el array con los datos de las peliculas y este se "mezcla" con la funcion getNumberRandom
-        // para que el valor que tomemos sea al azar que seria el de la primera posicion [0]
-        dataSorted.value = dataArray.value.sort(getNumberRandom);
 
-        // obtenemos el id de la pelicula, el cual sera usado mas abajo
-        idSorted.value = dataSorted.value[0].id;
-        // obtenemos la key del fondo de la imagen
-        movie_backdrop_key.value = dataSorted.value[0].backdrop_path;
-        // tomamos el link anterior y lo unimos al resto de la ruta para generar el link de la imagen completa
-        movie_backdrop_image.value =
-          movie_backdrop_link.value + movie_backdrop_key.value;
-        getImageBackground();
-        setTimeout(() => {
-          // capturamos el id del contenedor de los botones
-          buttons.value = document.getElementById("cont_buttons");
-          // hacemos visible los botones
-          buttons.value.style.visibility = "visible";
-          // titulo de la pelicula
-          movie_title.value = dataSorted.value[0].title;
-          // sinopsis de la pelicula
-          movie_overview.value = dataSorted.value[0].overview;
-        }, 500);
-      })
-      .catch((error) => {
-        throw error.message;
-      });
-
-    // le pasamos la variable idSorted que es la que contiene el id de la pelicula
-    await services.movie_video_start(idSorted.value)
-      .then((response) => {
-        params_movie.value = response.data.results;
-        movie_key.value = params_movie.value[0].key;
-      })
-      .catch((error) => {
-        throw error.message;
-      });
-
+  setTimeout(async () => {
     // obtenemos la info de la certificacion(+18, 16, 14, etc.)
-    await services.movie_certification(idSorted.value)
-      .then((response) => {
-        resp_certification.value = response.data.results[0].release_dates;
-        // obtenemos el valor string de la certificacion
-        resp_cert.value = resp_certification.value[0].certification;
-        // operador ternario
-        // si el contenido de la variable resp_cert que es .certification esta vacia
-        // a la variable resp_cert se le pasara el valor "vacio", por el contrario,
-        // si la variable ya contiene informacion, esta se retornara con su valor correspondiente
-        resp_cert.value === "" ? (resp_cert.value = "vacío") : resp_cert.value;
-        // una vez obtenida la info de la certificacion(+18, 16, 14, etc.) esta se muestra en pantalla
-        flagCertification.value = true;
-      })
-      .catch((error) => {
-        throw error.message;
-      });
+    // await services.movie_certification(idSorted.value)
+    //   .then((response) => {
+    //     resp_certification.value = response.data.results[0].release_dates;
+    //     // obtenemos el valor string de la certificacion
+    //     resp_cert.value = resp_certification.value[0].certification;
+    //     // operador ternario
+    //     // si el contenido de la variable resp_cert que es .certification esta vacia
+    //     // a la variable resp_cert se le pasara el valor "vacio", por el contrario,
+    //     // si la variable ya contiene informacion, esta se retornara con su valor correspondiente
+    //     resp_cert.value === "" ? (resp_cert.value = "vacío") : resp_cert.value;
+    //     // una vez obtenida la info de la certificacion(+18, 16, 14, etc.) esta se muestra en pantalla
+    //     flagCertification.value = true;
+    //   })
+    //   .catch((error) => {
+    //     throw error.message;
+    //   });
   }, 500);
 });
 

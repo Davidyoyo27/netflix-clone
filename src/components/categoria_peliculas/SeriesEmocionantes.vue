@@ -106,53 +106,53 @@ export default {
       prevEl: ".button-prev",
     });
 
-    onBeforeMount(() => {
-      // se llama al endpoint con el valor 1 para obtener la cantidad total 
-      // de paginas que este contiene
-      services.serie_top_rated(1)
-        .then((response) => {
-          // tomamos la cantidad de paginas y la pasamos a la variable a evaluar
-          let valuePage = response.data.total_pages;
-          // si el valuePage es mayor a 500
-          if(valuePage > 500){
-            // le asignaremos el valor de 500 a la variable pageNumMax
-            pageNumMax.value = 500;
-          }else{
-            // en caso de que el valor sea menor a 500, se pasara ese valor
-            // al pageNumMax
-            pageNumMax.value = response.data.total_pages;
-          }
-        })
-        .catch((error) => {
-          throw error.message;
-        });
-    });
+    // onBeforeMount(() => {
+    //   // se llama al endpoint con el valor 1 para obtener la cantidad total 
+    //   // de paginas que este contiene
+    //   services.serie_top_rated(1)
+    //     .then((response) => {
+    //       // tomamos la cantidad de paginas y la pasamos a la variable a evaluar
+    //       let valuePage = response.data.total_pages;
+    //       // si el valuePage es mayor a 500
+    //       if(valuePage > 500){
+    //         // le asignaremos el valor de 500 a la variable pageNumMax
+    //         pageNumMax.value = 500;
+    //       }else{
+    //         // en caso de que el valor sea menor a 500, se pasara ese valor
+    //         // al pageNumMax
+    //         pageNumMax.value = response.data.total_pages;
+    //       }
+    //     })
+    //     .catch((error) => {
+    //       throw error.message;
+    //     });
+    // });
 
-    onMounted(async () => {
-      setTimeout(async () => {
-        await services.serie_top_rated(getPageRandom(pageNumMax.value, numMin))
-          .then((response) => {
-            // traemos los resultados y los pasamos a una variable array
-            let array = response.data.results;
-            // pasamos el array a un .filter() ya que este contiene elementos
-            // con el poster_path en null, asi que para que no muestre una
-            // imagen vacia en el carrusel se quitaran estos elementos con null
-            data.value = array.filter((item) => {
-                // retornamos todos los elementos que contengan datos en
-              // el poster_path, esto es lo mismo que decir
-              // return item.poster_path != null
-              // que serian todos los elementos que no tengan datos null
-              return item.poster_path;
-            });
-            // cambiamos el estado de la bandera a true una vez que los datos se 
-            // hayan consultado correctamente para visualizar el carrusel de peliculas 
-            flagRenderShadow.value = true;
-          })
-          .catch((error) => {
-            throw error.message;
-          });
-      }, 1000);
-    });
+    // onMounted(async () => {
+    //   setTimeout(async () => {
+    //     await services.serie_top_rated(getPageRandom(pageNumMax.value, numMin))
+    //       .then((response) => {
+    //         // traemos los resultados y los pasamos a una variable array
+    //         let array = response.data.results;
+    //         // pasamos el array a un .filter() ya que este contiene elementos
+    //         // con el poster_path en null, asi que para que no muestre una
+    //         // imagen vacia en el carrusel se quitaran estos elementos con null
+    //         data.value = array.filter((item) => {
+    //             // retornamos todos los elementos que contengan datos en
+    //           // el poster_path, esto es lo mismo que decir
+    //           // return item.poster_path != null
+    //           // que serian todos los elementos que no tengan datos null
+    //           return item.poster_path;
+    //         });
+    //         // cambiamos el estado de la bandera a true una vez que los datos se 
+    //         // hayan consultado correctamente para visualizar el carrusel de peliculas 
+    //         flagRenderShadow.value = true;
+    //       })
+    //       .catch((error) => {
+    //         throw error.message;
+    //       });
+    //   }, 1000);
+    // });
 
     return {
       data,

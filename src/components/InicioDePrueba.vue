@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!flagPromiseData">
+  <div class="container" v-if="!flagPromiseData">
     <!-- los numeros solo representan la variable y su orden de creacion -->
     <!-- NO SU ORDER O POSICION a la hora de mostrar cada componente de peliculas/series -->
 
@@ -201,6 +201,10 @@ export default {
     const dataResp42 = ref(null);
     const dataResp43 = ref(null);
     const dataResp44 = ref(null);
+
+    // "/discover/movie?primary_release_date.gte=2014-09-15&primary_release_date.lte=2022-10-22&language=es-ES"
+    // `/movie/${idSorted.value}/videos?sort_by=popularity.desc`
+    // `/movie/${idSorted.value}/release_dates?`
 
     // consultamos la cantidad de paginas maxima por endpoint puesto que cada uno es diferente
     onMounted(async () => {
@@ -469,5 +473,5 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 </style>

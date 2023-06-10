@@ -103,6 +103,7 @@ export default {
 <style scoped>
 .container_principal {
   position: relative;
+  background-color: #141414;
 }
 
 .cont_video {

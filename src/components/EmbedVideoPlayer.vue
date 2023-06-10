@@ -76,13 +76,7 @@
 <!-- composition API -->
 <script setup>
 import { onMounted, ref, onBeforeMount } from "vue";
-import services from "@/helpers/services/services.js";
-import {
-  getPageRandom,
-  getNumberRandom,
-  getDataMovie,
-} from "@/helpers/js/functions.js";
-import { numMin } from "@/helpers/js/variables.js";
+import { getDataMovie } from "@/helpers/js/functions.js";
 
 /// inicializacion de las variables a usar
 // variable contenedora del reproductor
@@ -90,19 +84,14 @@ const player = ref(null);
 // id del <iframe>
 const playerId = ref(null);
 // variables que contienen los datos de la API
-const dataArray = ref([]);
-const dataSorted = ref([]);
-const idSorted = ref(0);
-const params_movie = ref([]);
+const id_movie = ref(null);
 const movie_key = ref("");
 const movie_title = ref("");
 const movie_overview = ref("");
 const movie_backdrop_link = ref("https://image.tmdb.org/t/p/original");
-const movie_backdrop_key = ref("");
 const movie_backdrop_image = ref("");
 // variables que muestran los datos en pantalla
 const buttons = ref(null);
-const resp_certification = ref(null);
 const resp_cert = ref("");
 const flagCertification = ref(false);
 // contenido de info de las peliculas
@@ -115,64 +104,33 @@ const desmutear = ref(null);
 const reproducir = ref(null);
 // bandera para tener el estado de reproduccion del video
 const flagEstate = ref(null);
-const pageNumMax = ref(null);
 
 // utilizamos el onBeforeMount ya que es el que se renderiza primero dentro del Ciclo de Vida de los componentes
 onBeforeMount(async () => {
-  // console.log("data", getDataMovie());
+  // usamos la funcion creada en el archivo externo y la pasamos a una variable para poder usarla,
+  // en este caso siendo un array solo se captura los datos segun su posicion
   const dataMovie = await getDataMovie();
-  const id_movie = dataMovie[0];
+  // id de la pelicula
+  id_movie.value = dataMovie[0];
+  // imagen de fondo de la pelicula
   const backdrop_key_movie = dataMovie[1];
-  const title_movie = dataMovie[2];
-  const overview_movie = dataMovie[3];
-  const video_key_movie = dataMovie[4];
-  const certification_movie = dataMovie[5];
-  console.log("x", dataMovie);
-  console.log("id", id_movie);
-  console.log("backdrop", backdrop_key_movie);
-  console.log("title", title_movie);
-  console.log("overview", overview_movie);
-  console.log("key_video", video_key_movie);
-  console.log("certification", certification_movie);
-  // console.log("a", idMovie.value);
+  // titulo de la pelicula
+  movie_title.value = dataMovie[2];
+  // sinopsis de la pelicula
+  movie_overview.value = dataMovie[3];
+  // key del trailer de la pelicula
+  movie_key.value = dataMovie[4];
+  // certificacion de la pelicula
+  resp_cert.value = dataMovie[5];
+  // bandera que muestra la certificacion cuando esta esta disponible para mostrarse
+  flagCertification.value = true;
   // tomamos el link anterior y lo unimos al resto de la ruta para generar el link de la imagen completa
   movie_backdrop_image.value = movie_backdrop_link.value + backdrop_key_movie;
   getImageBackground();
-  // setTimeout para esperar .5seg y sincronizar la informacion de la pelicula con la imagen de fondo
-  setTimeout(() => {
-    // capturamos el id del contenedor de los botones
-    buttons.value = document.getElementById("cont_buttons");
-    // hacemos visible los botones
-    buttons.value.style.visibility = "visible";
-    // titulo de la pelicula
-    movie_title.value = title_movie;
-    // sinopsis de la pelicula
-    movie_overview.value = overview_movie;
-    movie_key.value = video_key_movie;
-    resp_cert.value = certification_movie;
-    flagCertification.value = true;
-  }, 250);
-
-
-  setTimeout(async () => {
-    // obtenemos la info de la certificacion(+18, 16, 14, etc.)
-    // await services.movie_certification(idSorted.value)
-    //   .then((response) => {
-    //     resp_certification.value = response.data.results[0].release_dates;
-    //     // obtenemos el valor string de la certificacion
-    //     resp_cert.value = resp_certification.value[0].certification;
-    //     // operador ternario
-    //     // si el contenido de la variable resp_cert que es .certification esta vacia
-    //     // a la variable resp_cert se le pasara el valor "vacio", por el contrario,
-    //     // si la variable ya contiene informacion, esta se retornara con su valor correspondiente
-    //     resp_cert.value === "" ? (resp_cert.value = "vacío") : resp_cert.value;
-    //     // una vez obtenida la info de la certificacion(+18, 16, 14, etc.) esta se muestra en pantalla
-    //     flagCertification.value = true;
-    //   })
-    //   .catch((error) => {
-    //     throw error.message;
-    //   });
-  }, 500);
+  // capturamos el id del contenedor de los botones
+  buttons.value = document.getElementById("cont_buttons");
+  // hacemos visible los botones
+  buttons.value.style.visibility = "visible";
 });
 
 onMounted(() => {
@@ -180,13 +138,9 @@ onMounted(() => {
   playerId.value = "reproductor";
   loadAPI().then(() => {
     checkIfYTLoaded().then(() => {
-      // esperamos a que onBeforeMount obtenga la key
-      //del video para pasarsela a la variable de videoID
-      // si no es asi, la videoID siempre estara vacia, ya que
-      // el reproductor se creara antes de consultar la informacion de la API
       setTimeout(() => {
         createPlayer();
-      }, 4000);
+      }, 1000);
     });
   });
 });

@@ -43,7 +43,8 @@ export default {
 }
 
 .body {
-  background-color: #000;
+  /* color de fondo de Netflix */
+  background-color: #141414;
 }
 
 /* --------------- scrollbar -------------------- */

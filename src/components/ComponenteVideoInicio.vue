@@ -5,10 +5,10 @@
         <div class="info_movie">
           <div class="box-left">
             <div class="title_movie">
-              <h1>{{ titulo }}</h1>
+              <h1>{{ movie_title }}</h1>
             </div>
             <div class="cont_sinopsis">
-              <p id="sinopsis">{{ overview }}</p>
+              <p id="sinopsis">{{ movie_overview }}</p>
             </div>
             <div id="cont_buttons">
               <button class="button_rep">
@@ -37,7 +37,7 @@
               </button>
             </div>
             <div v-if="flagCertification" class="cont-cert">
-              <p>{{ cert }}</p>
+              <p>{{ resp_cert }}</p>
             </div>
           </div>
         </div>
@@ -49,17 +49,10 @@
 </template>
 
 <script>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, onBeforeMount } from "vue";
 import { getDataMovieStartVideo } from "@/helpers/js/functions.js";
 
 export default {
-  props: {
-    title_movie: String,
-    sinopsis_movie: String,
-    certification_movie: String,
-    background_image_movie: String,
-    key_trailer_movie: String,
-  },
   emits: [
     "ready",
     "playing",
@@ -72,8 +65,8 @@ export default {
     "apiChange",
   ],
   // Uncaught ReferenceError: emit is not defined
-  // setup( { emit }) solucion al error de arriba
-  setup(props, { emit }) {
+  // setup( props, { emit }) solucion al error de arriba
+  setup( props, { emit } ) {
     /// inicializacion de las variables a usar
     // variable contenedora del reproductor
     const player = ref(null);
@@ -100,48 +93,43 @@ export default {
     const reproducir = ref(null);
     // bandera para tener el estado de reproduccion del video
     const flagEstate = ref(null);
-    // variables que reciben los valores de las props pasadas a traves del componente padre
-    const titulo = ref('');
-    const overview = ref('');
-    const cert = ref('');
-    const key = ref('');
 
     // utilizamos el onBeforeMount ya que es el que se renderiza primero dentro del Ciclo de Vida de los componentes
-    onMounted(async () => {
+    onBeforeMount(async () => {
       // usamos la funcion creada en el archivo externo y la pasamos a una variable para poder usarla,
       // en este caso siendo un array solo se captura los datos segun su posicion
       const dataMovie = await getDataMovieStartVideo();
       // id de la pelicula
       id_movie.value = dataMovie[0];
       // imagen de fondo de la pelicula
-      const backdrop_key_movie = props.background_image_movie;
-      // creacion del link completo de la imagen de fondo
-      movie_backdrop_image.value = movie_backdrop_link.value + backdrop_key_movie;
+      const backdrop_key_movie = dataMovie[1];
       // titulo de la pelicula
-      titulo.value = props.title_movie;
+      movie_title.value = dataMovie[2];
       // sinopsis de la pelicula
-      overview.value = props.sinopsis_movie;
+      movie_overview.value = dataMovie[3];
       // key del trailer de la pelicula
-      movie_key.value = props.key_trailer_movie;
+      movie_key.value = dataMovie[4];
       // certificacion de la pelicula
-      cert.value = props.certification_movie;
-      // bandera que muestra la certificacion cuando esta esta disponible para mostrarse, ya que algunas veces
-      // la data de certification se envia desde el componente padre pero esta no logra llegar al componente hijo
+      resp_cert.value = dataMovie[5];
+      // bandera que muestra la certificacion cuando esta esta disponible para mostrarse
       flagCertification.value = true;
-
+      // tomamos el link anterior y lo unimos al resto de la ruta para generar el link de la imagen completa
+      movie_backdrop_image.value = movie_backdrop_link.value + backdrop_key_movie;
       getImageBackground();
       // capturamos el id del contenedor de los botones
       buttons.value = document.getElementById("cont_buttons");
       // hacemos visible los botones
       buttons.value.style.visibility = "visible";
+    });
 
+    onMounted(() => {
       // asignar el id al <iframe>
       playerId.value = "reproductor";
       loadAPI().then(() => {
         checkIfYTLoaded().then(() => {
           setTimeout(() => {
             createPlayer();
-          }, 2000);
+          }, 1000);
         });
       });
     });
@@ -395,12 +383,6 @@ export default {
       player.value.pauseVideo();
     }
     /**
-     * @see https://developers.google.com/youtube/iframe_api_reference#stopVideo
-     */
-    function stopVideo() {
-      player.value.stopVideo();
-    }
-    /**
      * @see https://developers.google.com/youtube/iframe_api_reference#mute
      */
     function mute() {
@@ -420,27 +402,6 @@ export default {
       return player.value.isMuted();
     }
     /**
-     * @returns {Number}
-     * @see https://developers.google.com/youtube/iframe_api_reference#getDuration
-     */
-    function getDuration() {
-      return player.value.getDuration();
-    }
-    /**
-     * @returns {Number}
-     * @see https://developers.google.com/youtube/iframe_api_reference#getPlayerState
-     */
-    function getPlayerState() {
-      return player.value.getPlayerState();
-    }
-    /**
-     * @return {Object}
-     * @see https://developers.google.com/youtube/iframe_api_reference#getIframe
-     */
-    function getIframe() {
-      return player.value.getIframe();
-    }
-    /**
      * @param {String} videoId
      * @param {Number} startSeconds
      * @param {Number} endSeconds
@@ -454,11 +415,6 @@ export default {
 
     return {
       flagCertification,
-      title_movie: props.title_movie,
-      sinopsis_movie: props.sinopsis_movie,
-      certification_movie: props.certification_movie,
-      background_image_movie: props.background_image_movie,
-      key_trailer_movie: props.key_trailer_movie,
       movie_title,
       movie_overview,
       playerId,
@@ -472,10 +428,6 @@ export default {
       deactivateVolumeVideo,
       activateVolumeVideo,
       playVideoAgain,
-      titulo,
-      overview,
-      cert,
-      key,
     };
   },
 };

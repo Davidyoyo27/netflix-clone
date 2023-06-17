@@ -1,103 +1,103 @@
 <template>
   <div class="container" v-if="!flagPromiseData">
     <!-- los numeros solo representan la variable y su orden de creacion -->
-    <!-- NO SU ORDER O POSICION a la hora de mostrar cada componente de peliculas/series -->
+    <!-- NO SU ORDEN O POSICION a la hora de mostrar cada componente de peliculas/series -->
 
     <!-- Series emocionantes aclamadas por la crítica -->
-    <componenteCarrusel :title="title1" :arrayData="dataResp1"></componenteCarrusel>
+    <CarruselPelicula :title="title1" :arrayData="dataResp1"></CarruselPelicula>
     <!-- Sugerencias de hoy -->
-    <componenteCarrusel :title="title2" :arrayData="dataResp2"></componenteCarrusel>
+    <CarruselPelicula :title="title2" :arrayData="dataResp2"></CarruselPelicula>
     <!-- Series de suspenso -->
-    <componenteCarrusel :title="title3" :arrayData="dataResp3"></componenteCarrusel>
+    <CarruselPelicula :title="title3" :arrayData="dataResp3"></CarruselPelicula>
     <!-- Películas de anime -->
-    <componenteCarrusel :title="title4" :arrayData="dataResp4"></componenteCarrusel>
+    <CarruselPelicula :title="title4" :arrayData="dataResp4"></CarruselPelicula>
     <!-- Películas de Hollywood para reír -->
-    <componenteCarrusel :title="title5" :arrayData="dataResp5"></componenteCarrusel>
+    <CarruselPelicula :title="title5" :arrayData="dataResp5"></CarruselPelicula>
     <!-- Series anime shonen -->
-    <componenteCarrusel :title="title26" :arrayData="dataResp26"></componenteCarrusel>
+    <CarruselPelicula :title="title26" :arrayData="dataResp26"></CarruselPelicula>
     <!-- Ciencia Ficción y Fantasía imaginativa de acción -->
-    <componenteCarrusel :title="title6" :arrayData="dataResp6"></componenteCarrusel>
+    <CarruselPelicula :title="title6" :arrayData="dataResp6"></CarruselPelicula>
     <!-- Lanzamientos del último año -->
-    <componenteCarrusel :title="title7" :arrayData="dataResp7"></componenteCarrusel>
+    <CarruselPelicula :title="title7" :arrayData="dataResp7"></CarruselPelicula>
     <!-- Las 10 películas más populares en Chile hoy -->
-    <componenteCarruselTop10 :title="titleTopMovie" :arrayData="dataResp43"></componenteCarruselTop10>
+    <CarruselTop10 :title="titleTopMovie" :arrayData="dataResp43"></CarruselTop10>
     <!-- Proximos estrenos -->
-    <componenteCarrusel :title="title8" :arrayData="dataResp8"></componenteCarrusel>
+    <CarruselPelicula :title="title8" :arrayData="dataResp8"></CarruselPelicula>
     <!-- Telenovelas -->
-    <componenteCarrusel :title="title34" :arrayData="dataResp34"></componenteCarrusel>
+    <CarruselPelicula :title="title34" :arrayData="dataResp34"></CarruselPelicula>
     <!-- Películas de animación -->
-    <componenteCarrusel :title="title9" :arrayData="dataResp9"></componenteCarrusel>
+    <CarruselPelicula :title="title9" :arrayData="dataResp9"></CarruselPelicula>
     <!-- Películas de acción -->
-    <componenteCarrusel :title="title10" :arrayData="dataResp10"></componenteCarrusel>
+    <CarruselPelicula :title="title10" :arrayData="dataResp10"></CarruselPelicula>
     <!-- Series anime comedia -->
-    <componenteCarrusel :title="title27" :arrayData="dataResp27"></componenteCarrusel>
+    <CarruselPelicula :title="title27" :arrayData="dataResp27"></CarruselPelicula>
     <!-- Películas documentales -->
-    <componenteCarrusel :title="title11" :arrayData="dataResp11"></componenteCarrusel>
+    <CarruselPelicula :title="title11" :arrayData="dataResp11"></CarruselPelicula>
     <!-- Series anime de crimen -->
-    <componenteCarrusel :title="title28" :arrayData="dataResp28"></componenteCarrusel>
+    <CarruselPelicula :title="title28" :arrayData="dataResp28"></CarruselPelicula>
     <!-- Películas documentales de EEUU -->
-    <componenteCarrusel :title="title12" :arrayData="dataResp12"></componenteCarrusel>
+    <CarruselPelicula :title="title12" :arrayData="dataResp12"></CarruselPelicula>
     <!-- Películas de romance -->
-    <componenteCarrusel :title="title14" :arrayData="dataResp14"></componenteCarrusel>
+    <CarruselPelicula :title="title14" :arrayData="dataResp14"></CarruselPelicula>
     <!-- Series anime de drama -->
-    <componenteCarrusel :title="title29" :arrayData="dataResp29"></componenteCarrusel>
+    <CarruselPelicula :title="title29" :arrayData="dataResp29"></CarruselPelicula>
     <!-- TV infantil y familiar -->
-    <componenteCarrusel :title="title35" :arrayData="dataResp35"></componenteCarrusel>
+    <CarruselPelicula :title="title35" :arrayData="dataResp35"></CarruselPelicula>
     <!-- Películas de misterio -->
-    <componenteCarrusel :title="title15" :arrayData="dataResp15"></componenteCarrusel>
+    <CarruselPelicula :title="title15" :arrayData="dataResp15"></CarruselPelicula>
     <!-- Series de Sci-Fi y Fantasía -->
-    <componenteCarrusel :title="title33" :arrayData="dataResp33"></componenteCarrusel>
+    <CarruselPelicula :title="title33" :arrayData="dataResp33"></CarruselPelicula>
     <!-- Películas de música -->
-    <componenteCarrusel :title="title16" :arrayData="dataResp16"></componenteCarrusel>
+    <CarruselPelicula :title="title16" :arrayData="dataResp16"></CarruselPelicula>
     <!-- Las 10 series más populares en Chile hoy -->
-    <componenteCarruselTop10 :title="titleTopSerie" :arrayData="dataResp44"></componenteCarruselTop10>
+    <CarruselTop10 :title="titleTopSerie" :arrayData="dataResp44"></CarruselTop10>
     <!-- Películas de terror -->
-    <componenteCarrusel :title="title17" :arrayData="dataResp17"></componenteCarrusel>
+    <CarruselPelicula :title="title17" :arrayData="dataResp17"></CarruselPelicula>
     <!-- Series anime de misterio -->
-    <componenteCarrusel :title="title30" :arrayData="dataResp30"></componenteCarrusel>
+    <CarruselPelicula :title="title30" :arrayData="dataResp30"></CarruselPelicula>
     <!-- Series anime de sci-fi y fantasía -->
-    <componenteCarrusel :title="title31" :arrayData="dataResp31"></componenteCarrusel>
+    <CarruselPelicula :title="title31" :arrayData="dataResp31"></CarruselPelicula>
     <!-- Películas de historia -->
-    <componenteCarrusel :title="title18" :arrayData="dataResp18"></componenteCarrusel>
+    <CarruselPelicula :title="title18" :arrayData="dataResp18"></CarruselPelicula>
     <!-- Películas sobre crimenes -->
-    <componenteCarrusel :title="title13" :arrayData="dataResp13"></componenteCarrusel>
+    <CarruselPelicula :title="title13" :arrayData="dataResp13"></CarruselPelicula>
     <!-- Series de guerra y politica -->
-    <componenteCarrusel :title="title42" :arrayData="dataResp42"></componenteCarrusel>
+    <CarruselPelicula :title="title42" :arrayData="dataResp42"></CarruselPelicula>
     <!-- Películas para ver en familia -->
-    <componenteCarrusel :title="title19" :arrayData="dataResp19"></componenteCarrusel>
+    <CarruselPelicula :title="title19" :arrayData="dataResp19"></CarruselPelicula>
     <!-- Películas de drama -->
-    <componenteCarrusel :title="title20" :arrayData="dataResp20"></componenteCarrusel>
+    <CarruselPelicula :title="title20" :arrayData="dataResp20"></CarruselPelicula>
     <!-- Series de crimen -->
-    <componenteCarrusel :title="title39" :arrayData="dataResp39"></componenteCarrusel>
+    <CarruselPelicula :title="title39" :arrayData="dataResp39"></CarruselPelicula>
     <!-- Películas de anime romanticas -->
-    <componenteCarrusel :title="title21" :arrayData="dataResp21"></componenteCarrusel>
+    <CarruselPelicula :title="title21" :arrayData="dataResp21"></CarruselPelicula>
     <!-- Series documentales -->
-    <componenteCarrusel :title="title40" :arrayData="dataResp40"></componenteCarrusel>
+    <CarruselPelicula :title="title40" :arrayData="dataResp40"></CarruselPelicula>
     <!-- Películas de TV -->
-    <componenteCarrusel :title="title22" :arrayData="dataResp22"></componenteCarrusel>
+    <CarruselPelicula :title="title22" :arrayData="dataResp22"></CarruselPelicula>
     <!-- Películas de suspenso -->
-    <componenteCarrusel :title="title23" :arrayData="dataResp23"></componenteCarrusel>
+    <CarruselPelicula :title="title23" :arrayData="dataResp23"></CarruselPelicula>
     <!-- Series occidentales de acción y aventura -->
-    <componenteCarrusel :title="title37" :arrayData="dataResp37"></componenteCarrusel>
+    <CarruselPelicula :title="title37" :arrayData="dataResp37"></CarruselPelicula>
     <!-- Series anime japonesas -->
-    <componenteCarrusel :title="title32" :arrayData="dataResp32"></componenteCarrusel>
+    <CarruselPelicula :title="title32" :arrayData="dataResp32"></CarruselPelicula>
     <!-- Películas occidentales -->
-    <componenteCarrusel :title="title25" :arrayData="dataResp25"></componenteCarrusel>
+    <CarruselPelicula :title="title25" :arrayData="dataResp25"></CarruselPelicula>
     <!-- Series de comedia -->
-    <componenteCarrusel :title="title38" :arrayData="dataResp38"></componenteCarrusel>
+    <CarruselPelicula :title="title38" :arrayData="dataResp38"></CarruselPelicula>
     <!-- Películas belicas/guerra -->
-    <componenteCarrusel :title="title24" :arrayData="dataResp24"></componenteCarrusel>
+    <CarruselPelicula :title="title24" :arrayData="dataResp24"></CarruselPelicula>
     <!-- Series de misterio -->
-    <componenteCarrusel :title="title41" :arrayData="dataResp41"></componenteCarrusel>
+    <CarruselPelicula :title="title41" :arrayData="dataResp41"></CarruselPelicula>
     <!-- Series de animacion occidental -->
-    <componenteCarrusel :title="title36" :arrayData="dataResp36"></componenteCarrusel>
+    <CarruselPelicula :title="title36" :arrayData="dataResp36"></CarruselPelicula>  
   </div>
 </template>
 
 <script>
-import { ref, onMounted, provide } from "vue";
-import componenteCarrusel from "@/components/categoria_peliculas/ComponenteCarruselPeliculas";
-import componenteCarruselTop10 from "@/components/categoria_peliculas/CarruselTop10"
+import { ref, onMounted } from "vue";
+import CarruselPelicula from "@/components/categoria_peliculas/CarruselPelicula";
+import CarruselTop10 from "@/components/categoria_peliculas/CarruselTop10";
 import services from "@/helpers/services/services";
 import { numMin, numMax500, numMax290, numMax200, numMax100, numMax40, numMax20, numMax10 } from "@/helpers/js/variables.js";
 import { getPageRandom } from "@/helpers/js/functions.js";
@@ -105,12 +105,11 @@ import { getDateMovieReleaseLastYear } from "@/helpers/js/functions";
 
 export default {
   components: {
-    componenteCarrusel,
-    componenteCarruselTop10,
+    CarruselPelicula,
+    CarruselTop10,
   },
   setup() {
     const flagPromiseData = ref(true);
-    const cantNumbersXComponents = ref(null);
     // titulos de carrusels
     const title1 = ref("Series emocionantes aclamadas por la crítica");
     const title2 = ref("Sugerencias de hoy");
@@ -202,12 +201,7 @@ export default {
     const dataResp43 = ref(null);
     const dataResp44 = ref(null);
 
-    // "/discover/movie?primary_release_date.gte=2014-09-15&primary_release_date.lte=2022-10-22&language=es-ES"
-    // `/movie/${idSorted.value}/videos?sort_by=popularity.desc`
-    // `/movie/${idSorted.value}/release_dates?`
-
-    // consultamos la cantidad de paginas maxima por endpoint puesto que cada uno es diferente
-    onMounted(async () => {
+    async function getDataServicesMovies() {
       const response = await Promise.all([
         // UNA VEZ COMPLETO LO DE LOS SERVICIOS VER LO DE LA SEPARACION DE ELLOS POR PAGINAS
         // cant paginas max
@@ -300,27 +294,28 @@ export default {
         // 2
         services.get_movie_services(getPageRandom(2, numMin),'/discover/tv?region=CL&language=es-MX&sort_by=popularity.desc&vote_average.gte=8&vote_count.gte=5000'),
       ]);
+      return response;
+    }
 
-      // asignamos el valor del largo de la respuesta a las consultas para saber cuantas peticiones a distintos endpoints se hicieron
-      // y por ende cuantos componentes de carruseles se generaron por ello
-      cantNumbersXComponents.value = response.length;
-      
+    // consultamos la cantidad de paginas maxima por endpoint puesto que cada uno es diferente
+    onMounted(async () => {
+      const response = await getDataServicesMovies();
       // tomamos la respuesta del servicio de response y 
       dataResp1.value = response[0].data.results
       // le pasamos un filter, esto ya que algunas imagenes del poster_path vienen vacias, osea null
       // por ende el filter retornara todos los items.poster_path que sean diferentes a null
       .filter((item) => item.poster_path !== null)
       // finalmente usamos el .map() para tomar esos elementos del array y crear un objeto para
-        // pasarlo con las siguientes propiedades
-        // {
-        //   poster_path: link_imagen,
-        //   name: nombre_imagen
-        // }
+      // pasarlo con las siguientes propiedades
+      // {
+      //   poster_path: link_imagen,
+      //   name: nombre_imagen
+      // }
       .map((item) => { 
         // retornamos el objeto
         return { poster_path: item.poster_path, name: item.name }; 
       });
-      dataResp2.value = response[1].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });      
+      dataResp2.value = response[1].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });  
       dataResp3.value = response[2].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });      
       dataResp4.value = response[3].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });      
       dataResp5.value = response[4].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });      
@@ -368,15 +363,6 @@ export default {
 
       flagPromiseData.value = false;
     });
-
-    // utilizamos el provide/inject para enviar variables hacia otro componente que no sea pasandolo como prop directamente al componente hijo
-    // provide: Envio de la informacion (provee de la data a enviar)
-    // inject: Recibe la informacion  (se injecta la data recibida)
-    //      nombre de la data enviada
-    //                                variable que contiene la data a enviar
-    //                      IMPORTANTE: al enviar la data notar que no se debe usar el .value que se usa en el setup(), ya que esto genera un error
-    // NOTA: no se necesita pasar al return la variable que se usara con provide
-    provide('cantElementsNavigation', cantNumbersXComponents);
 
     return {
       flagPromiseData,
@@ -472,6 +458,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-</style>

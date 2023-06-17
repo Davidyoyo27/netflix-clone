@@ -1,62 +1,13 @@
-  // // endpoint del video inicial al cargar en el inicio de la pagina
-  // movie_video_start: async (id_pelicula) => {
-  //   try {
-  //     const axiosConfig = {
-  //       baseURL: baseURLmoviedb,
-  //       url: `/movie/${id_pelicula}/videos?sort_by=popularity.desc`,
-
-  //       headers: {
-  //         Authorization: `Bearer ${ACCESS_TOKEN}`,
-  //       },
-
-  //       method: "get",
-  //       params: {
-  //         // name: variable
-  //         id_pelicula: id_pelicula,
-  //       },
-  //     };
-
-  //     const respuesta = await axios.request(axiosConfig);
-  //     return { ok: true, data: respuesta.data };
-  //   } catch (err) {
-  //     return { ok: false, error: err.message };
-  //   }
-  // },
-
-  // // trae la certificacion de la pelicula EJ: para mayores de 18 años, 16, 14, 10, etc.
-  // movie_certification: async (id_pelicula) => {
-  //   try {
-  //     const axiosConfig = {
-  //       baseURL: baseURLmoviedb,
-  //       url: `/movie/${id_pelicula}/release_dates?`,
-
-  //       headers: {
-  //         Authorization: `Bearer ${ACCESS_TOKEN}`,
-  //       },
-
-  //       method: "get",
-  //       params: {
-  //         id_pelicula: id_pelicula,
-  //       },
-  //     };
-
-  //     const respuesta = await axios.request(axiosConfig);
-  //     return { ok: true, data: respuesta.data };
-  //   } catch (err) {
-  //     return { ok: false, error: err.message };
-  //   }
-  // },
-
 import axios from "axios";
-import { baseURLmoviedb, ACCESS_TOKEN } from "../js/variables";
+import { BASE_URL_MOVIEDB, ACCESS_TOKEN } from "../js/variables";
 
 export default {
-  // /movie/${id_pelicula}/videos?sort_by=popularity.desc
-  // /movie/${id_pelicula}/release_dates?
+  // endpoint video pagina inicio
+  // endpoint para obtener la key del trailer de la pelicula y la certificacion
   get_data_movie_video_start: async (url) => {
     try {
       const axiosConfig = {
-        baseURL: baseURLmoviedb,
+        baseURL: BASE_URL_MOVIEDB,
         url,
 
         headers: {
@@ -64,10 +15,6 @@ export default {
         },
 
         method: "get",
-        // params: {
-        //   // name: variable
-        //   id_pelicula: id_pelicula,
-        // },
       };
 
       const { data } = await axios.request(axiosConfig);
@@ -87,7 +34,7 @@ export default {
   get_movie_services: async (page, url) => {
     try {
       const axiosConfig = {
-        baseURL: baseURLmoviedb,
+        baseURL: BASE_URL_MOVIEDB,
         url,
 
         headers: {

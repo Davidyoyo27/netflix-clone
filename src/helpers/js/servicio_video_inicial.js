@@ -5,27 +5,21 @@ import { numMin } from "@/helpers/js/variables.js";
 // max: 500, min: 1
 // estos valores son la cantidad de paginas de la API
 function getPageRandom(max, min) {
-  return Math.floor(Math.random() * (max - min) + min);
+    return Math.floor(Math.random() * (max - min) + min);
 }
-
+  
 // funcion para mezclar el array aleatoriamente con el sort
 function getNumberRandom() {
-  return 0.5 - Math.random();
-}
-
-// funcion que obtiene la fecha de año anterior para pasarsela al endpoint
-function getDateMovieReleaseLastYear() {
-  const date = new Date();
-  const dateYear = date.getFullYear() - 1;
-  return dateYear;
+    return 0.5 - Math.random();
 }
 
 // funcion que toma los endpoints para extraer los datos necesarios para enviarlos al componente EmbedVideoPlayer
 // y crear el video del inicio de la aplicacion
-async function getDataMovieStartVideo() {
+async function getDataMovie() {
   try {
     // tomamos el endpoint para extraer los datos de una pelicula extraida de una pagina al azar
-    const response = await services.get_movie_services(getPageRandom(500, numMin),"/discover/movie?primary_release_date.gte=2014-09-15&primary_release_date.lte=2022-10-22&language=es-ES");
+    const response = await services.get_movie_services(getPageRandom(500, numMin), "/discover/movie?primary_release_date.gte=2014-09-15&primary_release_date.lte=2022-10-22&language=es-ES");
+    console.log(response);
     // si la peticion no es exitosa se mostrara el error
     if (!response.ok) {
       throw new Error(`HTTP error: ${response.status}`);
@@ -66,10 +60,10 @@ async function getDataMovieStartVideo() {
 
       // usamos Array.isArray() para saber si la variable que se consulta es un arreglo
       // resultServiceOne.length > 0 es para verificar que el arreglo no este vacio
-      if(Array.isArray(resultServiceOne) && resultServiceOne.length > 0){
+      if (Array.isArray(resultServiceOne) && resultServiceOne.length > 0) {
         // si se cumple la condicion pasamos el contenido de la key a la variable
         keyTrailer = responsePromise[0].data.results[0].key;
-      }else{
+      } else {
         // en caso de que no exista una key o esta este vacio se enviara esa informacion a la variable
         keyTrailer = "No hay key del trailer";
       }
@@ -79,25 +73,28 @@ async function getDataMovieStartVideo() {
       // variable que contendra la certificacion
       let certification;
 
-      if(Array.isArray(resultServiceTwo) && resultServiceTwo.length > 0){
+      if (Array.isArray(resultServiceTwo) && resultServiceTwo.length > 0) {
         const respCertification = responsePromise[1].data.results[0].release_dates[0].certification;
-        // si la key certification no esta vacia se envia a la variable "certification", en caso de que 
+        // si la key certification no esta vacia se envia a la variable "certification", en caso de que
         // este vacia se enviara "Vacío" a la variable
-        certification = (respCertification != '') ? respCertification : "Vacío";
+        certification = (respCertification != "") ? respCertification : "Vacío";
       }
 
+    //   console.log(
+    //     movieId,
+    //     movieBackdropKey,
+    //     movieTitle,
+    //     movieOverview,
+    //     keyTrailer,
+    //     certification
+    //   );
       // finalmente retornamos todas las variables con los datos de los endpoints para ser consumidos en el EmbedVideoPlayer
       // y generar el video en el inicio de la pagina de Netflix
-      return [movieId, movieBackdropKey, movieTitle, movieOverview, keyTrailer, certification];
+      return [ movieId, movieBackdropKey, movieTitle, movieOverview, keyTrailer, certification ]
     }
   } catch (error) {
     throw error.message;
   }
 }
 
-export {
-  getPageRandom,
-  getNumberRandom,
-  getDateMovieReleaseLastYear,
-  getDataMovieStartVideo,
-};
+export default getDataMovie

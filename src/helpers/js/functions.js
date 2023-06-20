@@ -1,5 +1,5 @@
 import services from "../services/services";
-import { numMin } from "@/helpers/js/variables.js";
+import { numMin, numMax500, numMax290, numMax200, numMax100, numMax40, numMax20, numMax10 } from "@/helpers/js/variables.js";
 
 // generamos un numero random entre una cantidad especifica
 // max: 500, min: 1
@@ -20,7 +20,7 @@ function getDateMovieReleaseLastYear() {
   return dateYear;
 }
 
-// funcion que toma los endpoints para extraer los datos necesarios para enviarlos al componente EmbedVideoPlayer
+// funcion que toma los endpoints para extraer los datos necesarios para enviarlos al componente ComponenteVideoInicio.vue
 // y crear el video del inicio de la aplicacion
 async function getDataMovieStartVideo() {
   try {
@@ -95,9 +95,112 @@ async function getDataMovieStartVideo() {
   }
 }
 
+// funcion que consulta a los distintos endpoints para obtener la data que sera enviada al componente CarruselPelicula.vue
+async function getDataServicesMovies() {
+  // utilizamos el Promise.all([]) al cual le pasaremos todos los endpoints, que en este caso seria el mismo endpoint con sus respectivos filtros
+  // que apuntan a un endpoint diferente segun el tipo de pelicula/serie al cual se desea acceder, el resultado final seria todas las peticiones de 
+  // estos servicios en un array que se almacenarian en la variable response
+  const response = await Promise.all([
+    // UNA VEZ COMPLETO LO DE LOS SERVICIOS VER LO DE LA SEPARACION DE ELLOS POR PAGINAS
+    // cant paginas max
+    // 144
+    services.get_movie_services(getPageRandom(numMax100, numMin),'/tv/top_rated?language=es-MX'),
+    // 7504
+    services.get_movie_services(getPageRandom(numMax500, numMin),'/tv/popular?language=es-MX'),
+    // 239
+    services.get_movie_services(getPageRandom(numMax200, numMin),'/discover/tv?language=es-MX&sort_by=popularity.desc&with_genres=9648&primary_release_date.gte=2000'),
+    // 56
+    services.get_movie_services(getPageRandom(numMax40, numMin),'/discover/movie?language=es-MX&with_genres=16&with_keywords=210024|287501&primary_release_date.gte=2000'),
+    // 2176
+    services.get_movie_services(getPageRandom(numMax500, numMin),'/discover/movie?with_genres=35&language=es-MX&without_genres=16&primary_release_date.gte=2010'),
+    // 574
+    services.get_movie_services(getPageRandom(numMax500, numMin),'/discover/movie?with_genres=14 | 878&language=es-MX&without_keywords=210024&primary_release_date.gte=2010&without_genres=16|27'),
+    // 12
+    services.get_movie_services(getPageRandom(numMax10, numMin),`/discover/movie?sort_by=popularity.desc&vote_average.gte=7&vote_average.lte=10&vote_count.gte=100&language=es-MX&primary_release_date.gte=${getDateMovieReleaseLastYear()}`),
+    // 12
+    services.get_movie_services(getPageRandom(numMax10, numMin),'/movie/upcoming?language=es-MX'),
+    // 945
+    services.get_movie_services(getPageRandom(numMax500, numMin),'/discover/movie?with_genres=16&language=es-MX&without_keywords=210024&primary_release_date.gte=2010'),
+    // 957
+    services.get_movie_services(getPageRandom(numMax500, numMin),'/discover/movie?with_genres=28&language=es-MX&primary_release_date.gte=2000'),
+    // 4727
+    services.get_movie_services(getPageRandom(numMax500, numMin),'/discover/movie?with_genres=99&language=es-MX&primary_release_date.gte=2000'),
+    // 3
+    services.get_movie_services(getPageRandom(3, numMin),'/discover/movie?language=es-MX&sort_by=popularity.desc&primary_release_year=2020&with_original_language=au|ca|gb|ie|nz|us'),
+    // 666
+    services.get_movie_services(getPageRandom(numMax500, numMin),'/discover/movie?with_genres=80&language=es-MX&primary_release_date.gte=2000'),
+    // 909
+    services.get_movie_services(getPageRandom(numMax500, numMin),'/discover/movie?with_genres=10749&language=es-MX&without_genres=16&primary_release_date.gte=2010'),
+    // 296
+    services.get_movie_services(getPageRandom(numMax290, numMin),'/discover/movie?with_genres=9648&language=es-MX&without_genres=27&primary_release_date.gte=2010'),
+    // 734
+    services.get_movie_services(getPageRandom(numMax500, numMin),'/discover/movie?with_genres=10402&language=es-MX&primary_release_date.gte=2010'),
+    // 1131
+    services.get_movie_services(getPageRandom(numMax500, numMin),'/discover/movie?with_genres=27&language=es-MX&primary_release_date.gte=2010'),
+    // 301
+    services.get_movie_services(getPageRandom(numMax290, numMin),'/discover/movie?with_genres=36&language=es-MX&primary_release_date.gte=2010'),
+    // 453
+    services.get_movie_services(getPageRandom(numMax290, numMin),'/discover/movie?with_genres=10751&language=es-MX&primary_release_date.gte=2010'),
+    // 4013
+    services.get_movie_services(getPageRandom(numMax500, numMin),'/discover/movie?with_genres=18&language=es-MX&primary_release_date.gte=2010'),
+    // 6
+    services.get_movie_services(getPageRandom(6, numMin),'/discover/movie?with_genres=10749&language=es-MX&with_keywords=210024&primary_release_date.gte=2010'),
+    // 1020
+    services.get_movie_services(getPageRandom(numMax500, numMin),'/discover/movie?with_genres=10770&language=es-MX'),
+    // 1945
+    services.get_movie_services(getPageRandom(numMax500, numMin),'/discover/movie?with_genres=53&language=es-MX'),
+    // 463
+    services.get_movie_services(getPageRandom(numMax290, numMin),'/discover/movie?with_genres=10752&language=es-MX'),
+    // 46
+    services.get_movie_services(getPageRandom(numMax40, numMin),'/discover/movie?with_genres=37&language=es-MX&primary_release_date.gte=2010'),
+    // 61
+    services.get_movie_services(getPageRandom(numMax40, numMin),'/discover/tv?language=es-MX&sort_by=popularity.desc&with_genres=10759&with_keywords=210024|287501'),
+    // 50
+    services.get_movie_services(getPageRandom(numMax40, numMin),'/discover/tv?language=es-MX&sort_by=popularity.desc&with_genres=35&with_keywords=210024|287501&without_genres=10759'),
+    // 4
+    services.get_movie_services(getPageRandom(4, numMin),'/discover/tv?language=es-MX&sort_by=popularity.desc&with_genres=80&with_keywords=210024|287501'),
+    // 28
+    services.get_movie_services(getPageRandom(numMax20, numMin),'/discover/tv?language=es-MX&sort_by=popularity.desc&with_genres=18&with_keywords=210024|287501&without_genres=10759'),
+    // 12
+    services.get_movie_services(getPageRandom(numMax10, numMin),'/discover/tv?language=es-MX&sort_by=popularity.desc&with_genres=9648&with_keywords=210024|287501'),
+    // 25
+    services.get_movie_services(getPageRandom(numMax20, numMin),'/discover/tv?language=es-MX&sort_by=popularity.desc&with_genres=10765&with_keywords=210024|287501&without_genres=10759'),
+    // 152
+    services.get_movie_services(getPageRandom(numMax100, numMin),'/discover/tv?language=es-MX&with_keywords=210024'),
+    // 291
+    services.get_movie_services(getPageRandom(numMax290, numMin),'/discover/tv?language=es-MX&sort_by=popularity.desc&with_genres=10765'),
+    // 20
+    services.get_movie_services(getPageRandom(numMax20, numMin),'/discover/tv?language=es-MX&with_keywords=199262'),
+    // 9
+    services.get_movie_services(getPageRandom(9, numMin),'/discover/tv?language=es-MX&sort_by=popularity.desc&with_genres=10751|10762&with_keywords=210024|287501&primary_release_date.gte=2000'),
+    // 300
+    services.get_movie_services(getPageRandom(numMax290, numMin),'/discover/tv?language=es-MX&sort_by=popularity.desc&with_genres=37|16&without_genres=10759&without_keywords=210024'),
+    // 290
+    services.get_movie_services(getPageRandom(numMax290, numMin),'/discover/tv?language=es-MX&sort_by=popularity.desc&with_genres=37|10759&without_keywords=210024'),
+    // 1018
+    services.get_movie_services(getPageRandom(numMax500, numMin),'/discover/tv?language=es-MX&sort_by=popularity.desc&with_genres=37|35&without_keywords=210024'),
+    // 316
+    services.get_movie_services(getPageRandom(numMax290, numMin),'/discover/tv?language=es-MX&sort_by=popularity.desc&with_genres=37|80&without_genres=10765&without_keywords=210024'),
+    // 901
+    services.get_movie_services(getPageRandom(numMax500, numMin),'/discover/tv?language=es-MX&sort_by=popularity.desc&with_genres=37|99&without_genres=10765|18|10762|10751|16|10759|35|10767&without_keywords=210024'),
+    // 243
+    services.get_movie_services(getPageRandom(numMax200, numMin),'/discover/tv?language=es-MX&sort_by=popularity.desc&with_genres=37|9648&without_keywords=210024'),
+    // 77
+    services.get_movie_services(getPageRandom(numMax40, numMin),'/discover/tv?language=es-MX&sort_by=popularity.desc&with_genres=10768&without_keywords=210024'),
+    // 2
+    services.get_movie_services(getPageRandom(2, numMin),'/discover/movie?region=CL&language=es-MX&sort_by=popularity.desc&vote_average.gte=8&vote_count.gte=5000'),
+    // 2
+    services.get_movie_services(getPageRandom(2, numMin),'/discover/tv?region=CL&language=es-MX&sort_by=popularity.desc&vote_average.gte=8&vote_count.gte=5000'),
+  ]);
+
+  // retornamos la data rescatada en la variable response a la funcion
+  return response;
+}
+
 export {
   getPageRandom,
   getNumberRandom,
   getDateMovieReleaseLastYear,
   getDataMovieStartVideo,
+  getDataServicesMovies,
 };

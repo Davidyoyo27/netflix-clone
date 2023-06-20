@@ -211,7 +211,6 @@ export default {
           autoplay: 0,
           controls: 0,
           disablekb: 1,
-          enableapi: 1,
         },
         events: {
           onReady: onPlayerReady,

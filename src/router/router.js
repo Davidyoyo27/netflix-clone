@@ -9,15 +9,16 @@ const routes = [
     //                                  se tendran muchas descargas pequeñas
     //                      () => import ()
     //                               nombre que se vera en navegador red/network   ruta de la pagina
-    { path: '/', component: () => import(/* webpackChunkName: "Inicio.vue" */ '../components/Inicio')},
-    { path: '/series', component: () => import(/* webpackChunkName: "Series.vue" */ '../components/Series')},
-    { path: '/peliculas', component: () => import(/* webpackChunkName: "Peliculas.vue" */ '../components/Peliculas')},
-    { path: '/novedades', component: () => import(/* webpackChunkName: "Novedades.vue" */ '../components/Novedades') },
-    { path: '/mi_lista', component: () => import(/* webpackChunkName: "MiLista.vue" */ '../components/MiLista') },
-    { path: '/explora_por_idiomas', component: () => import(/* webpackChunkName: "ExploraIdiomas.vue" */ '../components/ExploraIdiomas') },
+    { path: '/', name: '/',component: () => import(/* webpackChunkName: "Inicio.vue" */ '../components/Inicio')},
+    { path: '/series', name: 'series',component: () => import(/* webpackChunkName: "Series.vue" */ '../components/Series')},
+    { path: '/peliculas', name: 'peliculas',component: () => import(/* webpackChunkName: "Peliculas.vue" */ '../components/Peliculas')},
+    { path: '/novedades', name: 'novedades',component: () => import(/* webpackChunkName: "Novedades.vue" */ '../components/Novedades') },
+    { path: '/mi_lista', name: 'mi_lista',component: () => import(/* webpackChunkName: "MiLista.vue" */ '../components/MiLista') },
+    { path: '/explora_por_idiomas', name: 'explora_por_idiomas',component: () => import(/* webpackChunkName: "ExploraIdiomas.vue" */ '../components/ExploraIdiomas') },
     // ----------------------------------------------------------------------------------------------------------------
     // componente prueba
     { path: '/prueba_carruseles', component: () => import(/* webpackChunkName: "ColeccionCarruselesPeliculas.vue" */ '../components/ColeccionCarruselesPeliculas') },
+    { path: '/visualizar_busqueda_pelicula', name: 'resultado_busqueda_pelicula',component: () => import(/* webpackChunkName: "VisualizarBusquedaPelicula.vue" */ '../components/VisualizarBusquedaPelicula') },
     // ----------------------------------------------------------------------------------------------------------------
     // page 404 Not Found
     // se busca cualquier url que no tenga match con los especificados aca en las rutas

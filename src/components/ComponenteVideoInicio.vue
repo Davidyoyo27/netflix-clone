@@ -36,7 +36,7 @@
                 <font-awesome-icon icon="fa-solid fa-rotate-right" />
               </button>
             </div>
-            <div v-if="flagCertification" class="cont-cert">
+            <div v-if="flagVisualizationState" class="cont-cert">
               <p>{{ resp_cert }}</p>
             </div>
           </div>
@@ -44,13 +44,13 @@
       </div>
     </div>
     <!-- 1. The <iframe> (and video player) will replace this <div> tag. -->
-    <div ref="youtube" :id="playerId"></div>
+    <div v-if="flagVisualizationState" ref="youtube" :id="playerId"></div>
   </div>
 </template>
 
 <script>
-import { ref, onMounted, onBeforeMount } from "vue";
-import { getDataMovieStartVideo } from "@/helpers/js/functions.js";
+import { ref, onMounted } from "vue";
+import { getDataMovieStartVideo } from "@/helpers/js/functions";
 
 export default {
   emits: [
@@ -66,7 +66,7 @@ export default {
   ],
   // Uncaught ReferenceError: emit is not defined
   // setup( props, { emit }) solucion al error de arriba
-  setup( props, { emit } ) {
+  setup(props, { emit }) {
     /// inicializacion de las variables a usar
     // variable contenedora del reproductor
     const player = ref(null);
@@ -82,20 +82,22 @@ export default {
     // variables que muestran los datos en pantalla
     const buttons = ref(null);
     const resp_cert = ref("");
-    const flagCertification = ref(false);
+    const flagVisualizationState = ref(false);
     // contenido de info de las peliculas
     const cont_info_movie = ref(null);
     const cont_img = ref(null);
     const sinopsis = ref(null);
     // botones de accion de silenciar/activar sonido/reproducir
-    const mutear = ref(null);
-    const desmutear = ref(null);
+    const volume_off = ref(null);
+    const volume_on = ref(null);
     const reproducir = ref(null);
     // bandera para tener el estado de reproduccion del video
-    const flagEstate = ref(null);
+    const flagEstateVideo = ref(null);
+    // variables con la cantidad de segundos en que inicia y termina el trailer de la pelicula
+    const startSecondsVideo = ref(7);
+    const endSecondsVideo = ref(65);
 
-    // utilizamos el onBeforeMount ya que es el que se renderiza primero dentro del Ciclo de Vida de los componentes
-    onBeforeMount(async () => {
+    onMounted( async () => {
       // usamos la funcion creada en el archivo externo y la pasamos a una variable para poder usarla,
       // en este caso siendo un array solo se captura los datos segun su posicion
       const dataMovie = await getDataMovieStartVideo();
@@ -103,6 +105,8 @@ export default {
       id_movie.value = dataMovie[0];
       // imagen de fondo de la pelicula
       const backdrop_key_movie = dataMovie[1];
+      // tomamos el link anterior y lo unimos al resto de la ruta para generar el link de la imagen completa
+      movie_backdrop_image.value = movie_backdrop_link.value + backdrop_key_movie;
       // titulo de la pelicula
       movie_title.value = dataMovie[2];
       // sinopsis de la pelicula
@@ -112,34 +116,27 @@ export default {
       // certificacion de la pelicula
       resp_cert.value = dataMovie[5];
       // bandera que muestra la certificacion cuando esta esta disponible para mostrarse
-      flagCertification.value = true;
-      // tomamos el link anterior y lo unimos al resto de la ruta para generar el link de la imagen completa
-      movie_backdrop_image.value = movie_backdrop_link.value + backdrop_key_movie;
+      flagVisualizationState.value = true;
+      
       getImageBackground();
       // capturamos el id del contenedor de los botones
       buttons.value = document.getElementById("cont_buttons");
       // hacemos visible los botones
       buttons.value.style.visibility = "visible";
-    });
-
-    onMounted(() => {
+      
       // asignar el id al <iframe>
       playerId.value = "reproductor";
       loadAPI().then(() => {
         checkIfYTLoaded().then(() => {
           setTimeout(() => {
             createPlayer();
-          }, 1000);
+          }, 3000);
         });
       });
     });
 
     function loadAPI() {
-      if (
-        document.querySelector(
-          "script[src='https://www.youtube.com/iframe_api']"
-        )
-      ) {
+      if (document.querySelector("script[src='https://www.youtube.com/iframe_api']")) {
         // Youtube API script already added
         return Promise.resolve();
       }
@@ -205,8 +202,8 @@ export default {
       player.value = new YT.Player(playerElement, {
         videoId: videoID,
         playerVars: {
-          start: 7,
-          end: 65,
+          start: startSecondsVideo.value,
+          end: endSecondsVideo.value,
           mute: 1,
           autoplay: 0,
           controls: 0,
@@ -243,9 +240,7 @@ export default {
           emit("playing", event.target);
           // SE OCULTA LA INFO DE LA PELICULA AL REPRODUCIRSE EL VIDEO
           // capturamos el elemento contenedor con los datos de la pelicula visualizada
-          cont_info_movie.value = document.getElementById(
-            "container_info_movie"
-          );
+          cont_info_movie.value = document.getElementById("container_info_movie");
           // pasamos el estilo de CSS ocultando el contenedor con la info mientras el video se reproduce
           cont_info_movie.value.style.visibility = "visible";
           // SE OCULTA LA IMAGEN DE FONDO DE LA PELICULA AL REPRODUCIRSE EL VIDEO
@@ -266,26 +261,26 @@ export default {
           reproducir.value = document.getElementById("button-playVideo");
           reproducir.value.style.display = "none";
           // capturamos el id del boton mutear
-          mutear.value = document.getElementById("button-mute");
+          volume_off.value = document.getElementById("button-mute");
           // usamos el metodo isMuted() el cual arrojara un true si el video reproducido esta en muteado
           //  y false si el video reproduciendose no esta muteado, esto para mostrar el mutear o desmutear
           // segun corresponda
           if (isMuted() === true) {
-            desmutear.value = document.getElementById("button-unMute");
-            desmutear.value.style.display = "block";
+            volume_on.value = document.getElementById("button-unMute");
+            volume_on.value.style.display = "block";
           } else {
-            mutear.value.style.display = "block";
+            volume_off.value.style.display = "block";
           }
           // asignamos el valor de reproduciendo del estado del reproductor a la variable para
           // usarla en la funcion pauseVideoIfNotActivePage()
-          flagEstate.value = window.YT.PlayerState.PLAYING;
+          flagEstateVideo.value = window.YT.PlayerState.PLAYING;
           pauseVideoIfNotActivePage();
           break;
         case window.YT.PlayerState.PAUSED:
           emit("paused", event.target);
           // asignamos el valor de pausa del estado del reproductor a la variable para
           // usarla en la funcion pauseVideoIfNotActivePage()
-          flagEstate.value = window.YT.PlayerState.PAUSED;
+          flagEstateVideo.value = window.YT.PlayerState.PAUSED;
           break;
         case window.YT.PlayerState.ENDED:
           emit("ended", event.target);
@@ -297,13 +292,13 @@ export default {
           sinopsis.value.style.opacity = "1";
           // al finalizar el video no importa cual de los dos botones de volumen este activo
           // ambos se ocultan
-          desmutear.value.style.display = "none";
-          mutear.value.style.display = "none";
+          volume_on.value.style.display = "none";
+          volume_off.value.style.display = "none";
           // es visible el boton de volver a reproducir al finalizar el video
           reproducir.value.style.display = "block";
           // asignamos el valor de pausa del estado del reproductor a la variable para
           // usarla en la funcion pauseVideoIfNotActivePage()
-          flagEstate.value = window.YT.PlayerState.ENDED;
+          flagEstateVideo.value = window.YT.PlayerState.ENDED;
           break;
       }
       emit("stateChange", event.target);
@@ -312,15 +307,15 @@ export default {
     // desmutea el video reproducido y oculta el mismo boton
     function activateVolumeVideo() {
       unMute();
-      desmutear.value.style.display = "none";
-      mutear.value.style.display = "block";
+      volume_on.value.style.display = "none";
+      volume_off.value.style.display = "block";
     }
 
     // mutea el video reproducido y oculta el mismo boton
     function deactivateVolumeVideo() {
       mute();
-      desmutear.value.style.display = "block";
-      mutear.value.style.display = "none";
+      volume_on.value.style.display = "block";
+      volume_off.value.style.display = "none";
     }
 
     // reproducimos el video de manera manual
@@ -328,9 +323,9 @@ export default {
       loadVideoById({
         videoId: movie_key.value,
         // establecemos el inicio del video en el segundo 7
-        startSeconds: 7,
+        startSeconds: startSecondsVideo.value,
         // y su finalizacion al minuto y 5 segundos
-        endSeconds: 65,
+        endSeconds: endSecondsVideo.value,
       });
     }
 
@@ -342,7 +337,7 @@ export default {
         // estado del video 0
         // cuando se cambie de pestaña si el video ya finalizo este no se reproduzca
         // a no ser que el usuario realize la accion con el boton
-        if (flagEstate.value == 0) {
+        if (flagEstateVideo.value == 0) {
           null;
         } else {
           // si la pestaña es visible se reproducira el video, en caso contrario
@@ -413,7 +408,7 @@ export default {
     }
 
     return {
-      flagCertification,
+      flagVisualizationState,
       movie_title,
       movie_overview,
       playerId,

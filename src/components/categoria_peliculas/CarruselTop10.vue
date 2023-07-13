@@ -208,6 +208,7 @@ export default {
     es para que las imagenes del carrusel no esten por encima del submenu 
     de la derecha (Menu Principal) */
   z-index: 0;
+  margin-bottom: 2rem;
 }
 
 .container_carousel:hover .pagination_elT10M,

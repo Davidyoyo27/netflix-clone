@@ -5,7 +5,7 @@
         <div class="info_movie">
           <div class="box-left">
             <div class="title_movie">
-              <h1>{{ titulo }}</h1>
+              <h1>{{ title }}</h1>
             </div>
             <div class="cont_sinopsis">
               <p id="sinopsis">{{ overview }}</p>
@@ -50,9 +50,9 @@
 
 <script>
 import { ref, onMounted } from "vue";
-import { getDataMovieStartVideo } from "@/helpers/js/functions.js";
 
 export default {
+  // propiedades que se reciben desde el componente padre al
   props: {
     title_movie: String,
     sinopsis_movie: String,
@@ -80,49 +80,39 @@ export default {
     // id del <iframe>
     const playerId = ref(null);
     // variables que contienen los datos de la API
-    const id_movie = ref(null);
-    const movie_key = ref("");
-    const movie_title = ref("");
-    const movie_overview = ref("");
     const movie_backdrop_link = ref("https://image.tmdb.org/t/p/original");
     const movie_backdrop_image = ref("");
     // variables que muestran los datos en pantalla
     const buttons = ref(null);
-    const resp_cert = ref("");
     const flagCertification = ref(false);
     // contenido de info de las peliculas
     const cont_info_movie = ref(null);
     const cont_img = ref(null);
     const sinopsis = ref(null);
     // botones de accion de silenciar/activar sonido/reproducir
-    const mutear = ref(null);
-    const desmutear = ref(null);
+    const volume_off = ref(null);
+    const volume_on = ref(null);
     const reproducir = ref(null);
     // bandera para tener el estado de reproduccion del video
     const flagEstate = ref(null);
     // variables que reciben los valores de las props pasadas a traves del componente padre
-    const titulo = ref('');
+    const title = ref('');
     const overview = ref('');
     const cert = ref('');
     const key = ref('');
 
     // utilizamos el onBeforeMount ya que es el que se renderiza primero dentro del Ciclo de Vida de los componentes
     onMounted(async () => {
-      // usamos la funcion creada en el archivo externo y la pasamos a una variable para poder usarla,
-      // en este caso siendo un array solo se captura los datos segun su posicion
-      const dataMovie = await getDataMovieStartVideo();
-      // id de la pelicula
-      id_movie.value = dataMovie[0];
       // imagen de fondo de la pelicula
       const backdrop_key_movie = props.background_image_movie;
       // creacion del link completo de la imagen de fondo
       movie_backdrop_image.value = movie_backdrop_link.value + backdrop_key_movie;
       // titulo de la pelicula
-      titulo.value = props.title_movie;
+      title.value = props.title_movie;
       // sinopsis de la pelicula
       overview.value = props.sinopsis_movie;
       // key del trailer de la pelicula
-      movie_key.value = props.key_trailer_movie;
+      key.value = props.key_trailer_movie;
       // certificacion de la pelicula
       cert.value = props.certification_movie;
       // bandera que muestra la certificacion cuando esta esta disponible para mostrarse, ya que algunas veces
@@ -202,7 +192,7 @@ export default {
     function createPlayer() {
       const playerElement = playerId.value;
       // creamos videoID que es la variable que contendra la key del video
-      const videoID = movie_key.value;
+      const videoID = key.value;
       // capturamos el id del iframe cuando este se crea
       let video_style = document.getElementById("reproductor");
       // le pasamos el estilo de css mediante JS cuando el video ya este renderizado
@@ -279,15 +269,15 @@ export default {
           reproducir.value = document.getElementById("button-playVideo");
           reproducir.value.style.display = "none";
           // capturamos el id del boton mutear
-          mutear.value = document.getElementById("button-mute");
+          volume_off.value = document.getElementById("button-mute");
           // usamos el metodo isMuted() el cual arrojara un true si el video reproducido esta en muteado
           //  y false si el video reproduciendose no esta muteado, esto para mostrar el mutear o desmutear
           // segun corresponda
           if (isMuted() === true) {
-            desmutear.value = document.getElementById("button-unMute");
-            desmutear.value.style.display = "block";
+            volume_on.value = document.getElementById("button-unMute");
+            volume_on.value.style.display = "block";
           } else {
-            mutear.value.style.display = "block";
+            volume_off.value.style.display = "block";
           }
           // asignamos el valor de reproduciendo del estado del reproductor a la variable para
           // usarla en la funcion pauseVideoIfNotActivePage()
@@ -310,8 +300,8 @@ export default {
           sinopsis.value.style.opacity = "1";
           // al finalizar el video no importa cual de los dos botones de volumen este activo
           // ambos se ocultan
-          desmutear.value.style.display = "none";
-          mutear.value.style.display = "none";
+          volume_on.value.style.display = "none";
+          volume_off.value.style.display = "none";
           // es visible el boton de volver a reproducir al finalizar el video
           reproducir.value.style.display = "block";
           // asignamos el valor de pausa del estado del reproductor a la variable para
@@ -325,21 +315,21 @@ export default {
     // desmutea el video reproducido y oculta el mismo boton
     function activateVolumeVideo() {
       unMute();
-      desmutear.value.style.display = "none";
-      mutear.value.style.display = "block";
+      volume_on.value.style.display = "none";
+      volume_off.value.style.display = "block";
     }
 
     // mutea el video reproducido y oculta el mismo boton
     function deactivateVolumeVideo() {
       mute();
-      desmutear.value.style.display = "block";
-      mutear.value.style.display = "none";
+      volume_on.value.style.display = "block";
+      volume_off.value.style.display = "none";
     }
 
     // reproducimos el video de manera manual
     function playVideoAgain() {
       loadVideoById({
-        videoId: movie_key.value,
+        videoId: key.value,
         // establecemos el inicio del video en el segundo 7
         startSeconds: 7,
         // y su finalizacion al minuto y 5 segundos
@@ -459,10 +449,7 @@ export default {
       certification_movie: props.certification_movie,
       background_image_movie: props.background_image_movie,
       key_trailer_movie: props.key_trailer_movie,
-      movie_title,
-      movie_overview,
       playerId,
-      resp_cert,
       onPlayerReady,
       onPlayerStateChange,
       onPlaybackQualityChange,
@@ -472,7 +459,7 @@ export default {
       deactivateVolumeVideo,
       activateVolumeVideo,
       playVideoAgain,
-      titulo,
+      title,
       overview,
       cert,
       key,

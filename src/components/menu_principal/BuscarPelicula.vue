@@ -5,10 +5,9 @@
     <!-- ICONO BUSCAR -->
     <!-- INPUT TEXT -->
     <input
-      v-model="input_value"
+      v-model.trim="input_value"
       ref="clear_input"
       id="click_input"
-      class="input_search"
       type="search"
       placeholder="Títulos, personas, géneros"
     />
@@ -22,47 +21,62 @@
     />
     <!-- ICONO(X) BORRAR TEXTO -->
   </div>
+  <!-- PASAR EL VALOR FINAL CON TODOS LOS DATOS, OSEA UN ARRAY QUE CONTENGA TODA LA INFO HACI UN NUEVO COMPONENTE
+      Y ESTE SERA EL QUE MOSTRARA LAS IMAGENES DE LAS PELICULAS SEGUN LA BUSQUEDA, USAR LA MISMA LOGICA QUE CON EL CARRUSEL -->
 </template>
 
 <script>
-import { ref, watch } from "vue"
+import { ref, watch } from "vue";
+import { useRouter } from "vue-router";
 
 export default {
-    setup(){
+  setup() {
     const input_value = ref("");
     // icono de X dentro del input no visible
     const icon_visible = ref(false);
     const clear_input = ref(null);
+    // variable a la que accederemos para poder enviar la data por url
+    const router = useRouter();
 
-    watch(input_value, (newValue, oldValue) => {
-      if(newValue != ""){
-        icon_visible.value = true;
-      }else{
-        icon_visible.value = false;
-      }
-    })
-
-    function clearInputText(){
+    function clearInputText() {
       icon_visible.value = false;
       input_value.value = "";
       // clear_input es la variable asignada en el ref del input
       clear_input.value.focus();
     }
- 
+
+    // capturamos la data del input
+    watch(input_value, (newValue) => {
+      if (newValue != "") {
+        icon_visible.value = true;
+        const data_input = input_value.value;
+        router.push({
+          name: "resultado_busqueda_pelicula",
+          query: {
+            data_input,
+          },
+        });
+      } else {
+        // si el contenido del input esta vacio, redireccionara a la pagina de Inicio
+        router.push({ name: "/" });
+        icon_visible.value = false;
+      }
+    });
+
     return {
       input_value,
       icon_visible,
       clear_input,
       clearInputText,
-    }
-  }
+    };
+  },
 };
 </script>
 
 <style scoped>
-.input_search:focus::placeholder,
-.input_search,
-#icon_clear_text{
+#click_input:focus::placeholder,
+#click_input,
+#icon_clear_text {
   color: #fff;
 }
 
@@ -74,7 +88,7 @@ export default {
   margin-right: 0.5rem;
 }
 
-.input_search::placeholder {
+#click_input::placeholder {
   color: #000;
 }
 
@@ -84,7 +98,7 @@ export default {
   color: #edebeb;
 }
 
-.input_search {
+#click_input {
   border: 1px solid #555;
   width: 2rem;
   padding: 0.4rem 0rem 0.4rem 2rem;
@@ -104,7 +118,7 @@ export default {
 }
 
 /* el :focus se activa cuando se le hace click al input */
-.input_search:focus {
+#click_input:focus {
   width: 17rem;
   font-size: 14px;
   /* transicion del input cuando se abre */
@@ -116,20 +130,20 @@ export default {
 }
 
 @media (min-width: 300px) and (max-width: 889px) {
-  .input_search:focus {
+  #click_input:focus {
     width: 16rem;
   }
 }
 
 @media (min-width: 890px) and (max-width: 1129px) {
-  .input_search:focus {
+  #click_input:focus {
     width: 16rem;
   }
 }
 
 @media (min-width: 1130px) and (max-width: 1330px) {
-  .input_search:focus {
-    width: 16rem;
+  #click_input:focus {
+    width: 14rem;
   }
 }
 </style>

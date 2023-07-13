@@ -202,7 +202,7 @@ export default {
   opacity: 0;
   /* el transition le da el desvanecimiento al 
   menu al momento de quitar el mouse de encima */
-  transition: 0.5s;
+  transition: 0.3s;
   border-radius: 1px solid #000;
   right: 0rem;
   top: 3.5rem;

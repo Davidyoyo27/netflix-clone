@@ -78,7 +78,7 @@ export default {
           link: array_links.value[index],
         };
       });
-      
+
     });
 
     return {

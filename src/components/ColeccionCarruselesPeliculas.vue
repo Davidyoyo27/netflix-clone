@@ -97,7 +97,7 @@
 
 <script>
 import { ref, onMounted, defineAsyncComponent } from "vue";
-import { getDataServicesMovies } from "@/helpers/js/functions.js";
+import { getDataServicesMovies } from '@/helpers/js/functions';
 
 export default {
   components: {

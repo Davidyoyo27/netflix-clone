@@ -40,7 +40,7 @@
 
 <script>
 import { ref, watch, onMounted, onBeforeUnmount } from "vue";
-import BuscarPelicula from "@/components/BuscarPelicula";
+import BuscarPelicula from "@/components/menu_principal/BuscarPelicula";
 import LinksMenuPrincipal from "@/components/menu_principal/LinksMenuPrincipal";
 import MenuResponsive from "@/components/menu_principal/MenuResponsive";
 import RightMenuMenuPrincipal from "@/components/menu_principal/RightMenuMenuPrincipal";

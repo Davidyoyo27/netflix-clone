@@ -1,11 +1,24 @@
 <template>
   <div class="body">
-    <!-- MENU -->
-    <MenuPrincipal></MenuPrincipal>
+    <!-- MENU PRINCIPAL -->
+    <header>
+      <MenuPrincipal></MenuPrincipal>
+    </header>
     <!-- FIN MENU -->
+
     <!-- el router view llama directamente a la ruta definida por defecto como el Home/Inicio -->
-    <!-- 1.9 -->
-    <router-view></router-view>
+    <!-- 1.8 -->
+    <!-- CONTENIDO DE LA PAGINA Y AL MOVERSE ENTRE LOS LINKS/MENU -->
+    <main>
+      <router-view></router-view>
+    </main>
+    <!-- FIN CONTENIDO -->
+
+    <!-- PIE DE PAGINA -->
+    <footer>
+      <Footer></Footer>
+    </footer>
+    <!-- PIE DE PAGINA -->
   </div>
 </template>
 
@@ -16,14 +29,9 @@ export default {
   name: "App",
   components: {
     //                                    LazyLoad
-    MenuPrincipal: defineAsyncComponent(() =>
-      import(
-        /* webpackChunkName: "MenuPrincipal.vue" */ "@/components/menu_principal/MenuPrincipal.vue"
-      )
-    ),
-    Inicio: defineAsyncComponent(() =>
-      import(/* webpackChunkName: "Inicio.vue" */ "@/components/Inicio.vue")
-    ),
+    MenuPrincipal: defineAsyncComponent(() => import(/* webpackChunkName: "MenuPrincipal.vue" */ "@/components/menu_principal/MenuPrincipal.vue")),
+    Inicio: defineAsyncComponent(() => import(/* webpackChunkName: "Inicio.vue" */ "@/components/Inicio.vue")),
+    Footer: defineAsyncComponent(() => import(/* webpackChunkName: "Footer.vue" */ "@/components/Footer.vue")),
   },
 };
 </script>
@@ -45,6 +53,12 @@ export default {
 .body {
   /* color de fondo de Netflix */
   background-color: #141414;
+  /*  */
+  margin: 0;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 /* --------------- scrollbar -------------------- */

@@ -4,7 +4,6 @@
       <p class="more_content">Más contenido para explorar:</p>
       <p class="options_content">Animes | Adam Sandler | Avatar 2 | Action | Películas de acción | Series de anime | Avatar | Películas animadas | American Pie: Tu primera vez | Animes japoneses</p>
     </div>
-    <p>Valor del input en la URL: {{ data_input_movie }}</p>
     <div class="wrap_container">
       <div class="container">
         <div class="container_movies" v-for="data in data_poster_movie" :key="data">
@@ -23,29 +22,42 @@ import { useRoute } from "vue-router";
 export default {
   setup() {
     const route = useRoute();
-    const data_input_movie = ref("");
     const data_poster_movie = ref(null);
     const link_img = ref("https://image.tmdb.org/t/p/w500");
+    const movies = ref([]);
 
-    async function resultSearchMovie(query){
-      const response = await services.get_movie_services(1, `/search/movie?language=es-MX&query=${query}`);
-      const arrayDataSearch = response.data.results;
-      data_poster_movie.value = arrayDataSearch.filter((item) => {
+    const resultSearchMovie = async (query) => {
+      const quantityResults = 50; // Cantidad deseada de resultados
+      let actualPage = 1;
+      let totalResult = 0;
+      movies.value = [];
+
+      while (totalResult <= quantityResults) {
+        const response = await services.get_movie_services(actualPage, `/search/movie?language=es-MX&query=${query}`);
+        const { results, total_pages } = response.data;
+
+        movies.value = movies.value.concat(results);
+        totalResult += results.length;
+
+        actualPage += 1;
+
+        if (actualPage > total_pages) {
+          break;
+        }
+      }
+
+      data_poster_movie.value = movies.value.filter((item) => {
         return item.poster_path;
       });
-
-      return response;
-    }
+    };
 
     watch(() => route.query.data_input, (newValue) => {
       resultSearchMovie(newValue);
-      data_input_movie.value = newValue;
     });
 
     return {
       data_poster_movie,
       link_img,
-      data_input_movie,
     };
   },
 };
@@ -53,7 +65,7 @@ export default {
 
 <style scoped>
 .wrapper {
-  padding-top: 9.9rem;
+  margin-top: 9.9rem;
 }
 
 p{
@@ -68,6 +80,7 @@ img {
 .wrap_container{
   display: flex;
   justify-content: center;
+  padding-bottom: 5rem;
 }
 
 .container {

@@ -15,10 +15,10 @@ const routes = [
     { path: '/novedades', name: 'novedades',component: () => import(/* webpackChunkName: "Novedades.vue" */ '../components/Novedades') },
     { path: '/mi_lista', name: 'mi_lista',component: () => import(/* webpackChunkName: "MiLista.vue" */ '../components/MiLista') },
     { path: '/explora_por_idiomas', name: 'explora_por_idiomas',component: () => import(/* webpackChunkName: "ExploraIdiomas.vue" */ '../components/ExploraIdiomas') },
+    { path: '/visualizar_busqueda_pelicula', name: 'resultado_busqueda_pelicula',component: () => import(/* webpackChunkName: "VisualizarBusquedaPelicula.vue" */ '../components/VisualizarBusquedaPelicula') },
     // ----------------------------------------------------------------------------------------------------------------
     // componente prueba
     { path: '/prueba_carruseles', component: () => import(/* webpackChunkName: "ColeccionCarruselesPeliculas.vue" */ '../components/ColeccionCarruselesPeliculas') },
-    { path: '/visualizar_busqueda_pelicula', name: 'resultado_busqueda_pelicula',component: () => import(/* webpackChunkName: "VisualizarBusquedaPelicula.vue" */ '../components/VisualizarBusquedaPelicula') },
     // ----------------------------------------------------------------------------------------------------------------
     // page 404 Not Found
     // se busca cualquier url que no tenga match con los especificados aca en las rutas

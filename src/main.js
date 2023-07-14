@@ -1,6 +1,6 @@
 import { createApp } from "vue";
 import App from "./App.vue";
-// 1.7-. importamos el router
+// 1.6-. importamos el router
 import router from "./router/router";
 // font awesome
 /* import the fontawesome core */
@@ -59,6 +59,6 @@ createApp(App)
   //      nombre por el cual sera
   //          llamado el icono
   .component("font-awesome-icon", FontAwesomeIcon)
-  // 1.8 usamos el router
+  // 1.7 usamos el router
   .use(router)
   .mount("#app");

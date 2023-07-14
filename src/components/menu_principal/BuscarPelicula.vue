@@ -45,11 +45,19 @@ export default {
       clear_input.value.focus();
     }
 
-    // capturamos la data del input
+    // utilizamos el watch para capturar la data del input cuando vaya cambiando
+    // a traves de la variable input_value, el newValue en este caso sera la que
+    // vaya cambiando y capturara cada caracter ingresado en el input
     watch(input_value, (newValue) => {
+      // si existe algun caracter dentro de newValue
       if (newValue != "") {
         icon_visible.value = true;
+        // asignamos la data dentro del input a una variable
         const data_input = input_value.value;
+        // usamos el router para enviar lo ingresado en el input por la url
+        // esto es llamado "query params"
+        // al enviarlo se necesitan en este caso 2 valores, name: "nombre de la ruta"
+        //  y query: "la data que se enviara"
         router.push({
           name: "resultado_busqueda_pelicula",
           query: {

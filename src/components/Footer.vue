@@ -75,7 +75,7 @@
 import { ref } from "vue";
 
 export default {
-  setup(){
+  setup() {
     const link_facebook = ref("https://www.facebook.com/Netflixmx");
     const link_instagram = ref("https://www.instagram.com/NetflixLAT/");
     const link_twitter = ref("https://twitter.com/netflixLAT");
@@ -93,7 +93,7 @@ export default {
     const link_privacidad = ref("https://help.netflix.com/legal/privacy");
     const link_contactanos = ref("https://help.netflix.com/es/contactus");
 
-    return{
+    return {
       link_facebook,
       link_instagram,
       link_twitter,
@@ -110,8 +110,8 @@ export default {
       link_prensa,
       link_privacidad,
       link_contactanos,
-    }
-  }
+    };
+  },
 };
 </script>
 
@@ -119,14 +119,16 @@ export default {
 .container {
   background-color: rgba(0, 0, 0, 0);
   width: 100%;
-  height: 15rem;
+  height: auto;
   bottom: 0;
   display: flex;
   justify-content: center;
 }
 
 .footer_items {
-  width: 51%;
+  /* min-width permite que al reducirse el ancho de la ventana del navegador 
+     el contenedor footer_links no se vaya haciendo mas pequeño */
+  min-width: 51%;
 }
 
 .footer_icons {
@@ -143,35 +145,33 @@ export default {
   display: flex;
 }
 
-.footer_links_items{
-  display: flex;
-  flex-direction: column;
-  width: 100%;
+.footer_links_items {
+  width: 15rem;
   text-align: left;
 }
 
-li{
+li {
   list-style: none;
 }
 
 .footer_links_items a {
   text-decoration: none;
-  font-size: .9rem;
-  margin: .5rem;
+  font-size: 0.9rem;
+  margin: 0.5rem;
   color: #7c7c7c;
   display: inline-block;
 }
 
-.footer_links_items a:hover{
+.footer_links_items a:hover {
   text-decoration: underline;
 }
 
-.cont_button{
+.cont_button {
   display: flex;
 }
 
-button{
-  padding: .4rem;
+button {
+  padding: 0.4rem;
   background-color: rgba(222, 11, 11, 0);
   border-style: none;
   border: 1px solid #7c7c7c;
@@ -179,19 +179,32 @@ button{
   margin-top: 1rem;
 }
 
-button:hover span{
+button:hover span {
   color: #fff;
 }
 
-span{
+span {
   color: #7c7c7c;
 }
 
 p {
   text-align: left;
-  font-size: .8rem;
+  font-size: 0.8rem;
   cursor: default;
   margin-top: 1rem;
   color: #7c7c7c;
+}
+
+@media (min-width: 300px) and (max-width: 828px) {
+  .footer_links {
+    /* no es necesario que tenga la propiedad display: flex; ya que el .footer_links inicial lo tiene */
+    flex-wrap: wrap;
+  }
+
+  .footer_links_items {
+    /* al llegar a X tamaño cada item ocupara el 50% de su contenedor, lo que quiere decir que como eran 4 divs
+       originalmente con este cambio serian 2 divs */
+    flex-basis: 50%;
+  }
 }
 </style>

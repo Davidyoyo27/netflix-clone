@@ -54,4 +54,46 @@ export default {
     }
   },
 
+  // endpoint trailer de series con filtro por ID
+  get_data_key_video: async (id) => {
+    try {
+      const axiosConfig = {
+        baseURL: BASE_URL_MOVIEDB,
+        url: `/tv/${id}/videos?sort_by=popularity.desc`,
+
+        headers: {
+          Authorization: `Bearer ${ACCESS_TOKEN}`,
+        },
+
+        method: "get",
+      };
+
+      const { data } = await axios.request(axiosConfig);
+      return { ok: true, data };
+    } catch (err) {
+      return { ok: false, error: err.message };
+    }
+  },
+
+  // `/movie/${id}/release_dates`
+  get_data_certification_video: async (id) => {
+    try {
+      const axiosConfig = {
+        baseURL: BASE_URL_MOVIEDB,
+        url: `/tv/${id}/content_ratings`,
+
+        headers: {
+          Authorization: `Bearer ${ACCESS_TOKEN}`,
+        },
+
+        method: "get",
+      };
+
+      const { data } = await axios.request(axiosConfig);
+      return { ok: true, data };
+    } catch (err) {
+      return { ok: false, error: err.message };
+    }
+  },
+
 };

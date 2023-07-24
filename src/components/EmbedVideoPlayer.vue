@@ -1,30 +1,34 @@
 <template>
-  <div class="container">
-    <div id="container_image">
-      <div id="container_info_movie">
-        <div class="info_movie">
-          <div class="box-left">
-            <div class="title_movie">
-              <h1>{{ title }}</h1>
+  <div class="wrapper">
+    <div class="container">
+      <div class="container_data">
+        <div class="data_movie">
+          <div class="box_left">
+            <div class="upper_data">
+              <div class="title_movie">
+                <h1>{{ titleMovie }}</h1>
+              </div>
+              <div class="cont_sinopsis">
+                <p id="sinopsis">{{ overviewMovie }}</p>
+              </div>
             </div>
-            <div class="cont_sinopsis">
-              <p id="sinopsis">{{ overview }}</p>
-            </div>
-            <div id="cont_buttons">
-              <button class="button_rep">
-                <font-awesome-icon class="icon" icon="fa-solid fa-play" />
-                <span>Reproducir</span>
-              </button>
-              <button class="button_info">
-                <font-awesome-icon
-                  class="icon"
-                  icon="fa-solid fa-circle-info"
-                />
-                <span>Más información</span>
-              </button>
+            <div class="down_data">
+              <div v-if="flagDataRenderized" id="cont_buttons">
+                <button class="button_rep">
+                  <font-awesome-icon class="icon" icon="fa-solid fa-play" />
+                  <span>Reproducir</span>
+                </button>
+                <button class="button_info">
+                  <font-awesome-icon
+                    class="icon"
+                    icon="fa-solid fa-circle-info"
+                  />
+                  <span>Más información</span>
+                </button>
+              </div>
             </div>
           </div>
-          <div class="box-right">
+          <div class="box_right">
             <div class="cont-play-mute">
               <button id="button-mute" v-on:click="deactivateVolumeVideo">
                 <font-awesome-icon icon="fa-solid fa-volume-xmark" />
@@ -36,15 +40,16 @@
                 <font-awesome-icon icon="fa-solid fa-rotate-right" />
               </button>
             </div>
-            <div v-if="flagCertification" class="cont-cert">
-              <p>{{ cert }}</p>
+            <div v-if="flagDataRenderized" class="cont-cert">
+              <p>{{ certificationMovie }}</p>
             </div>
           </div>
         </div>
+        <img id="background_image" :src="backgroundImageMovie" alt="" />
+        <!-- 1. The <iframe> (and video player) will replace this <div> tag. -->
+        <div class="video" ref="youtube" :id="playerId"></div>
       </div>
     </div>
-    <!-- 1. The <iframe> (and video player) will replace this <div> tag. -->
-    <div ref="youtube" :id="playerId"></div>
   </div>
 </template>
 
@@ -52,13 +57,34 @@
 import { ref, onMounted } from "vue";
 
 export default {
-  // propiedades que se reciben desde el componente padre al
   props: {
-    title_movie: String,
-    sinopsis_movie: String,
-    certification_movie: String,
-    background_image_movie: String,
-    key_trailer_movie: String,
+    videoId: {
+      required: true,
+    },
+    videoUrl: {
+      type: String,
+      required: false,
+      default: null,
+    },
+    playerVars: {
+      type: Object,
+      required: false,
+      default: () => ({}),
+    },
+    titleMovie: {
+      required: true,
+    },
+    overviewMovie: {
+      type: String,
+      required: true,
+      default: "No hay sinopsis",
+    },
+    backgroundImageMovie: {
+      required: true,
+    },
+    certificationMovie: {
+      required: true,
+    },
   },
   emits: [
     "ready",
@@ -71,60 +97,23 @@ export default {
     "error",
     "apiChange",
   ],
-  // Uncaught ReferenceError: emit is not defined
-  // setup( { emit }) solucion al error de arriba
   setup(props, { emit }) {
-    /// inicializacion de las variables a usar
-    // variable contenedora del reproductor
     const player = ref(null);
-    // id del <iframe>
     const playerId = ref(null);
-    // variables que contienen los datos de la API
-    const movie_backdrop_link = ref("https://image.tmdb.org/t/p/original");
-    const movie_backdrop_image = ref("");
-    // variables que muestran los datos en pantalla
-    const buttons = ref(null);
-    const flagCertification = ref(false);
-    // contenido de info de las peliculas
-    const cont_info_movie = ref(null);
-    const cont_img = ref(null);
     const sinopsis = ref(null);
-    // botones de accion de silenciar/activar sonido/reproducir
-    const volume_off = ref(null);
-    const volume_on = ref(null);
+    const cont_img = ref(null);
     const reproducir = ref(null);
-    // bandera para tener el estado de reproduccion del video
-    const flagEstate = ref(null);
-    // variables que reciben los valores de las props pasadas a traves del componente padre
-    const title = ref('');
-    const overview = ref('');
-    const cert = ref('');
-    const key = ref('');
+    const volume_on = ref(null);
+    const volume_off = ref(null);
+    // variables con la cantidad de segundos en que inicia y termina el trailer de la pelicula
+    const startSecondsVideo = ref(7);
+    const endSecondsVideo = ref(65);
+    // bandera para tener el estado global de reproduccion del video
+    const flagEstateVideo = ref(null);
+    // bandera para ocultar la certificacion y los botones mientras aun no esta la carga completa de la data
+    const flagDataRenderized = ref(false);
 
-    // utilizamos el onBeforeMount ya que es el que se renderiza primero dentro del Ciclo de Vida de los componentes
     onMounted(async () => {
-      // imagen de fondo de la pelicula
-      const backdrop_key_movie = props.background_image_movie;
-      // creacion del link completo de la imagen de fondo
-      movie_backdrop_image.value = movie_backdrop_link.value + backdrop_key_movie;
-      // titulo de la pelicula
-      title.value = props.title_movie;
-      // sinopsis de la pelicula
-      overview.value = props.sinopsis_movie;
-      // key del trailer de la pelicula
-      key.value = props.key_trailer_movie;
-      // certificacion de la pelicula
-      cert.value = props.certification_movie;
-      // bandera que muestra la certificacion cuando esta esta disponible para mostrarse, ya que algunas veces
-      // la data de certification se envia desde el componente padre pero esta no logra llegar al componente hijo
-      flagCertification.value = true;
-
-      getImageBackground();
-      // capturamos el id del contenedor de los botones
-      buttons.value = document.getElementById("cont_buttons");
-      // hacemos visible los botones
-      buttons.value.style.visibility = "visible";
-
       // asignar el id al <iframe>
       playerId.value = "reproductor";
       loadAPI().then(() => {
@@ -135,183 +124,7 @@ export default {
         });
       });
     });
-
-    function loadAPI() {
-      if (
-        document.querySelector(
-          "script[src='https://www.youtube.com/iframe_api']"
-        )
-      ) {
-        // Youtube API script already added
-        return Promise.resolve();
-      }
-      // 2. This code loads the IFrame Player API code asynchronously.
-      const tag = document.createElement("script");
-      tag.src = "https://www.youtube.com/iframe_api";
-      document.head.appendChild(tag);
-      return Promise.resolve();
-    }
-
-    function checkIfYTLoaded() {
-      if (window.YT && window.YT.Player) {
-        return Promise.resolve();
-      }
-      // recursively check if the YT object is loaded
-      //R: The JavaScript exception "too much recursion" or "Maximum call stack size exceeded"
-      //occurs when there are too many function calls, or a function is missing a base case.
-      // eslint-disable-next-line no-unused-vars
-      return new Promise((resolve) => {
-        // agregamos el setTimeout() con 1seg para evitar el problema de recursividad con las funciones
-        setTimeout(() => {
-          checkIfYTLoaded().then(() => {
-            resolve();
-          });
-        }, 2000);
-      });
-    }
-
-    // creamos el elemento img que es el que contendra la imagen de fondo
-    function getImageBackground() {
-      let url = movie_backdrop_image.value;
-      let image = new Image();
-      image.src = url;
-      document.getElementById("container_image").appendChild(image);
-      // le asignamos el id a la imagen una vez que se crea
-      image.setAttribute("id", "img_poster");
-      // caputaramos el id de la etiqueta <img> una vez que esta se creo
-      let img_poster = document.getElementById("img_poster");
-      // le asignamos el ancho y alto correspondiente a la imagen
-      img_poster.style.width = "100%";
-      img_poster.style.height = "100%";
-      // desactivamos las interacciones con el mouse cuando este el fondo de la imagen
-      img_poster.style.pointerEvents = "none";
-    }
-
-    // 3. This function creates an <iframe> (and YouTube player)
-    //    after the API code downloads.
-    function createPlayer() {
-      const playerElement = playerId.value;
-      // creamos videoID que es la variable que contendra la key del video
-      const videoID = key.value;
-      // capturamos el id del iframe cuando este se crea
-      let video_style = document.getElementById("reproductor");
-      // le pasamos el estilo de css mediante JS cuando el video ya este renderizado
-      // desactivamos la interaccion con el reproductor del video click derecho e izquierdo
-      video_style.style.pointerEvents = "none";
-      video_style.style.width = "100%";
-      // asignamos el style con el heigh con viewport width, esto quiere decir que su "altura"
-      // cambiara cuando se haga mas pequeña el tamaño de la ventana en base al ancho de la pantalla
-      // como se especifica con el vw(viewport width)
-      video_style.style.height = "50.25vw";
-      // eslint-disable-next-line no-undef
-      player.value = new YT.Player(playerElement, {
-        videoId: videoID,
-        playerVars: {
-          start: 7,
-          end: 65,
-          mute: 1,
-          autoplay: 0,
-          controls: 0,
-          disablekb: 1,
-          enableapi: 1,
-        },
-        events: {
-          onReady: onPlayerReady,
-          onStateChange: onPlayerStateChange,
-          onPlaybackQualityChange: onPlaybackQualityChange,
-          onPlaybackRateChange: onPlaybackRateChange,
-          onError: onError,
-          onApiChange: onApiChange,
-        },
-      });
-    }
-
-    // 4. The API will call this function when the video player is ready.
-    function onPlayerReady(event) {
-      emit("ready", event.target);
-      // esperamos 5 segundos a visualizar el fondo de la pelicula
-      // para luego reproducir el trailer
-      setTimeout(() => {
-        // se reproduce el video
-        playVideo();
-      }, 5000);
-    }
-
-    // 5. The API calls this function when the player's state changes.
-    //    The function indicates that when playing a video (state=1),
-    //    the player should play for six seconds and then stop.
-    function onPlayerStateChange(event) {
-      switch (event.data) {
-        case window.YT.PlayerState.PLAYING:
-          emit("playing", event.target);
-          // SE OCULTA LA INFO DE LA PELICULA AL REPRODUCIRSE EL VIDEO
-          // capturamos el elemento contenedor con los datos de la pelicula visualizada
-          cont_info_movie.value = document.getElementById(
-            "container_info_movie"
-          );
-          // pasamos el estilo de CSS ocultando el contenedor con la info mientras el video se reproduce
-          cont_info_movie.value.style.visibility = "visible";
-          // SE OCULTA LA IMAGEN DE FONDO DE LA PELICULA AL REPRODUCIRSE EL VIDEO
-          // capturamos el elemento que contiene la imagen de fondo de la pelicula
-          cont_img.value = document.getElementById("container_image");
-          // pasamos el estilo de CSS ocultando el contenedor con la imagen de la pelicula
-          cont_img.value.style.visibility = "hidden";
-          sinopsis.value = document.getElementById("sinopsis");
-
-          // settimeout para que cuando se reprodusca el trailer, luego de 3 seg se
-          // quite el texto informativo de la pelicula
-          setTimeout(() => {
-            sinopsis.value.style.fontSize = "0vw";
-            sinopsis.value.style.opacity = "0";
-          }, 3000);
-
-          // se oculta el reproducir de nuevo del video mientras este se reproduce
-          reproducir.value = document.getElementById("button-playVideo");
-          reproducir.value.style.display = "none";
-          // capturamos el id del boton mutear
-          volume_off.value = document.getElementById("button-mute");
-          // usamos el metodo isMuted() el cual arrojara un true si el video reproducido esta en muteado
-          //  y false si el video reproduciendose no esta muteado, esto para mostrar el mutear o desmutear
-          // segun corresponda
-          if (isMuted() === true) {
-            volume_on.value = document.getElementById("button-unMute");
-            volume_on.value.style.display = "block";
-          } else {
-            volume_off.value.style.display = "block";
-          }
-          // asignamos el valor de reproduciendo del estado del reproductor a la variable para
-          // usarla en la funcion pauseVideoIfNotActivePage()
-          flagEstate.value = window.YT.PlayerState.PLAYING;
-          pauseVideoIfNotActivePage();
-          break;
-        case window.YT.PlayerState.PAUSED:
-          emit("paused", event.target);
-          // asignamos el valor de pausa del estado del reproductor a la variable para
-          // usarla en la funcion pauseVideoIfNotActivePage()
-          flagEstate.value = window.YT.PlayerState.PAUSED;
-          break;
-        case window.YT.PlayerState.ENDED:
-          emit("ended", event.target);
-          // una vez finalizado la pre-visualizacion volvemos a mostrar la imagen de fondo
-          cont_img.value.style.visibility = "visible";
-          // el texto de la sinopsis vuelve a hacerse grande
-          sinopsis.value.style.fontSize = "1.5vw";
-          // es visible el texto de la sinopsis
-          sinopsis.value.style.opacity = "1";
-          // al finalizar el video no importa cual de los dos botones de volumen este activo
-          // ambos se ocultan
-          volume_on.value.style.display = "none";
-          volume_off.value.style.display = "none";
-          // es visible el boton de volver a reproducir al finalizar el video
-          reproducir.value.style.display = "block";
-          // asignamos el valor de pausa del estado del reproductor a la variable para
-          // usarla en la funcion pauseVideoIfNotActivePage()
-          flagEstate.value = window.YT.PlayerState.ENDED;
-          break;
-      }
-      emit("stateChange", event.target);
-    }
-
+    
     // desmutea el video reproducido y oculta el mismo boton
     function activateVolumeVideo() {
       unMute();
@@ -329,11 +142,12 @@ export default {
     // reproducimos el video de manera manual
     function playVideoAgain() {
       loadVideoById({
-        videoId: key.value,
+        // key del trailer que viene por props
+        videoId: props.videoId,
         // establecemos el inicio del video en el segundo 7
-        startSeconds: 7,
+        startSeconds: startSecondsVideo.value,
         // y su finalizacion al minuto y 5 segundos
-        endSeconds: 65,
+        endSeconds: endSecondsVideo.value,
       });
     }
 
@@ -345,7 +159,7 @@ export default {
         // estado del video 0
         // cuando se cambie de pestaña si el video ya finalizo este no se reproduzca
         // a no ser que el usuario realize la accion con el boton
-        if (flagEstate.value == 0) {
+        if (flagEstateVideo.value == 0) {
           null;
         } else {
           // si la pestaña es visible se reproducira el video, en caso contrario
@@ -354,6 +168,112 @@ export default {
           document.visibilityState === "visible" ? playVideo() : pauseVideo();
         }
       });
+    }
+
+    function createPlayer() {
+      const playerElement = playerId.value;
+      // capturamos el id del iframe cuando este se crea
+      let video_style = document.getElementById("reproductor");
+      // le pasamos el estilo de css mediante JS cuando el video ya este renderizado
+      // desactivamos la interaccion con el reproductor del video click derecho e izquierdo
+      video_style.style.pointerEvents = "none";
+      video_style.style.width = "100%";
+      // asignamos el style con el heigh con viewport width, esto quiere decir que su "altura"
+      // cambiara cuando se haga mas pequeña el tamaño de la ventana en base al ancho de la pantalla
+      // como se especifica con el vw(viewport width)
+      video_style.style.height = "50.25vw";
+
+      flagDataRenderized.value = true;
+      player.value = new YT.Player(playerElement, {
+        videoId: props.videoId,
+        playerVars: {
+          start: startSecondsVideo.value,
+          end: endSecondsVideo.value,
+          mute: 1,
+          autoplay: 0,
+          controls: 0,
+          disablekb: 1,
+          enableapi: 1,
+        },
+        events: {
+          onReady: (event) => {
+            player.value = event.target;
+            setVolume(70);
+            setTimeout(() => {
+              playVideo();
+            }, 5000);
+          },
+          onStateChange: onPlayerStateChange,
+          onPlaybackQualityChange: onPlaybackQualityChange,
+          onPlaybackRateChange: onPlaybackRateChange,
+          onError: onError,
+          onApiChange: onApiChange,
+        },
+      });
+    }
+
+    function onPlayerStateChange(event) {
+      switch (event.data) {
+        case window.YT.PlayerState.PLAYING:
+          emit("playing", event.target);
+          // capturamos el id contenedor de la sinopsis
+          sinopsis.value = document.getElementById("sinopsis");
+          // settimeout para que cuando se reprodusca el trailer, luego de 3 seg se
+          // quite el texto informativo de la pelicula
+          setTimeout(() => {
+            sinopsis.value.style.fontSize = "0vw";
+            sinopsis.value.style.opacity = "0";
+          }, 3000);
+          // SE OCULTA LA IMAGEN DE FONDO DE LA PELICULA AL REPRODUCIRSE EL VIDEO
+          // capturamos el elemento que contiene la imagen de fondo de la pelicula
+          cont_img.value = document.getElementById("background_image");
+          // pasamos el estilo de CSS ocultando el contenedor con la imagen de la pelicula
+          cont_img.value.style.visibility = "hidden";
+          // se oculta el reproducir de nuevo del video mientras este se reproduce
+          reproducir.value = document.getElementById("button-playVideo");
+          reproducir.value.style.display = "none";
+          // capturamos el id del boton mutear
+          volume_off.value = document.getElementById("button-mute");
+          // usamos el metodo isMuted() el cual arrojara un true si el video reproducido esta en muteado
+          //  y false si el video reproduciendose no esta muteado, esto para mostrar el mutear o desmutear
+          // segun corresponda
+          if (isMuted() === true) {
+            volume_on.value = document.getElementById("button-unMute");
+            volume_on.value.style.display = "block";
+          } else {
+            volume_off.value.style.display = "block";
+          }
+          // asignamos el valor de reproduciendo del estado del reproductor a la variable para
+          // usarla en la funcion pauseVideoIfNotActivePage()
+          flagEstateVideo.value = window.YT.PlayerState.PLAYING;
+          pauseVideoIfNotActivePage();
+          break;
+        case window.YT.PlayerState.PAUSED:
+          emit("paused", event.target);
+          // asignamos el valor de pausa del estado del reproductor a la variable para
+          // usarla en la funcion pauseVideoIfNotActivePage()
+          flagEstateVideo.value = window.YT.PlayerState.PAUSED;
+          break;
+        case window.YT.PlayerState.ENDED:
+          emit("ended", event.target);
+          // el texto de la sinopsis vuelve a hacerse grande una vez finalizado el video
+          sinopsis.value.style.fontSize = "1.5vw";
+          // es visible el texto de la sinopsis
+          sinopsis.value.style.opacity = "1";
+          // una vez finalizado la pre-visualizacion volvemos a mostrar la imagen de fondo
+          cont_img.value.style.visibility = "visible";
+          // al finalizar el video no importa cual de los dos botones de volumen este activo
+          // ambos se ocultan
+          volume_on.value.style.display = "none";
+          volume_off.value.style.display = "none";
+          // es visible el boton de volver a reproducir al finalizar el video
+          reproducir.value.style.display = "block";
+          // asignamos el valor de pausa del estado del reproductor a la variable para
+          // usarla en la funcion pauseVideoIfNotActivePage()
+          flagEstateVideo.value = window.YT.PlayerState.ENDED;
+          break;
+      }
+      emit("stateChange", event.target);
     }
 
     function onPlaybackQualityChange(event) {
@@ -378,30 +298,45 @@ export default {
     function playVideo() {
       player.value.playVideo();
     }
+
     /**
      * @see https://developers.google.com/youtube/iframe_api_reference#pauseVideo
      */
     function pauseVideo() {
       player.value.pauseVideo();
     }
+
     /**
      * @see https://developers.google.com/youtube/iframe_api_reference#stopVideo
      */
     function stopVideo() {
       player.value.stopVideo();
     }
+
+    /**
+     * @param {Number} seconds
+     * @param {Boolean} allowSeekAhead
+     *
+     * @see https://developers.google.com/youtube/iframe_api_reference#seekTo
+     */
+    function seekTo(seconds, allowSeekAhead) {
+      player.value.seekTo(seconds, allowSeekAhead);
+    }
+
     /**
      * @see https://developers.google.com/youtube/iframe_api_reference#mute
      */
     function mute() {
       player.value.mute();
     }
+
     /**
      * @see https://developers.google.com/youtube/iframe_api_reference#unMute
      */
     function unMute() {
       player.value.unMute();
     }
+
     /**
      * @returns {Boolean}
      * @see https://developers.google.com/youtube/iframe_api_reference#isMuted
@@ -409,6 +344,24 @@ export default {
     function isMuted() {
       return player.value.isMuted();
     }
+
+    /**
+     * @param {Number} volume
+     *
+     * @see https://developers.google.com/youtube/iframe_api_reference#setVolume
+     */
+    function setVolume(volume) {
+      player.value.setVolume(volume);
+    }
+
+    /**
+     * @see https://developers.google.com/youtube/iframe_api_reference#getVolume
+     * @returns {Number}
+     */
+    function getVolume() {
+      return player.value.getVolume();
+    }
+
     /**
      * @returns {Number}
      * @see https://developers.google.com/youtube/iframe_api_reference#getDuration
@@ -416,6 +369,7 @@ export default {
     function getDuration() {
       return player.value.getDuration();
     }
+
     /**
      * @returns {Number}
      * @see https://developers.google.com/youtube/iframe_api_reference#getPlayerState
@@ -423,13 +377,7 @@ export default {
     function getPlayerState() {
       return player.value.getPlayerState();
     }
-    /**
-     * @return {Object}
-     * @see https://developers.google.com/youtube/iframe_api_reference#getIframe
-     */
-    function getIframe() {
-      return player.value.getIframe();
-    }
+
     /**
      * @param {String} videoId
      * @param {Number} startSeconds
@@ -438,83 +386,104 @@ export default {
      * @returns void
      * @see https://developers.google.com/youtube/iframe_api_reference#loadVideoById
      */
-    function loadVideoById({ videoId, startSeconds, endSeconds } = {}) {
-      player.value.loadVideoById({ videoId, startSeconds, endSeconds });
+    function loadVideoById({ videoId, startSeconds, endSeconds }) {
+      return player.value.loadVideoById({ videoId, startSeconds, endSeconds });
+    }
+
+    function loadAPI() {
+      if (document.querySelector("script[src='https://www.youtube.com/iframe_api']")) {
+        return Promise.resolve();
+      }
+      const tag = document.createElement("script");
+      tag.src = "https://www.youtube.com/iframe_api";
+      document.head.appendChild(tag);
+      console.info("Youtube API script added to the HTML document.");
+      return Promise.resolve();
+    }
+
+    function checkIfYTLoaded() {
+      if (window.YT && window.YT.Player) {
+        return Promise.resolve();
+      }
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          checkIfYTLoaded().then(() => {
+            resolve();
+          });
+        }, 2000); // cambio de 100 a 2000 ms
+      });
     }
 
     return {
-      flagCertification,
-      title_movie: props.title_movie,
-      sinopsis_movie: props.sinopsis_movie,
-      certification_movie: props.certification_movie,
-      background_image_movie: props.background_image_movie,
-      key_trailer_movie: props.key_trailer_movie,
+      player,
       playerId,
-      onPlayerReady,
-      onPlayerStateChange,
-      onPlaybackQualityChange,
-      onPlaybackRateChange,
-      onError,
-      onApiChange,
+      playVideo,
+      pauseVideo,
+      stopVideo,
+      seekTo,
+      mute,
+      unMute,
+      isMuted,
+      setVolume,
+      getVolume,
+      getDuration,
+      getPlayerState,
+      loadVideoById,
+      playVideoAgain,
       deactivateVolumeVideo,
       activateVolumeVideo,
-      playVideoAgain,
-      title,
-      overview,
-      cert,
-      key,
+      flagDataRenderized,
     };
   },
 };
 </script>
 
 <style scoped>
-.container {
+.container_data {
   position: relative;
-  width: 100%;
-  display: flex;
-  justify-content: center;
 }
 
-/* contenedor que se superpone */
-#container_image {
+.container_data .video {
   position: absolute;
-  width: 100%;
-  height: 50.5vw;
 }
 
-#container_info_movie {
+#background_image {
+  position: absolute;
   width: 100%;
   height: 100%;
-  position: absolute;
-  display: flex;
-  align-items: center;
+  left: 0;
+  pointer-events: none;
 }
 
-.info_movie {
+.data_movie {
+  position: absolute;
   width: 100%;
-  height: 70%;
+  height: 100%;
   display: flex;
   justify-content: space-between;
-  margin-left: 4rem;
-  gap: 20px;
+  align-items: center;
+  gap: 10px;
 }
 
-.box-left {
-  width: 40%;
-  height: 75%;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  gap: 20px;
-}
-
-.box-right {
-  width: 50%;
-  height: 75%;
+.box_right {
+  width: 100%;
+  height: 50%;
   display: flex;
   justify-content: flex-end;
   align-items: flex-end;
+  z-index: 1;
+}
+
+.box_left {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+  height: 50%;
+  color: #fff;
+  margin-left: 4rem;
+  z-index: 1;
 }
 
 #cont_buttons button {
@@ -530,7 +499,6 @@ export default {
   display: flex;
   justify-content: flex-start;
   gap: 10px;
-  visibility: hidden;
 }
 
 .button_rep {
@@ -559,43 +527,31 @@ export default {
   margin-right: 1rem;
 }
 
-.cont_sinopsis {
+.upper_data {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
   text-align: left;
-  color: #fff;
-  /* oculta el texto cuando este se desborda */
-  overflow: hidden;
-  /* punto suspensivo al aplicar el overflow hidden del texto */
-  text-overflow: ellipsis;
-}
-
-.cont_sinopsis p {
-  font-weight: 500;
-  cursor: default;
+  width: 100%;
+  height: 100%;
 }
 
 .title_movie h1 {
-  color: #fff;
   font-size: 50px;
+  margin-bottom: 1.5rem;
+  text-shadow: 0.1em 0.1em 0.3em rgb(28, 27, 27);
   cursor: default;
-  text-align: left;
+}
+
+.cont_sinopsis p {
+  cursor: default;
 }
 
 #sinopsis {
   font-size: 1.4vw;
+  margin-bottom: 1.5rem;
   transition: font-size 2.5s;
   text-shadow: 0.1em 0.1em 0.1em rgb(65, 64, 64);
-}
-
-.cont-cert {
-  background-color: rgba(97, 96, 96, 0.5);
-  padding: 0.7rem 4.3rem 0.7rem 1rem;
-  border-left: 3px solid #bdbdbd;
-}
-
-.cont-cert p {
-  color: #fff;
-  font-size: 20px;
-  cursor: default;
 }
 
 .cont-play-mute button {
@@ -626,12 +582,19 @@ export default {
   display: none;
 }
 
-@media (min-width: 390px) and (max-width: 889px) {
-  .info_movie {
-    margin-left: 2rem;
-    height: 100%;
-  }
+.cont-cert {
+  background-color: rgba(97, 96, 96, 0.5);
+  padding: 0.7rem 4.3rem 0.7rem 1rem;
+  border-left: 3px solid #bdbdbd;
+}
 
+.cont-cert p {
+  color: #fff;
+  font-size: 20px;
+  cursor: default;
+}
+
+@media (min-width: 390px) and (max-width: 889px) {
   #cont_buttons button {
     padding: 0.5rem 1rem 0.5rem 1rem;
     border-style: none;
@@ -646,13 +609,8 @@ export default {
     margin-right: 1rem;
   }
 
-  .box-left {
-    width: 50%;
-    height: 60%;
-  }
-
-  .box-right {
-    height: 60%;
+  .box_left {
+    margin-left: 2rem;
   }
 
   .title_movie h1 {
@@ -678,10 +636,6 @@ export default {
 }
 
 @media (min-width: 890px) and (max-width: 1129px) {
-  .info_movie {
-    margin-left: 2rem;
-  }
-
   #cont_buttons button {
     padding: 0.5rem 1rem 0.5rem 1rem;
     border-style: none;
@@ -696,17 +650,17 @@ export default {
     margin-right: 1rem;
   }
 
-  .box-left {
-    width: 50%;
-    height: 80%;
+  .box_left {
+    height: 60%;
+    margin-left: 2rem;
   }
 
-  .box-right {
-    height: 80%;
+  .box_right {
+    height: 60%;
   }
 
   .title_movie h1 {
-    font-size: 40px;
+    font-size: 35px;
   }
 
   .cont-cert {
@@ -719,10 +673,6 @@ export default {
 }
 
 @media (min-width: 1130px) and (max-width: 1330px) {
-  .info_movie {
-    margin-left: 2rem;
-  }
-
   #cont_buttons button {
     padding: 0.5rem 1rem 0.5rem 1rem;
     border-style: none;
@@ -741,13 +691,17 @@ export default {
     font-size: 18px;
   }
 
-  .box-left {
-    width: 50%;
-    height: 80%;
+  .box_left {
+    height: 60%;
+    margin-left: 2rem;
   }
 
-  .box-right {
-    height: 80%;
+  .box_right {
+    height: 60%;
+  }
+
+  .title_movie h1 {
+    font-size: 40px;
   }
 
   .cont-cert {

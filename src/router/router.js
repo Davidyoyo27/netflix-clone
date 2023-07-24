@@ -10,7 +10,7 @@ const routes = [
     //                      () => import ()
     //                               nombre que se vera en navegador red/network   ruta de la pagina
     { path: '/', name: '/',component: () => import(/* webpackChunkName: "Inicio.vue" */ '../components/Inicio')},
-    { path: '/series', name: 'series',component: () => import(/* webpackChunkName: "Series.vue" */ '../components/Series')},
+    { path: '/genre/83', name: 'series',component: () => import(/* webpackChunkName: "Series.vue" */ '../components/Series')},
     { path: '/peliculas', name: 'peliculas',component: () => import(/* webpackChunkName: "Peliculas.vue" */ '../components/Peliculas')},
     { path: '/novedades', name: 'novedades',component: () => import(/* webpackChunkName: "Novedades.vue" */ '../components/Novedades') },
     { path: '/mi_lista', name: 'mi_lista',component: () => import(/* webpackChunkName: "MiLista.vue" */ '../components/MiLista') },

@@ -198,7 +198,6 @@ export default {
       // cambiara cuando se haga mas pequeña el tamaño de la ventana en base al ancho de la pantalla
       // como se especifica con el vw(viewport width)
       video_style.style.height = "50.25vw";
-      // eslint-disable-next-line no-undef
       player.value = new YT.Player(playerElement, {
         videoId: videoID,
         playerVars: {
@@ -537,6 +536,7 @@ export default {
   font-size: 50px;
   cursor: default;
   text-align: left;
+  text-shadow: 0.1em 0.1em 0.3em rgb(28, 27, 27);
 }
 
 #sinopsis {
@@ -665,7 +665,7 @@ export default {
   }
 
   .title_movie h1 {
-    font-size: 40px;
+    font-size: 35px;
   }
 
   .cont-cert {
@@ -707,6 +707,10 @@ export default {
 
   .box-right {
     height: 80%;
+  }
+
+  .title_movie h1 {
+    font-size: 40px;
   }
 
   .cont-cert {

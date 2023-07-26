@@ -15,7 +15,7 @@
 import { ref, onMounted } from "vue";
 import EmbedVideoPlayer from "./EmbedVideoPlayer.vue";
 import services from "@/helpers/services/services";
-import { getPageRandom } from "@/helpers/js/functions";
+import { getPageRandom, cutText } from "@/helpers/js/functions";
 import { numMax100 } from "@/helpers/js/variables";
 
 export default {
@@ -30,27 +30,6 @@ export default {
     const movieBackdropLink = ref("https://image.tmdb.org/t/p/original");
     const certification = ref("");
     const id = ref(0);
-
-    // funcion que corta el texto segun el maximo de palabras que se especifique
-    // a la funcion se le pasa como argumento 2 variables
-    // text: el texto a evaluar
-    // maxWords: cantidad maxima de palabras que se desea que el texto tenga
-    function cutText(text, maxWords) {
-      // tomamos el texto y con el .split(" ") lo separamos por cada espacio
-      // dando como resultado a cada palabra del texto separada en un array
-      const words = text.split(" ");
-      // variable donde se guardara el resultado final
-      let textCuted;
-      // si la cantidad de words es mayor a maxWords
-      if (words.length > maxWords) {
-        // usamos el metodo .slice() para asignarle un inicio(0) y donde este terminara (maxWords)
-        // y finalmente usamos el .join(" ") para unir las palabras y separandola por espacio
-        textCuted = words.slice(0, maxWords).join(" ");
-      }
-      
-      // retornamos el texto final con un ...
-      return textCuted + "...";
-    }
 
     onMounted(async () => {
       // realizamos el llamado al servicio que es el endpoint con series y el filtro de animacion

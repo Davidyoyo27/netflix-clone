@@ -13,6 +13,8 @@
               </div>
             </div>
             <div class="down_data">
+              <!-- flagDataRenderized es para que mientras la data aun no sea visible 
+                tanto los botones como la certificacion no sera visible -->
               <div v-if="flagDataRenderized" id="cont_buttons">
                 <button class="button_rep">
                   <font-awesome-icon class="icon" icon="fa-solid fa-play" />
@@ -57,32 +59,47 @@
 import { ref, onMounted } from "vue";
 
 export default {
+  // aca se reciben mediante las props la data que viene desde el componente padre
+  // NOTA: si se desea exponer inmediatamente la data al template una vez que el componente padre ya la envio
+  //       solo debe pasarse directamente al template, sin necesidad de que se pase al return{} o pasarlas a
+  //       una variable en el onMounted para luego exponerla en el return, para ello ver el ejemplo de titleMovie o overviewMovie
+  //       que una vez recibidas en el props se exponen inmediatamente en el template
   props: {
+    // recibe la key del video desde el componente padre
     videoId: {
+      type: String,
       required: true,
     },
-    videoUrl: {
-      type: String,
-      required: false,
-      default: null,
-    },
+    // objecto que contiene los parametros del reproductor de YouTube
     playerVars: {
       type: Object,
       required: false,
       default: () => ({}),
     },
+    // recibe el titulo del video desde el componente padre
     titleMovie: {
+      type: String,
       required: true,
     },
+    // recibe la sinopsis del video desde el componente padre
     overviewMovie: {
       type: String,
       required: true,
       default: "No hay sinopsis",
     },
+    // recibe la imagen de fondo del video desde el componente padre
     backgroundImageMovie: {
+      type: String,
       required: true,
     },
+    // recibe la certificacion(12, 16, 18+, etc.) del video desde el componente padre
     certificationMovie: {
+      type: String,
+      required: true,
+    },
+    // recibe el id del video desde el componente padre
+    idMovie: {
+      type: Number,
       required: true,
     },
   },
@@ -97,11 +114,16 @@ export default {
     "error",
     "apiChange",
   ],
+  // Uncaught ReferenceError: emit is not defined
+  // setup( { emit }) solucion al error de arriba
   setup(props, { emit }) {
+    // variable contenedora del reproductor
     const player = ref(null);
+    // id del <iframe>
     const playerId = ref(null);
     const sinopsis = ref(null);
     const cont_img = ref(null);
+    // variables contenedoras de los botones que interactuan con el video
     const reproducir = ref(null);
     const volume_on = ref(null);
     const volume_off = ref(null);
@@ -170,6 +192,39 @@ export default {
       });
     }
 
+    function loadAPI() {
+      if (document.querySelector("script[src='https://www.youtube.com/iframe_api']")) {
+        // Youtube API script already added
+        return Promise.resolve();
+      }
+      // 2. This code loads the IFrame Player API code asynchronously.
+      const tag = document.createElement("script");
+      tag.src = "https://www.youtube.com/iframe_api";
+      document.head.appendChild(tag);
+      console.info("Youtube API script added to the HTML document.");
+      return Promise.resolve();
+    }
+
+    function checkIfYTLoaded() {
+      if (window.YT && window.YT.Player) {
+        return Promise.resolve();
+      }
+      // recursively check if the YT object is loaded
+      //R: The JavaScript exception "too much recursion" or "Maximum call stack size exceeded"
+      //occurs when there are too many function calls, or a function is missing a base case.
+      // eslint-disable-next-line no-unused-vars
+      return new Promise((resolve) => {
+        // agregamos el setTimeout() con 2seg para evitar el problema de recursividad con las funciones
+        setTimeout(() => {
+          checkIfYTLoaded().then(() => {
+            resolve();
+          });
+        }, 500); // cambio de 100 a 500 ms, anterior 2000
+      });
+    }
+
+    // 3. This function creates an <iframe> (and YouTube player)
+    //    after the API code downloads.
     function createPlayer() {
       const playerElement = playerId.value;
       // capturamos el id del iframe cuando este se crea
@@ -182,7 +237,8 @@ export default {
       // cambiara cuando se haga mas pequeña el tamaño de la ventana en base al ancho de la pantalla
       // como se especifica con el vw(viewport width)
       video_style.style.height = "50.25vw";
-
+      // cambiamos el estado de la bandera a true una vez se finalize la carga de todos los elementos con la data
+      // y estos sean visibles
       flagDataRenderized.value = true;
       player.value = new YT.Player(playerElement, {
         videoId: props.videoId,
@@ -196,13 +252,7 @@ export default {
           enableapi: 1,
         },
         events: {
-          onReady: (event) => {
-            player.value = event.target;
-            setVolume(70);
-            setTimeout(() => {
-              playVideo();
-            }, 5000);
-          },
+          onReady: onPlayerReady,
           onStateChange: onPlayerStateChange,
           onPlaybackQualityChange: onPlaybackQualityChange,
           onPlaybackRateChange: onPlaybackRateChange,
@@ -212,14 +262,32 @@ export default {
       });
     }
 
+    // 4. The API will call this function when the video player is ready.
+    function onPlayerReady(event) {
+      emit("ready", event.target);
+      // player.value = event.target;
+      // establecemos el nivel de volumen en 70 ya que este se mide de 0 a 100
+      setVolume(70);
+      // esperamos 5 segundos a visualizar el fondo de la pelicula
+      // para luego reproducir el trailer
+      setTimeout(() => {
+        // se reproduce el video
+        playVideo();
+      }, 5000);
+    }
+
+    // 5. The API calls this function when the player's state changes.
+    //    The function indicates that when playing a video (state=1),
+    //    the player should play for six seconds and then stop.
     function onPlayerStateChange(event) {
       switch (event.data) {
         case window.YT.PlayerState.PLAYING:
           emit("playing", event.target);
+          // SE OCULTA LA INFO DE LA PELICULA AL REPRODUCIRSE EL VIDEO
           // capturamos el id contenedor de la sinopsis
           sinopsis.value = document.getElementById("sinopsis");
           // settimeout para que cuando se reprodusca el trailer, luego de 3 seg se
-          // quite el texto informativo de la pelicula
+          // quite la sinopsis de la pelicula
           setTimeout(() => {
             sinopsis.value.style.fontSize = "0vw";
             sinopsis.value.style.opacity = "0";
@@ -307,23 +375,6 @@ export default {
     }
 
     /**
-     * @see https://developers.google.com/youtube/iframe_api_reference#stopVideo
-     */
-    function stopVideo() {
-      player.value.stopVideo();
-    }
-
-    /**
-     * @param {Number} seconds
-     * @param {Boolean} allowSeekAhead
-     *
-     * @see https://developers.google.com/youtube/iframe_api_reference#seekTo
-     */
-    function seekTo(seconds, allowSeekAhead) {
-      player.value.seekTo(seconds, allowSeekAhead);
-    }
-
-    /**
      * @see https://developers.google.com/youtube/iframe_api_reference#mute
      */
     function mute() {
@@ -355,30 +406,6 @@ export default {
     }
 
     /**
-     * @see https://developers.google.com/youtube/iframe_api_reference#getVolume
-     * @returns {Number}
-     */
-    function getVolume() {
-      return player.value.getVolume();
-    }
-
-    /**
-     * @returns {Number}
-     * @see https://developers.google.com/youtube/iframe_api_reference#getDuration
-     */
-    function getDuration() {
-      return player.value.getDuration();
-    }
-
-    /**
-     * @returns {Number}
-     * @see https://developers.google.com/youtube/iframe_api_reference#getPlayerState
-     */
-    function getPlayerState() {
-      return player.value.getPlayerState();
-    }
-
-    /**
      * @param {String} videoId
      * @param {Number} startSeconds
      * @param {Number} endSeconds
@@ -390,44 +417,15 @@ export default {
       return player.value.loadVideoById({ videoId, startSeconds, endSeconds });
     }
 
-    function loadAPI() {
-      if (document.querySelector("script[src='https://www.youtube.com/iframe_api']")) {
-        return Promise.resolve();
-      }
-      const tag = document.createElement("script");
-      tag.src = "https://www.youtube.com/iframe_api";
-      document.head.appendChild(tag);
-      console.info("Youtube API script added to the HTML document.");
-      return Promise.resolve();
-    }
-
-    function checkIfYTLoaded() {
-      if (window.YT && window.YT.Player) {
-        return Promise.resolve();
-      }
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          checkIfYTLoaded().then(() => {
-            resolve();
-          });
-        }, 2000); // cambio de 100 a 2000 ms
-      });
-    }
-
     return {
       player,
       playerId,
       playVideo,
       pauseVideo,
-      stopVideo,
-      seekTo,
       mute,
       unMute,
       isMuted,
       setVolume,
-      getVolume,
-      getDuration,
-      getPlayerState,
       loadVideoById,
       playVideoAgain,
       deactivateVolumeVideo,

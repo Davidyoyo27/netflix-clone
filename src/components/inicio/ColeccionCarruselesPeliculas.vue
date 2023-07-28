@@ -103,8 +103,8 @@ export default {
   components: {
     // LazyLoad: al realizar el import del componente dentro del defineAsyncComponent() ya no es necesario que este el import del mismo mas arriba,
     // puesto que este lo reemplaza
-    CarruselPelicula: defineAsyncComponent( /* webpackChunkName: "carrusel_de_peliculas.vue" */ () => import("@/components/categoria_peliculas/CarruselPelicula.vue")),
-    CarruselTop10: defineAsyncComponent( /* webpackChunkName: "carrusel_top_10.vue" */ () => import("@/components/categoria_peliculas/CarruselTop10.vue")),
+    CarruselPelicula: defineAsyncComponent( /* webpackChunkName: "carrusel_de_peliculas.vue" */ () => import("@/components/carrusel_peliculas/CarruselPelicula.vue")),
+    CarruselTop10: defineAsyncComponent( /* webpackChunkName: "carrusel_top_10.vue" */ () => import("@/components/carrusel_peliculas/CarruselTop10.vue")),
   },
   setup() {
     // bandera para mostrar u ocultar los carruseles

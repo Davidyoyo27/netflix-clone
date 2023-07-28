@@ -9,9 +9,9 @@ const routes = [
     //                                  se tendran muchas descargas pequeñas
     //                      () => import ()
     //                               nombre que se vera en navegador red/network   ruta de la pagina
-    { path: '/', name: '/',component: () => import(/* webpackChunkName: "Inicio.vue" */ '../components/Inicio')},
+    { path: '/', name: '/',component: () => import(/* webpackChunkName: "Inicio.vue" */ '../components/inicio/Inicio')},
     // VER LO DEL /83 PARA VER COMO SE PASARA LA DATA QUE SE VE EN LA URL EN NETFLIX
-    { path: '/genre/83', name: 'series',component: () => import(/* webpackChunkName: "Series.vue" */ '../components/Series')},
+    { path: '/genre/83', name: 'series',component: () => import(/* webpackChunkName: "Series.vue" */ '../components/series/Series')},
     { path: '/peliculas', name: 'peliculas',component: () => import(/* webpackChunkName: "Peliculas.vue" */ '../components/Peliculas')},
     { path: '/novedades', name: 'novedades',component: () => import(/* webpackChunkName: "Novedades.vue" */ '../components/Novedades') },
     { path: '/mi_lista', name: 'mi_lista',component: () => import(/* webpackChunkName: "MiLista.vue" */ '../components/MiLista') },
@@ -19,7 +19,8 @@ const routes = [
     { path: '/visualizar_busqueda_pelicula', name: 'resultado_busqueda_pelicula',component: () => import(/* webpackChunkName: "VisualizarBusquedaPelicula.vue" */ '../components/VisualizarBusquedaPelicula') },
     // ----------------------------------------------------------------------------------------------------------------
     // componente prueba
-    { path: '/prueba_carruseles', component: () => import(/* webpackChunkName: "ColeccionCarruselesPeliculas.vue" */ '../components/ColeccionCarruselesPeliculas') },
+    { path: '/prueba_carruseles', component: () => import(/* webpackChunkName: "ColeccionCarruselesPeliculas.vue" */ '../components/inicio/ColeccionCarruselesPeliculas') },
+    { path: '/cbo_generos', component: () => import(/* webpackChunkName: "ComboboxGeneros.vue" */ '../components/series/ComboboxGeneros') },
     // ----------------------------------------------------------------------------------------------------------------
     // page 404 Not Found
     // se busca cualquier url que no tenga match con los especificados aca en las rutas

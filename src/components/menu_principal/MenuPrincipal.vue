@@ -114,7 +114,7 @@ export default {
   justify-content: space-between;
   align-items: center;
   height: 4.2rem;
-  z-index: 2;
+  z-index: 3;
   position: fixed;
   width: 100%;
 }

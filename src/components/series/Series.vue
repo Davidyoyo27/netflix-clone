@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div id="combobox">
+      <ComboboxGeneros></ComboboxGeneros>
+    </div>
     <EmbedVideoPlayer 
       :idMovie="id"
       :titleMovie="title"
@@ -12,15 +15,17 @@
 </template>
 
 <script>
-import { ref, onMounted } from "vue";
-import EmbedVideoPlayer from "./EmbedVideoPlayer.vue";
+import { ref, onMounted, onBeforeUnmount, watch } from "vue";
+import EmbedVideoPlayer from "../EmbedVideoPlayer";
 import services from "@/helpers/services/services";
 import { getPageRandom, cutText } from "@/helpers/js/functions";
 import { numMax100 } from "@/helpers/js/variables";
+import ComboboxGeneros from "./ComboboxGeneros";
 
 export default {
   components: {
     EmbedVideoPlayer,
+    ComboboxGeneros,
   },
   setup() {
     const keyTrailer = ref("");
@@ -30,8 +35,23 @@ export default {
     const movieBackdropLink = ref("https://image.tmdb.org/t/p/original");
     const certification = ref("");
     const id = ref(0);
+    // variable que contendra el valor del scroll al moverse
+    // inicializada en 0
+    const scrollTop = ref(0); 
+
+    // creamos la funcion
+    function handleScroll() {
+      // que contendra el valor del scrollY que en este caso es cuando
+      // se haga scroll vertical para luego asignarsela a la variable
+      // scrollTop
+      scrollTop.value = window.scrollY;
+    }
 
     onMounted(async () => {
+      // agregamos un escuchador que este atento a la interaccion del scroll
+      // y le pasamos la funcion handleScroll
+      window.addEventListener("scroll", handleScroll);
+
       // realizamos el llamado al servicio que es el endpoint con series y el filtro de animacion
       const response = await services.get_movie_services(getPageRandom(numMax100, 1), "/discover/tv?language=es-MX&with_genres=16&with_keywords=210024|287501");
       // pasamos los elementos contenidos en results a una variable
@@ -112,6 +132,28 @@ export default {
       }
     });
 
+    // removemos el escuchador una vez que la accion de la funcion handleScroll fue tomada
+    onBeforeUnmount(() => {
+      window.removeEventListener("scroll", handleScroll);
+    });
+
+    // observamos la variable scrollTop la cual detectaremos cualquier cambio que tenga
+    watch(scrollTop, () => {
+      // tomamos el id del div principal menu
+      let cont_combobox = document.getElementById("combobox");
+      // si scrollTop es mayor a 0
+      if (scrollTop.value > 0) {
+        // le pasaremos al CSS del div principal_menu la propiedad backgroundColor
+        // esto quiere decir que cuando se haga scroll hacia abajo la barra difuminada
+        // del menu principal dejara de serlo y se vera del color solido asignado, en este caso negro(#000)
+        cont_combobox.style.backgroundColor = "#000";
+      } else {
+        // en su defecto si el scrollTop es 0 se removera la propiedad CSS "background-color"
+        // del div cont_combobox dejando la barra del menu con el difuminado
+        cont_combobox.style.removeProperty("background-color");
+      }
+    });
+
     return {
       keyTrailer,
       title,
@@ -119,7 +161,21 @@ export default {
       backdrop,
       certification,
       id,
+      scrollTop,
+      handleScroll,
     };
   },
 };
 </script>
+
+<style scoped>
+#combobox {
+  height: 9rem;
+  width: 100%;
+  /* background-color: yellowgreen; */
+  display: flex;
+  align-items: flex-end;
+  position: fixed;
+  z-index: 2;
+}
+</style>

@@ -227,7 +227,7 @@ export default {
 }
 
 .submenu a:hover {
-  text-decoration: underline;
+  text-decoration: underline #fff;
 }
 
 .submenu div p {

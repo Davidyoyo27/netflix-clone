@@ -70,8 +70,7 @@ async function getDataMovieStartVideo() {
       const movieTitle = dataSorted[0].title;
       // usamos el .split(' ') para separar el texto de la sinopsis por cada espacio que tenga y obtener la cantidad de palabras que contiene
       const wordsOfOverview = dataSorted[0].overview.split(' ');
-      console.log(wordsOfOverview);
-      console.log(wordsOfOverview.length);
+      
       let movieOverview;
       // evaluamos si la sinopsis posee mas de 50 palabras
       if(wordsOfOverview.length > 50){
@@ -81,9 +80,6 @@ async function getDataMovieStartVideo() {
         // en caso de que la sinopsis tenga menos de 50 palabras se guarda eso
         movieOverview = dataSorted[0].overview;
       }
-      console.log(movieOverview);
-      // // sinopsis de la pelicula
-      // const movieOverview = dataSorted[0].overview;
 
       // utilizamos el Promise.all([]) para pasarle un array con los servicios a consultar, esto para realizar de una vez
       // y no por separado mas de una consulta a un endpoint

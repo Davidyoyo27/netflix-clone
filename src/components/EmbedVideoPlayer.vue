@@ -2,7 +2,9 @@
   <div class="wrapper">
     <div class="container">
       <div class="container_data">
-        <div class="data_movie">
+        <!-- flagDataRenderized es para que mientras la data aun no sea visible 
+                tanto los botones como, titulo, sinopsis o la certificacion no sera visible -->
+        <div v-if="flagDataRenderized" class="data_movie">
           <div class="box_left">
             <div class="upper_data">
               <div class="title_movie">
@@ -13,9 +15,7 @@
               </div>
             </div>
             <div class="down_data">
-              <!-- flagDataRenderized es para que mientras la data aun no sea visible 
-                tanto los botones como la certificacion no sera visible -->
-              <div v-if="flagDataRenderized" id="cont_buttons">
+              <div id="cont_buttons">
                 <button class="button_rep">
                   <font-awesome-icon class="icon" icon="fa-solid fa-play" />
                   <span>Reproducir</span>
@@ -42,7 +42,7 @@
                 <font-awesome-icon icon="fa-solid fa-rotate-right" />
               </button>
             </div>
-            <div v-if="flagDataRenderized" class="cont-cert">
+            <div class="cont-cert">
               <p>{{ certificationMovie }}</p>
             </div>
           </div>

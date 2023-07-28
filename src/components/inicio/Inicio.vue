@@ -16,8 +16,8 @@
 // RECOMENDACION: al importar un componente no usar la extension .vue, ya que
 // al traer 2 componentes de la misma ruta con la extension .vue este generara un error
 // si bien el error no afecta el funcionamiento del modulo es molesto visualmente dentro del modulo
-import ComponenteVideoInicio from "@/components/ComponenteVideoInicio";
-import ColeccionCarruselesPeliculas from "./ColeccionCarruselesPeliculas";
+import ComponenteVideoInicio from "@/components/inicio/ComponenteVideoInicio";
+import ColeccionCarruselesPeliculas from "@/components/inicio/ColeccionCarruselesPeliculas";
 import Footer from "@/components/Footer";
 
 export default {

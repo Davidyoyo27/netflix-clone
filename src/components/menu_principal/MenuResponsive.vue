@@ -8,12 +8,12 @@
         </div>
         <ul class="responsive_menu_options">
           <div class="figure_left_menu"></div>
-          <router-link to="/"><li>Inicio</li></router-link>
-          <router-link to="/series"><li>Series</li></router-link>
-          <router-link to="/peliculas"><li>Películas</li></router-link>
-          <router-link to="/novedades"><li>Novedades populares</li></router-link>
-          <router-link to="/mi_lista"><li>Mi lista</li></router-link>
-          <router-link to="/explora_por_idiomas"><li>Explora por idiomas</li></router-link>
+          <router-link :to="{ name: '/' }"><li>Inicio</li></router-link>
+          <router-link :to="{ name: 'series' }"><li>Series</li></router-link>
+          <router-link :to="{ name: 'peliculas' }"><li>Películas</li></router-link>
+          <router-link :to="{ name: 'novedades' }"><li>Novedades populares</li></router-link>
+          <router-link :to="{ name: 'mi_lista' }"><li>Mi lista</li></router-link>
+          <router-link :to="{ name: 'explora_por_idiomas' }"><li>Explora por idiomas</li></router-link>
         </ul>
       </div>
     </li>

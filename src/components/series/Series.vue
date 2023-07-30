@@ -170,12 +170,10 @@ export default {
 
 <style scoped>
 #combobox {
-  height: 9rem;
   width: 100%;
-  /* background-color: yellowgreen; */
-  display: flex;
-  align-items: flex-end;
+  height: 9rem;
   position: fixed;
+  display: flex;
   z-index: 2;
 }
 </style>

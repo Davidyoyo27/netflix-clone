@@ -75,7 +75,7 @@ export default {
     }
   },
 
-  // `/movie/${id}/release_dates`
+  // endpoint certificacion(12, 16, 18+, etc.) de las peliculas/series
   get_data_certification_video: async (id) => {
     try {
       const axiosConfig = {

@@ -530,6 +530,7 @@ export default {
   flex-direction: column;
   justify-content: flex-end;
   text-align: left;
+  margin-bottom: 1.5rem;
   width: 100%;
   height: 100%;
 }
@@ -547,8 +548,8 @@ export default {
 
 #sinopsis {
   font-size: 1.4vw;
-  margin-bottom: 1.5rem;
-  transition: font-size 2.5s;
+  overflow: hidden;
+  transition: font-size 1.5s;
   text-shadow: 0.1em 0.1em 0.1em rgb(65, 64, 64);
 }
 

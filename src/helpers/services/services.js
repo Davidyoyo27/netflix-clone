@@ -1,5 +1,5 @@
 import axios from "axios";
-import { BASE_URL_MOVIEDB, ACCESS_TOKEN } from "../js/variables";
+import { BASE_URL_MOVIEDB, ACCESS_TOKEN, ACCESS_TOKEN_YOUTUBE } from "../js/variables";
 
 export default {
   // endpoint video pagina inicio
@@ -84,6 +84,26 @@ export default {
 
         headers: {
           Authorization: `Bearer ${ACCESS_TOKEN}`,
+        },
+
+        method: "get",
+      };
+
+      const { data } = await axios.request(axiosConfig);
+      return { ok: true, data };
+    } catch (err) {
+      return { ok: false, error: err.message };
+    }
+  },
+
+  get_data_youtube_data_v3: async (key_video) => {
+    try {
+      const axiosConfig = {
+        baseURL: 'https://www.googleapis.com/youtube/v3',
+        url: `/videos?id=${key_video}&key=AIzaSyBmapjiGTdAG3MUzQZf0kS-rdAWLpv4Bzk&part=contentDetails`,
+
+        headers: {
+          Authorization: `key ${ACCESS_TOKEN_YOUTUBE}`,
         },
 
         method: "get",

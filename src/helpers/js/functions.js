@@ -41,6 +41,27 @@ function cutText(text, maxWords) {
   return textCuted + "...";
 }
 
+// creamos la funcion para convertir la duracion del video que viene en la API de Youtube
+// desde el formato ISO 8601 a segundos
+function convertDurationToSeconds(duration) {
+  // usamos el .match() para devolver las coindidencias en una cadena de texto con una expresion regular, 
+  // en este caso la cadena debe comenzar con "PT", seguido de un numero opcional de digitos con la letra "H"(horas),
+  // luego un numero opcional de digitos con la letra "M"(minutos), y finalmente un numero opcional de digitos con la letra "S"(segundos)
+  const match = duration.match(/PT(\d+H)?(\d+M)?(\d+S)?/);
+  // evaluamos el match[1] para convertirlo en un numero entero con el parseInt, si no encuentra ninguna hora
+  // match[1] arrojara "undefined", para evitar esto usamos el operador logico || para asignar 0 en caso de que
+  // match[1] sea "undefined" o no sea un numero valido
+  const hours = (parseInt(match[1]) || 0);
+  const minutes = (parseInt(match[2]) || 0);
+  const seconds = (parseInt(match[3]) || 0);
+  // retornamos el valor final haciendo la conversion de horas y minutos a segundos
+  // 1 hora = 3600 segundos
+  // 1 minuto = 60 segundos
+  // para ello solo multiplicamos la variable por el valor numerico correspondiente
+  // luego se suma todo para retornar el valor final en segundos
+  return hours * 3600 + minutes * 60 + seconds;
+}
+
 // funcion que toma los endpoints para extraer los datos necesarios para enviarlos al componente ComponenteVideoInicio.vue
 // y crear el video del inicio de la aplicacion
 async function getDataMovieStartVideo() {
@@ -70,13 +91,13 @@ async function getDataMovieStartVideo() {
       const movieTitle = dataSorted[0].title;
       // usamos el .split(' ') para separar el texto de la sinopsis por cada espacio que tenga y obtener la cantidad de palabras que contiene
       const wordsOfOverview = dataSorted[0].overview.split(' ');
-      
+
       let movieOverview;
       // evaluamos si la sinopsis posee mas de 50 palabras
-      if(wordsOfOverview.length > 50){
+      if (wordsOfOverview.length > 50) {
         // si es asi la pasamos a la funcion para cortarla y solo guardar las primeras 50 palabras
         movieOverview = cutText(dataSorted[0].overview, 50);
-      }else{
+      } else {
         // en caso de que la sinopsis tenga menos de 50 palabras se guarda eso
         movieOverview = dataSorted[0].overview;
       }
@@ -235,4 +256,5 @@ export {
   getDataMovieStartVideo,
   getDataServicesMovies,
   cutText,
+  convertDurationToSeconds,
 };

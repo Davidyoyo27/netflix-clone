@@ -102,6 +102,11 @@ export default {
       type: Number,
       required: true,
     },
+    // recibe la duracion en segundos del video
+    timeVideoId: {
+      type: Number,
+      required: true,
+    },
   },
   emits: [
     "ready",
@@ -129,7 +134,7 @@ export default {
     const volume_off = ref(null);
     // variables con la cantidad de segundos en que inicia y termina el trailer de la pelicula
     const startSecondsVideo = ref(7);
-    const endSecondsVideo = ref(65);
+    const endSecondsVideo = ref(0);
     // bandera para tener el estado global de reproduccion del video
     const flagEstateVideo = ref(null);
     // bandera para ocultar la certificacion y los botones mientras aun no esta la carga completa de la data
@@ -227,6 +232,15 @@ export default {
     //    after the API code downloads.
     function createPlayer() {
       const playerElement = playerId.value;
+      // tomamos la duracion del trailer del video y si esta es mayor a 65 seg
+      if(props.timeVideoId > 65){
+        // solo guardamos hasta el seg 65 del video
+        endSecondsVideo.value = 65;
+      }else{
+        // por el contrario y si el video dura menos de 65 seg, tomamos la duracion
+        // de ese video y le restamos 12seg, para obtener el valor final
+        endSecondsVideo.value = props.timeVideoId - 12;
+      }
       // capturamos el id del iframe cuando este se crea
       let video_style = document.getElementById("reproductor");
       // le pasamos el estilo de css mediante JS cuando el video ya este renderizado

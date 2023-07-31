@@ -14,4 +14,4 @@ const numMax40=40
 const numMax20=20
 const numMax10=10
 
-export { numMin, BASE_URL_MOVIEDB, ACCESS_TOKEN, numMax500, numMax290, numMax200, numMax100, numMax40, numMax20, numMax10, ACCESS_TOKEN_YOUTUBE };
+export { numMin, BASE_URL_MOVIEDB, ACCESS_TOKEN, numMax500, numMax290, numMax200, numMax100, numMax40, numMax20, numMax10 };

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { BASE_URL_MOVIEDB, ACCESS_TOKEN, ACCESS_TOKEN_YOUTUBE } from "../js/variables";
+import { BASE_URL_MOVIEDB, ACCESS_TOKEN } from "../js/variables";
 
 export default {
   // endpoint video pagina inicio

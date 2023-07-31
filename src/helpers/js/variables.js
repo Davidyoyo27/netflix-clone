@@ -5,8 +5,6 @@ const numMin = 1;
 const ACCESS_TOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlZjZmMzM3NTRmNGJkYjJlNDVmZTAyNWQ3MWM4Mjg3OCIsInN1YiI6IjYzZmE3YWM4NzY0NmZkMDBhMjgzZjU1ZSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.iEkLGH2TxZGVxzeU8L55CyrKQ1vQAbjZOOjpDBYn_J8";
 // baseURL de los endpoints de la API de themoviedb
 const BASE_URL_MOVIEDB = "https://api.themoviedb.org/3";
-// token de la api de youtube data de google cloud
-const ACCESS_TOKEN_YOUTUBE = "AIzaSyBmapjiGTdAG3MUzQZf0kS-rdAWLpv4Bzk";
 // variables con rangos de cantidad de paginas de endpoints de peliculas
 const numMax500=500
 const numMax290=290

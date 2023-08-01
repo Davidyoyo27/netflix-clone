@@ -28,11 +28,6 @@ export default {
 </script>
 
 <style scoped>
-/* @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500&display=swap'); */
-
-.wrapper {
-  position: relative;
-}
 .container {
   background-image: url(../assets/Color_negro.jpg);
   /* con  propiedad fixed usando un background de una imagen esta permite 

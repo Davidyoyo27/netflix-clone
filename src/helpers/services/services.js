@@ -1,8 +1,7 @@
 import axios from "axios";
 
 export default {
-  // endpoint video pagina inicio
-  // endpoint para obtener la key del trailer de la pelicula y la certificacion
+  // endpoint video pagina inicio para obtener la key del trailer de la pelicula y la certificacion
   get_data_movie_video_start: async (url) => {
     try {
       const axiosConfig = {

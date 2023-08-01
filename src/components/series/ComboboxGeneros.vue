@@ -22,7 +22,7 @@
         <!-- CAMBIAR EL ! DE LA BANDERA -->
         <div v-if="flagVisibleSubmenu" id="submenu">
           <div class="submenu_items">
-            <a href="">Acción</a>
+            <router-link :to="{ name: '/' }">Acción</router-link>
             <a href="">Animes</a>
             <a href="">Asiáticos</a>
             <a href="">Británicos</a>

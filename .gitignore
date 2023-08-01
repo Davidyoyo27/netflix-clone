@@ -4,10 +4,8 @@ node_modules
 
 
 # local env files
-## agregamos el nombre del archivo a ignorar al subir los cambios a la rama
-## en este caso el archivo con las variables de entorno
-.env
-
+.env.local
+.env.*.local
 
 # Log files
 npm-debug.log*

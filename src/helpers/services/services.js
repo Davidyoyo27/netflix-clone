@@ -1,16 +1,17 @@
 import axios from "axios";
 
 export default {
-  // endpoint video pagina inicio para obtener la key del trailer de la pelicula y la certificacion
+  // endpoint video pagina inicio
+  // endpoint para obtener la key del trailer de la pelicula y la certificacion
   get_data_movie_video_start: async (url) => {
     try {
       const axiosConfig = {
         // llamada a la variable de entorno
-        baseURL: process.env.VUE_APP_BASE_URL_MOVIEDB,
+        baseURL: import.meta.env.VUE_APP_BASE_URL_MOVIEDB,
         url,
 
         headers: {
-          Authorization: `Bearer ${process.env.VUE_APP_ACCESS_TOKEN_MOVIEDB}`,
+          Authorization: `Bearer ${import.meta.env.VUE_APP_ACCESS_TOKEN_MOVIEDB}`,
         },
 
         method: "get",
@@ -33,11 +34,11 @@ export default {
   get_movie_services: async (page, url) => {
     try {
       const axiosConfig = {
-        baseURL: process.env.VUE_APP_BASE_URL_MOVIEDB,
+        baseURL: import.meta.env.VUE_APP_BASE_URL_MOVIEDB,
         url,
 
         headers: {
-          Authorization: `Bearer ${process.env.VUE_APP_ACCESS_TOKEN_MOVIEDB}`,
+          Authorization: `Bearer ${import.meta.env.VUE_APP_ACCESS_TOKEN}`,
         },
 
         method: "get",
@@ -57,11 +58,11 @@ export default {
   get_data_key_video: async (id) => {
     try {
       const axiosConfig = {
-        baseURL: process.env.VUE_APP_BASE_URL_MOVIEDB,
+        baseURL: import.meta.env.VUE_APP_BASE_URL_MOVIEDB,
         url: `/tv/${id}/videos?sort_by=popularity.desc`,
 
         headers: {
-          Authorization: `Bearer ${process.env.VUE_APP_ACCESS_TOKEN_MOVIEDB}`,
+          Authorization: `Bearer ${import.meta.env.VUE_APP_ACCESS_TOKEN}`,
         },
 
         method: "get",
@@ -78,11 +79,11 @@ export default {
   get_data_certification_video: async (id) => {
     try {
       const axiosConfig = {
-        baseURL: process.env.VUE_APP_BASE_URL_MOVIEDB,
+        baseURL: import.meta.env.VUE_APP_BASE_URL_MOVIEDB,
         url: `/tv/${id}/content_ratings`,
 
         headers: {
-          Authorization: `Bearer ${process.env.VUE_APP_ACCESS_TOKEN_MOVIEDB}`,
+          Authorization: `Bearer ${import.meta.env.VUE_APP_ACCESS_TOKEN}`,
         },
 
         method: "get",
@@ -95,14 +96,15 @@ export default {
     }
   },
 
-  // endpoint de Youtube data API v3 para obtener la duracion del video pasandole la key de este mismo
   get_data_youtube_data_v3: async (key_video) => {
     try {
       const axiosConfig = {
-        baseURL: process.env.VUE_APP_BASE_URL_YOUTUBE_DATA_API,
-        // las API keys de YouTube no se manejan en la cabecera Authorization, sino que se incluyen como parámetro en la URL de la solicitud
-        // por esta razon no tiene un "headers" este endpoint
-        url: `/videos?id=${key_video}&key=${process.env.VUE_APP_YOUTUBE_DATA_API_KEY}&part=contentDetails`,
+        baseURL: 'https://www.googleapis.com/youtube/v3',
+        url: `/videos?id=${key_video}&key=AIzaSyBmapjiGTdAG3MUzQZf0kS-rdAWLpv4Bzk&part=contentDetails`,
+
+        headers: {
+          Authorization: `key ${ACCESS_TOKEN_YOUTUBE}`,
+        },
 
         method: "get",
       };

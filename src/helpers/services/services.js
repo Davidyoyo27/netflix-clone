@@ -7,11 +7,11 @@ export default {
     try {
       const axiosConfig = {
         // llamada a la variable de entorno
-        baseURL: import.meta.env.VUE_APP_BASE_URL_MOVIEDB,
+        baseURL: process.env.VUE_APP_BASE_URL_MOVIEDB,
         url,
 
         headers: {
-          Authorization: `Bearer ${import.meta.env.VUE_APP_ACCESS_TOKEN_MOVIEDB}`,
+          Authorization: `Bearer ${process.env.VUE_APP_ACCESS_TOKEN_MOVIEDB}`,
         },
 
         method: "get",
@@ -34,11 +34,11 @@ export default {
   get_movie_services: async (page, url) => {
     try {
       const axiosConfig = {
-        baseURL: import.meta.env.VUE_APP_BASE_URL_MOVIEDB,
+        baseURL: process.env.VUE_APP_BASE_URL_MOVIEDB,
         url,
 
         headers: {
-          Authorization: `Bearer ${import.meta.env.VUE_APP_ACCESS_TOKEN}`,
+          Authorization: `Bearer ${process.env.VUE_APP_ACCESS_TOKEN_MOVIEDB}`,
         },
 
         method: "get",
@@ -58,11 +58,11 @@ export default {
   get_data_key_video: async (id) => {
     try {
       const axiosConfig = {
-        baseURL: import.meta.env.VUE_APP_BASE_URL_MOVIEDB,
+        baseURL: process.env.VUE_APP_BASE_URL_MOVIEDB,
         url: `/tv/${id}/videos?sort_by=popularity.desc`,
 
         headers: {
-          Authorization: `Bearer ${import.meta.env.VUE_APP_ACCESS_TOKEN}`,
+          Authorization: `Bearer ${process.env.VUE_APP_ACCESS_TOKEN_MOVIEDB}`,
         },
 
         method: "get",
@@ -79,11 +79,11 @@ export default {
   get_data_certification_video: async (id) => {
     try {
       const axiosConfig = {
-        baseURL: import.meta.env.VUE_APP_BASE_URL_MOVIEDB,
+        baseURL: process.env.VUE_APP_BASE_URL_MOVIEDB,
         url: `/tv/${id}/content_ratings`,
 
         headers: {
-          Authorization: `Bearer ${import.meta.env.VUE_APP_ACCESS_TOKEN}`,
+          Authorization: `Bearer ${process.env.VUE_APP_ACCESS_TOKEN_MOVIEDB}`,
         },
 
         method: "get",
@@ -99,12 +99,8 @@ export default {
   get_data_youtube_data_v3: async (key_video) => {
     try {
       const axiosConfig = {
-        baseURL: 'https://www.googleapis.com/youtube/v3',
-        url: `/videos?id=${key_video}&key=AIzaSyBmapjiGTdAG3MUzQZf0kS-rdAWLpv4Bzk&part=contentDetails`,
-
-        headers: {
-          Authorization: `key ${ACCESS_TOKEN_YOUTUBE}`,
-        },
+        baseURL: process.env.VUE_APP_BASE_URL_YOUTUBE_DATA_API,
+        url: `/videos?id=${key_video}&key=${process.env.VUE_APP_YOUTUBE_DATA_API_KEY}&part=contentDetails`,
 
         method: "get",
       };

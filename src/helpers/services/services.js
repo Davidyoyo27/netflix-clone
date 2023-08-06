@@ -55,7 +55,7 @@ export default {
   },
 
   // endpoint trailer de series con filtro por ID
-  get_data_key_video: async (id) => {
+  get_data_key_series_video: async (id) => {
     try {
       const axiosConfig = {
         baseURL: process.env.VUE_APP_BASE_URL_MOVIEDB,
@@ -76,7 +76,7 @@ export default {
   },
 
   // endpoint certificacion(12, 16, 18+, etc.) de las peliculas/series
-  get_data_certification_video: async (id) => {
+  get_data_series_certification_video: async (id) => {
     try {
       const axiosConfig = {
         baseURL: process.env.VUE_APP_BASE_URL_MOVIEDB,

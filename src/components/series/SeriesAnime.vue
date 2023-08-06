@@ -1,9 +1,12 @@
 <template>
   <div>
-    <div v-show="FlagVisibleElements" id="combobox">
-      <ComboboxGeneros></ComboboxGeneros>
+    <div id="top_bar">
+      <div v-show="FlagVisibleElements" class="container_bar">
+        <router-link :to="{ name: 'series' }">Series ></router-link>
+        <h1>{{ nameTitleSection }}</h1>
+      </div>
     </div>
-    <EmbedVideoPlayer 
+    <EmbedVideoPlayer
       :idMovie="id"
       :titleMovie="title"
       :overviewMovie="overview"
@@ -20,12 +23,10 @@ import { ref, onMounted, onBeforeUnmount, watch } from "vue";
 import EmbedVideoPlayer from "../EmbedVideoPlayer";
 import services from "@/helpers/services/services";
 import { getPageRandom, cutText, convertDurationToSeconds } from "@/helpers/js/functions";
-import ComboboxGeneros from "./ComboboxGeneros";
 
 export default {
   components: {
     EmbedVideoPlayer,
-    ComboboxGeneros,
   },
   setup() {
     // key del trailer de youtube pelicula/serie
@@ -43,9 +44,11 @@ export default {
     const id = ref(0);
     // variable que contendra el valor del scroll al moverse
     // inicializada en 0
-    const scrollTop = ref(0); 
+    const scrollTop = ref(0);
     // duracion segundos de pelicula/serie
     const dataTimeVideoKey = ref(0);
+    // nombre del titulo de la seccion dependiendo del genero que sea
+    const nameTitleSection = ref("Series de anime");
     const FlagVisibleElements = ref(false);
 
     // creamos la funcion
@@ -61,17 +64,19 @@ export default {
       // y le pasamos la funcion handleScroll
       window.addEventListener("scroll", handleScroll);
 
-      // realizamos el llamado al servicio que es el endpoint con series
-      const response = await services.get_movie_services(getPageRandom(58, 1), 
-      "/discover/tv?language=es-MX&without_genres=37&with_original_language=en&first_air_date.gte=2005&with_watch_providers=8&watch_region=CL");
+      // realizamos el llamado al servicio que es el endpoint con series y el filtro de animacion
+      const response = await services.get_movie_services(
+        getPageRandom(155, 1),
+        "/discover/tv?language=es-MX&with_genres=16&with_keywords=210024|287501"
+      );
       // pasamos los elementos contenidos en results a una variable
       const data = response.data.results;
       // usamos .filter() para traer todos los elementos que en su backdrop_path contengan una imagen
       const responseFiltered = data.filter((item) => {
         return item.backdrop_path;
       });
-      // usamos Math.floor() para redonder a la baja al numero entero mas cercano, y luego usamos Math.random() * responseFiltered.length
-      // para generar un numero entre 0 y el valor que tenga responseFiltered.length y finalmente almacenamos el valor de ese resultado en la variable
+      // usamos Math.floor() para redonder a la baja al numero entero mas cercano, y luego usamos Math.random() * responseFiltered.length para
+      // generar un numero entre 0 y el valor que tenga responseFiltered.length y finalmente almacenamos el valor de ese resultado en la variable
       const randomIndex = Math.floor(Math.random() * responseFiltered.length);
       // usamos el randomIndex con el numero aleatoria y lo pasamos al responseFiltered como su valor de array [numero_aleatorio] que seria
       // el finalmente el elemento que se tomara para extraer la data a pasar al componente hijo
@@ -82,12 +87,12 @@ export default {
       // obtenemos el titulo de la pelicula/serie
       title.value = randomObject.name;
       // usamos el .split(' ') para separar el texto de la sinopsis por cada espacio que tenga y obtener la cantidad de palabras que contiene
-      const wordsOfOverview = randomObject.overview.split(' ');
+      const wordsOfOverview = randomObject.overview.split(" ");
       // evaluamos si la sinopsis posee mas de 50 palabras
-      if(wordsOfOverview.length > 50){
+      if (wordsOfOverview.length > 50) {
         // si es asi la pasamos a la funcion para cortarla y solo guardar las primeras 50 palabras
         overview.value = cutText(randomObject.overview, 50);
-      }else{
+      } else {
         // en caso de que la sinopsis tenga menos de 50 palabras se guarda eso
         overview.value = randomObject.overview;
       }
@@ -131,7 +136,9 @@ export default {
             certification.value = item.rating;
           } else {
             // en caso contrario generara un numero al azar con la cantidad maxima de dataRespResults
-            const randomIndex = Math.floor(Math.random() * dataRespResults.length);
+            const randomIndex = Math.floor(
+              Math.random() * dataRespResults.length
+            );
             // y ese numero aleatorio lo pasamos al dataRespResults para obtener un elemento aleatorio y de ese elemento extraer su .rating
             certification.value = dataRespResults[randomIndex].rating;
           }
@@ -174,7 +181,7 @@ export default {
     // observamos la variable scrollTop la cual detectaremos cualquier cambio que tenga
     watch(scrollTop, () => {
       // tomamos el id del div principal menu
-      let cont_combobox = document.getElementById("combobox");
+      let cont_combobox = document.getElementById("top_bar");
       // si scrollTop es mayor a 0
       if (scrollTop.value > 0) {
         // le pasaremos al CSS del div principal_menu la propiedad backgroundColor
@@ -198,18 +205,42 @@ export default {
       scrollTop,
       handleScroll,
       dataTimeVideoKey,
+      nameTitleSection,
       FlagVisibleElements,
     };
   },
 };
 </script>
-
+  
 <style scoped>
-#combobox {
+#top_bar {
   width: 100%;
   height: 9rem;
   position: fixed;
   display: flex;
+  align-items: flex-end;
   z-index: 2;
+}
+
+.container_bar {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding-left: 4rem;
+  margin-bottom: 0.5rem;
+}
+
+.container_bar a {
+  font-weight: 600;
+  text-decoration: none;
+  margin-right: 1rem;
+  font-size: 1.1rem;
+  color: #727171;
+}
+
+.container_bar h1 {
+  font-weight: 600;
+  font-size: 2.3rem;
+  color: #fff;
 }
 </style>

@@ -18,35 +18,33 @@
           <div class="figure_right_menu"></div>
         </button>
         <!-- flagVisibleSubmenu muestra u oculta el menu segun el estado de la bandera  -->
-
-        <!-- CAMBIAR EL ! DE LA BANDERA -->
         <div v-if="flagVisibleSubmenu" id="submenu">
           <div class="submenu_items">
-            <router-link :to="{ name: '/' }">Acción</router-link>
-            <a href="">Animes</a>
-            <a href="">Asiáticos</a>
-            <a href="">Británicos</a>
-            <a href="">Cienca y naturaleza</a>
-            <a href="">Comedias</a>
-            <a href="">Contenido infantil</a>
+            <router-link :to="{ name: 'series_accion' }">Acción</router-link>
+            <router-link :to="{ name: 'series_anime' }">Animes</router-link>
+            <router-link :to="{ name: 'series_asiaticas' }">Asiáticos</router-link>
+            <router-link :to="{ name: 'series_britanicas' }">Británicos</router-link>
+            <router-link :to="{ name: 'series_ciencia' }">Cienca y naturaleza</router-link>
+            <router-link :to="{ name: 'series_comedia' }">Comedias</router-link>
+            <router-link :to="{ name: 'series_infantil' }">Contenido infantil</router-link>
           </div>
           <div class="submenu_items">
-            <a href="">De adolescentes</a>
-            <a href="">De EE.UU.</a>
-            <a href="">Dramas</a>
-            <a href="">Especiales de stand up</a>
-            <a href="">Latinoamericanos</a>
-            <a href="">Misterios</a>
-            <a href="">Policiales</a>
+            <router-link :to="{ name: 'series_adolescentes' }">De adolescentes</router-link>
+            <router-link :to="{ name: 'series_EEUU' }">De EE.UU.</router-link>
+            <router-link :to="{ name: 'series_dramas' }">Dramas</router-link>
+            <router-link :to="{ name: 'series_standup' }">Especiales de stand up</router-link>
+            <router-link :to="{ name: 'series_latinoamericanas' }">Latinoamericanos</router-link>
+            <router-link :to="{ name: 'series_misterio' }">Misterios</router-link>
+            <router-link :to="{ name: 'series_policiales' }">Policiales</router-link>
           </div>
           <div class="submenu_items">
-            <a href="">Reality shows y entrevistas</a>
-            <a href="">Romances</a>
-            <a href="">Sci-fi y fantasía</a>
-            <a href="">Series documentales</a>
-            <a href="">Telenovelas</a>
-            <a href="">Terror</a>
-            <a href="">Thrillers</a>
+            <router-link :to="{ name: 'series_reality' }">Reality shows y entrevistas</router-link>
+            <router-link :to="{ name: 'series_romance' }">Romances</router-link>
+            <router-link :to="{ name: 'series_fantasia' }">Sci-fi y fantasía</router-link>
+            <router-link :to="{ name: 'series_documental' }">Series documentales</router-link>
+            <router-link :to="{ name: 'series_telenovelas' }">Telenovelas</router-link>
+            <router-link :to="{ name: 'series_terror' }">Terror</router-link>
+            <router-link :to="{ name: 'series_thrillers' }">Thrillers</router-link>
           </div>
         </div>
       </div>

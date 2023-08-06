@@ -36,7 +36,7 @@ export default {
     // ENLACE REDIRECCION
     const array_links = ref([
       "/",
-      "/genre/83",
+      "/series",
       "/peliculas",
       "/novedades",
       "/mi_lista",

@@ -202,68 +202,53 @@ export default {
 
     // consultamos la cantidad de paginas maxima por endpoint puesto que cada uno es diferente
     onMounted(async () => {
+      // recibimos la data que viene desde la funcion en el archivo externo
       const response = await getDataServicesMovies();
-      // tomamos la respuesta del servicio de response y 
-      dataResp1.value = response[0].data.results
-      // le pasamos un filter, esto ya que algunas imagenes del poster_path vienen vacias, osea null
-      // por ende el filter retornara todos los items.poster_path que sean diferentes a null
-      .filter((item) => item.poster_path !== null)
-      // finalmente usamos el .map() para tomar esos elementos del array y crear un objeto para
-      // pasarlo con las siguientes propiedades
-      // {
-      //   poster_path: link_imagen,
-      //   name: nombre_imagen
-      // }
-      .map((item) => { 
-        // retornamos el objeto
-        return { poster_path: item.poster_path, name: item.name }; 
-      });
-      dataResp2.value = response[1].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });  
-      dataResp3.value = response[2].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });      
-      dataResp4.value = response[3].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });      
-      dataResp5.value = response[4].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });      
-      dataResp6.value = response[5].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });      
-      dataResp7.value = response[6].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });      
-      dataResp8.value = response[7].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });      
-      dataResp9.value = response[8].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });      
-      dataResp10.value = response[9].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });      
-      dataResp11.value = response[10].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });      
-      dataResp12.value = response[11].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });      
-      dataResp13.value = response[12].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });      
-      dataResp14.value = response[13].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });      
-      dataResp15.value = response[14].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });      
-      dataResp16.value = response[15].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });      
-      dataResp17.value = response[16].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });      
-      dataResp18.value = response[17].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });      
-      dataResp19.value = response[18].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });      
-      dataResp20.value = response[19].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });      
-      dataResp21.value = response[20].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });      
-      dataResp22.value = response[21].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });      
-      dataResp23.value = response[22].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });      
-      dataResp24.value = response[23].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });      
-      dataResp25.value = response[24].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });      
-      dataResp26.value = response[25].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });      
-      dataResp27.value = response[26].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });      
-      dataResp28.value = response[27].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });      
-      dataResp29.value = response[28].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });      
-      dataResp30.value = response[29].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });      
-      dataResp31.value = response[30].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });      
-      dataResp32.value = response[31].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });      
-      dataResp33.value = response[32].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });      
-      dataResp34.value = response[33].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });      
-      dataResp35.value = response[34].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });      
-      dataResp36.value = response[35].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });      
-      dataResp37.value = response[36].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });      
-      dataResp38.value = response[37].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });      
-      dataResp39.value = response[38].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });      
-      dataResp40.value = response[39].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });      
-      dataResp41.value = response[40].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });      
-      dataResp42.value = response[41].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });
-      dataResp43.value = response[42].data.results.filter((item) => item.poster_path !== null).slice(0, 10)
-      .map((item) => { return { poster_path: item.poster_path, name: item.title }; });
-      dataResp44.value = response[43].data.results.filter((item) => item.poster_path !== null).slice(0, 10)
-      .map((item) => { return { poster_path: item.poster_path, name: item.title }; });
-
+      // asignamos cada valor a una variable dependiendo de la posicion en la que se encuentra cada data el array
+      dataResp1.value = response[0];
+      dataResp2.value = response[1];
+      dataResp3.value = response[2];
+      dataResp4.value = response[3];
+      dataResp5.value = response[4];
+      dataResp6.value = response[5];
+      dataResp7.value = response[6];
+      dataResp8.value = response[7];
+      dataResp9.value = response[8];
+      dataResp10.value = response[9];
+      dataResp11.value = response[10];
+      dataResp12.value = response[11];
+      dataResp13.value = response[12];
+      dataResp14.value = response[13];
+      dataResp15.value = response[14];
+      dataResp16.value = response[15];
+      dataResp17.value = response[16];
+      dataResp18.value = response[17];
+      dataResp19.value = response[18];
+      dataResp20.value = response[19];
+      dataResp21.value = response[20];
+      dataResp22.value = response[21];
+      dataResp23.value = response[22];
+      dataResp24.value = response[23];
+      dataResp25.value = response[24];
+      dataResp26.value = response[25];
+      dataResp27.value = response[26];
+      dataResp28.value = response[27];
+      dataResp29.value = response[28];
+      dataResp30.value = response[29];
+      dataResp31.value = response[30];
+      dataResp32.value = response[31];
+      dataResp33.value = response[32];
+      dataResp34.value = response[33];
+      dataResp35.value = response[34];
+      dataResp36.value = response[35];
+      dataResp37.value = response[36];
+      dataResp38.value = response[37];
+      dataResp39.value = response[38];
+      dataResp40.value = response[39];
+      dataResp41.value = response[40];
+      dataResp42.value = response[41];
+      dataResp43.value = response[42];
+      dataResp44.value = response[43];
       // cambiamos el estado de la bandera a false, esto representa que la data si llego al componente padre
       // y que esta fue asignada a cada variable segun corresponda
       flagPromiseData.value = false;

@@ -244,8 +244,114 @@ async function getDataServicesMovies() {
     services.get_movie_services(getPageRandom(2, 1), '/discover/tv?region=CL&language=es-MX&sort_by=popularity.desc&vote_average.gte=8&vote_count.gte=5000'),
   ]);
 
+  // tomamos la respuesta del servicio de response y 
+  const dataSeriesEmocionantes = response[0].data.results
+    // le pasamos un filter, esto ya que algunas imagenes del poster_path vienen vacias, osea null
+    // por ende el filter retornara todos los items.poster_path que sean diferentes a null
+    .filter((item) => item.poster_path !== null)
+    // finalmente usamos el .map() para tomar esos elementos del array y crear un objeto para
+    // pasarlo con las siguientes propiedades
+    // {
+    //   poster_path: link_imagen,
+    //   name: nombre_imagen
+    // }
+    .map((item) => {
+      // retornamos el objeto
+      return { poster_path: item.poster_path, name: item.name };
+    });
+  const dataSugerenciasHoy = response[1].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });
+  const dataSeriesSuspenso = response[2].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });
+  const dataPeliculasAnime = response[3].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });
+  const dataPeliculasHollywood = response[4].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });
+  const dataPeliculasFiccion = response[5].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });
+  const dataPeliculasUltimoAnio = response[6].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });
+  const dataPeliculasEstrenos = response[7].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });
+  const dataPeliculasAnimacion = response[8].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });
+  const dataPeliculasAccion = response[9].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });
+  const dataPeliculasDocu = response[10].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });
+  const dataPeliculasDocuEEUU = response[11].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });
+  const dataPeliculasCrimen = response[12].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });
+  const dataPeliculasRomance = response[13].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });
+  const dataPeliculasMisterio = response[14].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });
+  const dataPeliculasMusica = response[15].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });
+  const dataPeliculasTerror = response[16].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });
+  const dataPeliculasHistoria = response[17].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });
+  const dataPeliculasFamilia = response[18].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });
+  const dataPeliculasDrama = response[19].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });
+  const dataPeliculasAnimeRom = response[20].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });
+  const dataPeliculasTV = response[21].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });
+  const dataPeliculasSuspenso = response[22].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });
+  const dataPeliculasGuerra = response[23].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });
+  const dataPeliculasOcciden = response[24].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });
+  const dataSeriesAnimeShonen = response[25].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });
+  const dataSeriesAnimeCom = response[26].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });
+  const dataSeriesAnimeCrim = response[27].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });
+  const dataSeriesAnimeDrama = response[28].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });
+  const dataSeriesAnimeMist = response[29].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });
+  const dataSeriesAnimeSciYFant = response[30].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });
+  const dataSeriesAnimeJapo = response[31].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });
+  const dataSeriesSciYFant = response[32].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });
+  const dataSeriesTelenovelas = response[33].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });
+  const dataSeriesTVInfantil = response[34].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });
+  const dataSeriesAnimacionOcc = response[35].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });
+  const dataSeriesOccAccYAvent = response[36].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });
+  const dataSeriesComedia = response[37].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });
+  const dataSeriesCrimen = response[38].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });
+  const dataSeriesDocumentales = response[39].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });
+  const dataSeriesMisterio = response[40].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });
+  const dataSeriesGuerraYPolit = response[41].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });
+  const dataPeliculasTop10 = response[42].data.results.filter((item) => item.poster_path !== null).slice(0, 10)
+    .map((item) => { return { poster_path: item.poster_path, name: item.title }; });
+  const dataSeriesTop10 = response[43].data.results.filter((item) => item.poster_path !== null).slice(0, 10)
+    .map((item) => { return { poster_path: item.poster_path, name: item.title }; });
+
   // retornamos la data rescatada en la variable response a la funcion
-  return response;
+  return [
+    dataSeriesEmocionantes,
+    dataSugerenciasHoy,
+    dataSeriesSuspenso,
+    dataPeliculasAnime,
+    dataPeliculasHollywood,
+    dataPeliculasFiccion,
+    dataPeliculasUltimoAnio,
+    dataPeliculasEstrenos,
+    dataPeliculasAnimacion,
+    dataPeliculasAccion,
+    dataPeliculasDocu,
+    dataPeliculasDocuEEUU,
+    dataPeliculasCrimen,
+    dataPeliculasRomance,
+    dataPeliculasMisterio,
+    dataPeliculasMusica,
+    dataPeliculasTerror,
+    dataPeliculasHistoria,
+    dataPeliculasFamilia,
+    dataPeliculasDrama,
+    dataPeliculasAnimeRom,
+    dataPeliculasTV,
+    dataPeliculasSuspenso,
+    dataPeliculasGuerra,
+    dataPeliculasOcciden,
+    dataSeriesAnimeShonen,
+    dataSeriesAnimeCom,
+    dataSeriesAnimeCrim,
+    dataSeriesAnimeDrama,
+    dataSeriesAnimeMist,
+    dataSeriesAnimeSciYFant,
+    dataSeriesAnimeJapo,
+    dataSeriesSciYFant,
+    dataSeriesTelenovelas,
+    dataSeriesTVInfantil,
+    dataSeriesAnimacionOcc,
+    dataSeriesOccAccYAvent,
+    dataSeriesComedia,
+    dataSeriesCrimen,
+    dataSeriesDocumentales,
+    dataSeriesMisterio,
+    dataSeriesGuerraYPolit,
+    dataPeliculasTop10,
+    dataSeriesTop10
+  ];
 }
 
 export {

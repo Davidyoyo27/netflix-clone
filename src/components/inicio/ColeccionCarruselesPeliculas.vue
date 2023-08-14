@@ -1,6 +1,6 @@
 <template>
   <!-- una vez que la data esta lista se muestran los componentes (carruseles peliculas) -->
-  <div class="container" v-if="!flagPromiseData">
+  <div v-if="!flagPromiseData">
     <!-- los numeros solo representan la variable y su orden de creacion -->
     <!-- NO SU ORDEN O POSICION a la hora de mostrar cada componente de peliculas/series -->
 
@@ -92,6 +92,8 @@
     <CarruselPelicula :title="title41" :arrayData="dataResp41"></CarruselPelicula>
     <!-- Series de animacion occidental -->
     <CarruselPelicula :title="title36" :arrayData="dataResp36"></CarruselPelicula>  
+    <!-- Series románticas -->
+    <CarruselPelicula :title="title45" :arrayData="dataResp45"></CarruselPelicula>  
   </div>
 </template>
 
@@ -152,6 +154,7 @@ export default {
     const title24 = ref("Películas belicas/guerra");
     const title41 = ref("Series de misterio");
     const title36 = ref("Series de animacion occidental");
+    const title45 = ref("Series románticas");
     const titleTopMovie = ref("Las 10 películas más populares en Chile hoy");
     const titleTopSerie = ref("Las 10 series más populares en Chile hoy");
     // data con los elementos que contienen las peliculas que seran consumidos por el componente carrusel
@@ -199,6 +202,7 @@ export default {
     const dataResp42 = ref(null);
     const dataResp43 = ref(null);
     const dataResp44 = ref(null);
+    const dataResp45 = ref(null);
 
     // consultamos la cantidad de paginas maxima por endpoint puesto que cada uno es diferente
     onMounted(async () => {
@@ -249,6 +253,7 @@ export default {
       dataResp42.value = response[41];
       dataResp43.value = response[42];
       dataResp44.value = response[43];
+      dataResp45.value = response[44];
       // cambiamos el estado de la bandera a false, esto representa que la data si llego al componente padre
       // y que esta fue asignada a cada variable segun corresponda
       flagPromiseData.value = false;
@@ -298,6 +303,7 @@ export default {
       title40,
       title41,
       title42,
+      title45,
       titleTopMovie,
       titleTopSerie,
       dataResp1,
@@ -344,6 +350,7 @@ export default {
       dataResp42,
       dataResp43,
       dataResp44,
+      dataResp45,
     };
   },
 };

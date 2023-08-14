@@ -85,10 +85,12 @@ export default {
         // esto quiere decir que cuando se haga scroll hacia abajo la barra difuminada
         // del menu principal dejara de serlo y se vera del color solido asignado, en este caso negro(#000)
         menu_principal.style.backgroundColor = "#000";
+        menu_principal.style.transition = "";
       } else {
         // en su defecto si el scrollTop es 0 se removera la propiedad CSS "background-color"
         // del div menu_principal dejando la barra del menu con el difuminado
         menu_principal.style.removeProperty("background-color");
+        menu_principal.style.transition = "1s";
       }
     });
 
@@ -114,9 +116,10 @@ export default {
   justify-content: space-between;
   align-items: center;
   height: 4.2rem;
-  z-index: 3;
   position: fixed;
+  transition: all .3s;
   width: 100%;
+  z-index: 3;
 }
 
 .icon_menu {
@@ -142,16 +145,6 @@ export default {
   gap: 1.2rem;
   margin-right: 5rem;
 }
-
-/* ------------------------------------------------------- */
-.normal_options_menu .router-link-exact-active li {
-  cursor: default;
-}
-
-.normal_options_menu .router-link-exact-active li:hover {
-  color: #fff;
-}
-/* ------------------------------------------------------- */
 
 .icon {
   font-size: 20px;
@@ -180,7 +173,7 @@ export default {
 @media (min-width: 300px) and (max-width: 889px) {
   /* INICIO MENU IZQUIERDO */
   .first_option_menu {
-    margin-left: 2rem;
+    margin-left: 1rem;
   }
 
   .first_option_menu img {
@@ -189,6 +182,10 @@ export default {
 
   .normal_options_menu {
     display: none;
+  }
+
+  .icon_menu {
+    margin-right: 1rem;
   }
 
   .responsive_menu {
@@ -202,7 +199,7 @@ export default {
   }
 
   .second_option_menu {
-    margin-right: 2rem;
+    margin-right: 1rem;
   }
 
   /* al momento de estar en el tamaño de pantalla mas pequeña 

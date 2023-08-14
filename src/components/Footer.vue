@@ -118,9 +118,7 @@ export default {
 <style scoped>
 .container {
   background-color: rgba(0, 0, 0, 0);
-  width: 100%;
-  height: auto;
-  bottom: 0;
+  padding: 0rem 0rem 2rem 0rem;
   display: flex;
   justify-content: center;
 }
@@ -189,7 +187,7 @@ span {
 
 p {
   text-align: left;
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   cursor: default;
   margin-top: 1rem;
   color: #7c7c7c;

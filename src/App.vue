@@ -53,11 +53,12 @@ export default {
 .body {
   /* color de fondo de Netflix */
   background-color: #141414;
-  /*  */
   margin: 0;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
+  /* establecemos un min-height para que mientras aun no haya cargado 
+    el contenido se vea de color negro el fondo y no blanco*/
   min-height: 100vh;
 }
 

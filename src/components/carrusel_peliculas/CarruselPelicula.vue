@@ -2,11 +2,15 @@
   <div v-if="flagRenderShadow" class="container">
     <div class="cont_info_carousel">
       <div class="cont_title">
-        <h3 class="title">{{ title }}</h3>
-        <div class="cont_icon">
-          <font-awesome-icon class="icon" icon="fa-solid fa-chevron-right" />
+        <div class="text">
+          <h3 class="title">{{ title }}</h3>
         </div>
-        <p class="sub_text">Explorar todos</p>
+        <div class="hover_text">
+          <div class="cont_icon">
+            <font-awesome-icon class="icon" icon="fa-solid fa-chevron-right" />
+          </div>
+          <p class="sub_text">Explorar todos</p>
+        </div>
       </div>
     </div>
     <div class="container_carousel">
@@ -77,11 +81,9 @@ export default {
       1870: { slidesPerView: 9 },
       1680: { slidesPerView: 8 },
       1480: { slidesPerView: 7 },
-      1250: { slidesPerView: 6 },
-      760: { slidesPerView: 5 },
+      760: { slidesPerView: 6 },
       590: { slidesPerView: 4 },
-      440: { slidesPerView: 3 },
-      300: { slidesPerView: 2 },
+      300: { slidesPerView: 3 },
     });
 
     onMounted(() => {
@@ -105,7 +107,7 @@ export default {
 
 <style scoped>
 .container {
-  margin-bottom: 4rem;
+  margin: 0rem 0rem 4rem 4rem;
 }
 
 img {
@@ -138,13 +140,13 @@ img:hover {
 .cont_info_carousel {
   display: flex;
   align-items: center;
-  margin-left: 4rem;
+  margin-left: .7rem;
 }
 
 .title {
   position: relative;
-  color: #e6dfdf;
-  font-size: 30px;
+  color: #d0cfcf;
+  font-size: 1.8rem;
   font-weight: 600;
 }
 
@@ -167,31 +169,36 @@ img:hover {
  el texto que se desea visualizar debe estar dentro del mismo contenedor */
 .cont_title:hover .sub_text {
   /* usar margenes para mover los elementos en el :hover es mejor que left, right, etc.*/
-  margin-left: 2rem;
+  margin-left: 1rem;
   transition: 1s;
   opacity: 1;
 }
 
 .cont_title {
   display: flex;
-  align-items: center;
+  z-index: 1;
 }
 
 .cont_title:hover .icon {
-  margin-left: 9.2rem;
+  margin-left: 8rem;
   font-size: 15px;
-  display: block;
 }
 
 .cont_title:hover .title {
   color: #fff;
 }
 
+.hover_text {
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  position: relative;
+}
+
 .cont_icon {
   position: relative;
   display: flex;
   align-items: center;
-  background-color: tomato;
 }
 
 .icon {
@@ -239,13 +246,73 @@ img:hover {
 
 .box_shadow {
   position: relative;
-  height: 270px;
-  box-shadow: rgb(0, 0, 0) 0px -5px 50px 35px;
+  height: 250px;
+  box-shadow: rgb(0, 0, 0) -5px 25px 45px 40px;
   background: #fff;
   visibility: visible;
 }
 
-@media (min-width: 300px) and (max-width: 889px) {
+@media (min-width: 380px) and (max-width: 590px){
+  .container {
+    margin: 0rem 0rem 4rem .3rem;
+  }
+
+  img {
+    height: 11.30rem;
+  }
+
+  .title {
+    font-size: 15px;
+  }
+
+  .sub_text {
+    font-size: 0.8rem;
+  }
+
+  .text {
+    max-width: 15rem;
+  }
+
+  .cont_title:hover .icon {
+    margin-left: 6.7rem;
+  }
+
+  .box_shadow {
+    box-shadow: rgb(0, 0, 0) -5px 20px 55px 20px;
+  }
+}
+
+@media (min-width: 591px) and (max-width: 889px){
+  .container {
+    margin: 0rem 0rem 4rem .3rem;
+  }
+
+  img {
+    height: 11.30rem;
+  }
+
+  .title {
+    font-size: 18px;
+  }
+
+  .sub_text {
+    font-size: 0.8rem;
+  }
+
+  .cont_title:hover .icon {
+    margin-left: 6.7rem;
+  }
+
+  .box_shadow {
+    box-shadow: rgb(0, 0, 0) -5px 20px 55px 20px;
+  }
+}
+
+@media (min-width: 890px) and (max-width: 1129px) {
+  .container {
+    margin: 0rem 0rem 4rem 1.5rem;
+  }
+
   img {
     height: 12.75rem;
   }
@@ -254,13 +321,25 @@ img:hover {
     font-size: 20px;
   }
 
+  .sub_text {
+    font-size: .8rem;
+  }
+
+  .cont_title:hover .icon {
+    margin-left: 6.7rem;
+  }
+
   .box_shadow {
     height: 160px;
     box-shadow: rgb(0, 0, 0) 0px -5px 50px 35px;
   }
 }
 
-@media (min-width: 890px) and (max-width: 1129px) {
+@media (min-width: 1130px) and (max-width: 1330px) {
+  .container {
+    margin: 0rem 0rem 4rem 1.5rem;
+  }
+
   img {
     height: 15.75rem;
   }

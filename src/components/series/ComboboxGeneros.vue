@@ -49,8 +49,8 @@
         </div>
       </div>
       <div class="box_right">
-        <p>Icono 1</p>
-        <p>Icono 2</p>
+        <p>Icon 1</p>
+        <p>Icon 2</p>
       </div>
     </div>
   </div>
@@ -203,11 +203,6 @@ a {
   text-align: left;
 }
 
-#submenu ul {
-  display: flex;
-  flex-direction: column;
-}
-
 a {
   text-decoration: none;
   padding: 0.2rem;
@@ -216,5 +211,98 @@ a {
 
 a:hover {
   text-decoration: underline #fff;
+}
+
+@media (min-width: 300px) and (max-width: 580px){
+  .box_left {
+    margin: 0rem 0rem 0.8rem 1rem;
+  }
+
+  .box_right {
+    margin-right: 1rem;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+  
+  button {
+    padding: 0.3rem 0.3rem 0.3rem 0.3rem;
+    margin-left: 1rem;
+    font-size: 1.2rem;
+  }
+
+  button p {
+    font-size: .9rem;
+  }
+
+  #submenu {
+    display: flex;
+    flex-direction: column;
+    top: 1.9rem;
+    left: 5.5rem;
+    gap: 0rem;
+  }
+
+  /* el "a" que representa el link viene siendo el router-link*/
+  .submenu_items a {
+    padding: .2rem 0rem .2rem 0rem;
+  }
+}
+
+@media (min-width: 581px) and (max-width: 889px) {
+  .box_left {
+    margin: 0rem 0rem 0.8rem 1rem;
+  }
+
+  .box_right {
+    margin-right: 1rem;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+  
+  button {
+    padding: 0.3rem 0.3rem 0.3rem 0.3rem;
+    margin-left: 1rem;
+    font-size: 1.2rem;
+  }
+
+  button p {
+    font-size: .9rem;
+  }
+
+  #submenu {
+    top: 1.9rem;
+    left: 5.5rem;
+  }
+
+  .submenu_items {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    text-align: left;
+  }
+}
+
+@media (min-width: 890px) and (max-width: 1129px) {
+  .box_left {
+    margin: 0rem 0rem 0.8rem 2rem;
+  }
+
+  .box_right {
+    margin-right: 2rem;
+  }
+}
+
+@media (min-width: 1130px) and (max-width: 1330px) {
+  .box_left {
+    margin: 0rem 0rem 0.8rem 2rem;
+  }
+
+  .box_right {
+    margin-right: 2rem;
+  }
 }
 </style>

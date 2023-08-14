@@ -166,7 +166,7 @@ export default {
   },
 };
 </script>
-  
+
 <style scoped>
 .cont-image {
   display: flex;
@@ -313,6 +313,10 @@ export default {
   .box_shadow {
     height: 160px;
     box-shadow: rgb(0, 0, 0) 0px -5px 50px 35px;
+  }
+
+  .cont_info_carousel {
+    margin-left: 1rem;
   }
 }
 

@@ -4,7 +4,7 @@
       <div class="container_data">
         <!-- flagDataRenderized es para que mientras la data aun no sea visible 
                 tanto los botones como, titulo, sinopsis o la certificacion no sera visible -->
-        <div v-if="flagDataRenderized" class="data_movie">
+        <div v-show="flagDataRenderized" class="data_movie">
           <div class="box_left">
             <div class="upper_data">
               <div class="title_movie">
@@ -31,7 +31,7 @@
             </div>
           </div>
           <div class="box_right">
-            <div class="cont-play-mute">
+            <div class="cont_play_mute">
               <button id="button-mute" v-on:click="deactivateVolumeVideo">
                 <font-awesome-icon icon="fa-solid fa-volume-xmark" />
               </button>
@@ -251,9 +251,6 @@ export default {
       // cambiara cuando se haga mas pequeña el tamaño de la ventana en base al ancho de la pantalla
       // como se especifica con el vw(viewport width)
       video_style.style.height = "50.25vw";
-      // cambiamos el estado de la bandera a true una vez se finalize la carga de todos los elementos con la data
-      // y estos sean visibles
-      flagDataRenderized.value = true;
       player.value = new YT.Player(playerElement, {
         videoId: props.videoId,
         playerVars: {
@@ -274,12 +271,14 @@ export default {
           onApiChange: onApiChange,
         },
       });
+      // cambiamos el estado de la bandera a true una vez se finalize la carga de todos los elementos con la data
+      // y estos sean visibles
+      flagDataRenderized.value = true;
     }
 
     // 4. The API will call this function when the video player is ready.
     function onPlayerReady(event) {
       emit("ready", event.target);
-      // player.value = event.target;
       // establecemos el nivel de volumen en 70 ya que este se mide de 0 a 100
       setVolume(70);
       // esperamos 5 segundos a visualizar el fondo de la pelicula
@@ -567,7 +566,7 @@ export default {
   text-shadow: 0.1em 0.1em 0.1em rgb(65, 64, 64);
 }
 
-.cont-play-mute button {
+.cont_play_mute button {
   font-size: 20px;
   color: #fff;
   background-color: rgba(147, 146, 146, 0);
@@ -578,7 +577,7 @@ export default {
   border: 1px solid #c1c1c1;
 }
 
-.cont-play-mute button:hover {
+.cont_play_mute button:hover {
   background-color: rgba(208, 206, 206, 0.2);
   cursor: pointer;
 }
@@ -607,14 +606,10 @@ export default {
   cursor: default;
 }
 
-@media (min-width: 390px) and (max-width: 889px) {
+@media (min-width: 380px) and (max-width: 590px){
   #cont_buttons button {
-    padding: 0.5rem 1rem 0.5rem 1rem;
-    border-style: none;
-    font-weight: 600;
-    font-size: 0.7rem;
-    border-radius: 3px;
-    cursor: pointer;
+    padding: 0.3rem .8rem 0.3rem .8rem;
+    font-size: 0.6rem;
   }
 
   .icon {
@@ -623,11 +618,60 @@ export default {
   }
 
   .box_left {
-    margin-left: 2rem;
+    margin-left: 1rem;
+  }
+
+  .box_right {
+    width: 50%;
   }
 
   .title_movie h1 {
-    font-size: 30px;
+    font-size: 18px;
+  }
+
+  .cont-cert {
+    padding: 0.3rem 1.5rem 0.3rem 1rem;
+  }
+
+  .cont-cert p {
+    color: #fff;
+    font-size: 12px;
+  }
+
+  .cont_play_mute button {
+    font-size: 10px;
+  }
+
+  .cont_sinopsis {
+    display: none;
+  }
+
+  .upper_data {
+    margin-bottom: 0rem;
+  }
+}
+
+@media (min-width: 591px) and (max-width: 889px) {
+  #cont_buttons button {
+    padding: 0.5rem 1rem 0.5rem 1rem;
+    font-size: 0.7rem;
+  }
+
+  .icon {
+    font-size: 1rem;
+    margin-right: 1rem;
+  }
+
+  .box_left {
+    margin-left: 1rem;
+  }
+
+  .box_right {
+    width: 50%;
+  }
+
+  .title_movie h1 {
+    font-size: 25px;
   }
 
   .cont-cert {
@@ -639,23 +683,23 @@ export default {
     font-size: 18px;
   }
 
-  .cont-play-mute button {
+  .cont_play_mute button {
     font-size: 10px;
   }
 
   .cont_sinopsis {
     display: none;
   }
+
+  .upper_data {
+    margin-bottom: 0rem;
+  }
 }
 
 @media (min-width: 890px) and (max-width: 1129px) {
   #cont_buttons button {
     padding: 0.5rem 1rem 0.5rem 1rem;
-    border-style: none;
-    font-weight: 600;
     font-size: 0.8rem;
-    border-radius: 3px;
-    cursor: pointer;
   }
 
   .icon {
@@ -680,7 +724,7 @@ export default {
     padding: 0.5rem 4rem 0.5rem 1rem;
   }
 
-  .cont-play-mute button {
+  .cont_play_mute button {
     font-size: 15px;
   }
 }
@@ -688,11 +732,7 @@ export default {
 @media (min-width: 1130px) and (max-width: 1330px) {
   #cont_buttons button {
     padding: 0.5rem 1rem 0.5rem 1rem;
-    border-style: none;
-    font-weight: 600;
     font-size: 0.8rem;
-    border-radius: 3px;
-    cursor: pointer;
   }
 
   .icon {
@@ -721,7 +761,7 @@ export default {
     padding: 0.5rem 4rem 0.5rem 1rem;
   }
 
-  .cont-play-mute button {
+  .cont_play_mute button {
     font-size: 15px;
   }
 }

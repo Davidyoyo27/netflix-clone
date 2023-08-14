@@ -2,7 +2,7 @@
   <div class="container">
     <div id="container_image">
       <div id="container_info_movie">
-        <div class="info_movie">
+        <div v-if="flagDataRenderized" class="info_movie">
           <div class="box-left">
             <div class="title_movie">
               <h1>{{ movie_title }}</h1>
@@ -36,7 +36,7 @@
                 <font-awesome-icon icon="fa-solid fa-rotate-right" />
               </button>
             </div>
-            <div v-if="flagVisualizationState" class="cont-cert">
+            <div class="cont-cert">
               <p>{{ resp_cert }}</p>
             </div>
           </div>
@@ -44,7 +44,7 @@
       </div>
     </div>
     <!-- 1. The <iframe> (and video player) will replace this <div> tag. -->
-    <div v-if="flagVisualizationState" ref="youtube" :id="playerId"></div>
+    <div ref="youtube" :id="playerId"></div>
   </div>
 </template>
 
@@ -80,7 +80,6 @@ export default {
     const movie_backdrop_link = ref("https://image.tmdb.org/t/p/original");
     const movie_backdrop_image = ref("");
     // variables que muestran los datos en pantalla
-    const buttons = ref(null);
     const resp_cert = ref("");
     const flagVisualizationState = ref(false);
     // contenido de info de las peliculas
@@ -96,6 +95,7 @@ export default {
     // variables con la cantidad de segundos en que inicia y termina el trailer de la pelicula
     const startSecondsVideo = ref(7);
     const endSecondsVideo = ref(65);
+    const flagDataRenderized = ref(false);
 
     onMounted( async () => {
       // usamos la funcion creada en el archivo externo y la pasamos a una variable para poder usarla,
@@ -115,22 +115,17 @@ export default {
       movie_key.value = dataMovie[4];
       // certificacion de la pelicula
       resp_cert.value = dataMovie[5];
-      // bandera que muestra la certificacion cuando esta esta disponible para mostrarse
-      flagVisualizationState.value = true;
-      
       getImageBackground();
-      // capturamos el id del contenedor de los botones
-      buttons.value = document.getElementById("cont_buttons");
-      // hacemos visible los botones
-      buttons.value.style.visibility = "visible";
+      // bandera que muestra la data cuando esta disponible para mostrarse
+      flagDataRenderized.value = true;
       
       // asignar el id al <iframe>
-      playerId.value = "reproductor";
-      loadAPI().then(() => {
-        checkIfYTLoaded().then(() => {
-          setTimeout(() => {
-            createPlayer();
-          }, 3000);
+        playerId.value = "reproductor";
+        loadAPI().then(() => {
+          checkIfYTLoaded().then(() => {
+            setTimeout(() => {
+              createPlayer();
+          }, 2000);
         });
       });
     });
@@ -161,7 +156,7 @@ export default {
           checkIfYTLoaded().then(() => {
             resolve();
           });
-        }, 2000);
+        }, 500); //100
       });
     }
 
@@ -421,6 +416,7 @@ export default {
       deactivateVolumeVideo,
       activateVolumeVideo,
       playVideoAgain,
+      flagDataRenderized,
     };
   },
 };
@@ -454,7 +450,6 @@ export default {
   height: 70%;
   display: flex;
   justify-content: space-between;
-  margin-left: 4rem;
   gap: 20px;
 }
 
@@ -464,11 +459,10 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  gap: 20px;
+  margin-left: 4rem;
 }
 
 .box-right {
-  width: 50%;
   height: 75%;
   display: flex;
   justify-content: flex-end;
@@ -488,7 +482,6 @@ export default {
   display: flex;
   justify-content: flex-start;
   gap: 10px;
-  visibility: hidden;
 }
 
 .button_rep {
@@ -528,6 +521,7 @@ export default {
 
 .cont_sinopsis p {
   font-weight: 500;
+  margin-bottom: 1rem;
   cursor: default;
 }
 
@@ -585,19 +579,66 @@ export default {
   display: none;
 }
 
-@media (min-width: 390px) and (max-width: 889px) {
+/* 400px aprox ya es mobile, probado con celular */
+@media (min-width: 380px) and (max-width: 500px){
+  #cont_buttons button {
+    padding: 0.3rem .6rem 0.3rem .6rem;
+    font-size: 0.6rem;
+  }
+  
+  .icon {
+    font-size: 1rem;
+    margin-right: .5rem;
+  }
+
+  .box-left {
+    width: 100%;
+    height: 85%;
+    margin-left: 1rem;
+  }
+
+  .box-right {
+    height: 85%;
+  }
+
   .info_movie {
-    margin-left: 2rem;
+    width: 100%;
+    height: 70%;
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+  }
+
+  .title_movie h1 {
+    font-size: 20px;
+    margin-bottom: .3rem;
+  }
+
+  .cont-cert {
+    padding: 0.3rem 1.5rem 0.3rem 1rem;
+  }
+
+  .cont-cert p {
+    font-size: 12px;
+  }
+
+  .cont-play-mute button {
+    font-size: 10px;
+  }
+
+  .cont_sinopsis {
+    display: none;
+  }
+}
+
+@media (min-width: 501px) and (max-width: 889px) {
+  .info_movie {
     height: 100%;
   }
 
   #cont_buttons button {
-    padding: 0.5rem 1rem 0.5rem 1rem;
-    border-style: none;
-    font-weight: 600;
+    padding: 0.2rem 1rem 0.2rem 1rem;
     font-size: 0.7rem;
-    border-radius: 3px;
-    cursor: pointer;
   }
 
   .icon {
@@ -607,15 +648,17 @@ export default {
 
   .box-left {
     width: 50%;
-    height: 60%;
+    height: 80%;
+    margin-left: 2rem;
   }
 
   .box-right {
-    height: 60%;
+    height: 80%;
   }
 
   .title_movie h1 {
-    font-size: 30px;
+    font-size: 25px;
+    margin-bottom: .5rem;
   }
 
   .cont-cert {
@@ -623,7 +666,6 @@ export default {
   }
 
   .cont-cert p {
-    color: #fff;
     font-size: 18px;
   }
 
@@ -637,17 +679,9 @@ export default {
 }
 
 @media (min-width: 890px) and (max-width: 1129px) {
-  .info_movie {
-    margin-left: 2rem;
-  }
-
   #cont_buttons button {
     padding: 0.5rem 1rem 0.5rem 1rem;
-    border-style: none;
-    font-weight: 600;
     font-size: 0.8rem;
-    border-radius: 3px;
-    cursor: pointer;
   }
 
   .icon {
@@ -658,6 +692,7 @@ export default {
   .box-left {
     width: 50%;
     height: 80%;
+    margin-left: 2rem;
   }
 
   .box-right {
@@ -678,17 +713,9 @@ export default {
 }
 
 @media (min-width: 1130px) and (max-width: 1330px) {
-  .info_movie {
-    margin-left: 2rem;
-  }
-
   #cont_buttons button {
     padding: 0.5rem 1rem 0.5rem 1rem;
-    border-style: none;
-    font-weight: 600;
     font-size: 0.8rem;
-    border-radius: 3px;
-    cursor: pointer;
   }
 
   .icon {
@@ -703,6 +730,7 @@ export default {
   .box-left {
     width: 50%;
     height: 80%;
+    margin-left: 2rem;
   }
 
   .box-right {

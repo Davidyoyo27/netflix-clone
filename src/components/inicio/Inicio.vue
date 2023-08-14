@@ -28,9 +28,6 @@ export default {
     ColeccionCarruselesPeliculas,
     Footer,
   },
-  setup() {
-    return {};
-  },
 };
 </script>
 
@@ -59,7 +56,21 @@ export default {
   bottom: 9rem;
 }
 
-@media (min-width: 300px) and (max-width: 889px) {
+@media (min-width: 380px) and (max-width: 500px){
+  .cont_carousels {
+    box-shadow: rgb(0, 0, 0) 0px -10px 40px 20px;
+  }
+
+  .cont_video {
+    margin-top: 1.8rem;
+  }
+
+  .carousels {
+    bottom: 2.5rem;
+  }
+}
+
+@media (min-width: 501px) and (max-width: 889px) {
   .cont_carousels {
     box-shadow: rgb(0, 0, 0) 0px -10px 40px 20px;
   }

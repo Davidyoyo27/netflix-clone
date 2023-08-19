@@ -252,7 +252,7 @@ img:hover {
   visibility: visible;
 }
 
-@media (min-width: 380px) and (max-width: 590px){
+@media (min-width: 360px) and (max-width: 590px){
   .container {
     margin: 0rem 0rem 4rem .3rem;
   }

@@ -5,47 +5,49 @@
         <h1>Series</h1>
         <!-- usamos el @click.stop ya que sin este el div "submenu" al hacerse click al boton este se mostraba y ocultaba -->
         <!-- El problema está ocurriendo porque el evento mousedown en el botón está activando el click del botón, lo que a su vez 
-            invoca la función clickBoton, cambiando el valor de la bandera flagVisibleSubmenu, lo que provoca que se abra y se cierre 
-            inmediatamente el div. -->
+              invoca la función clickBoton, cambiando el valor de la bandera flagVisibleSubmenu, lo que provoca que se abra y se cierre 
+              inmediatamente el div. -->
         <!-- Para evitar esta situación, podemos utilizar el evento mousedown en el botón y el evento click en el documento, y luego 
-            detener la propagación del evento mousedown en el botón para que no llegue al documento. De esta manera, el evento 
-            click en el botón no se activará cuando hagamos clic en él. -->
+              detener la propagación del evento mousedown en el botón para que no llegue al documento. De esta manera, el evento 
+              click en el botón no se activará cuando hagamos clic en él. -->
         <!-- Con esta modificación, el evento click en el botón no se propagará al documento debido al uso de @click.stop, lo que 
-            evitará que el div se abra y se cierre inmediatamente. El div se abrirá cuando hagas clic en el botón y se cerrará 
-            cuando hagas clic fuera de él, como se esperaba. -->
+              evitará que el div se abra y se cierre inmediatamente. El div se abrirá cuando hagas clic en el botón y se cerrará 
+              cuando hagas clic fuera de él, como se esperaba. -->
         <button id="boton" @mousedown="clickBoton" @click.stop>
           <p>Géneros</p>
           <div class="figure_right_menu"></div>
         </button>
         <!-- flagVisibleSubmenu muestra u oculta el menu segun el estado de la bandera  -->
         <div v-if="flagVisibleSubmenu" id="submenu">
-          <div class="submenu_items">
-            <router-link :to="{ name: 'series_accion' }">Acción</router-link>
-            <router-link :to="{ name: 'series_anime' }">Animes</router-link>
-            <router-link :to="{ name: 'series_asiaticas' }">Asiáticos</router-link>
-            <router-link :to="{ name: 'series_britanicas' }">Británicos</router-link>
-            <router-link :to="{ name: 'series_ciencia' }">Cienca y naturaleza</router-link>
-            <router-link :to="{ name: 'series_comedia' }">Comedias</router-link>
-            <router-link :to="{ name: 'series_infantil' }">Contenido infantil</router-link>
-          </div>
-          <div class="submenu_items">
-            <router-link :to="{ name: 'series_adolescentes' }">De adolescentes</router-link>
-            <router-link :to="{ name: 'series_EEUU' }">De EE.UU.</router-link>
-            <router-link :to="{ name: 'series_dramas' }">Dramas</router-link>
-            <router-link :to="{ name: 'series_standup' }">Especiales de stand up</router-link>
-            <router-link :to="{ name: 'series_latinoamericanas' }">Latinoamericanos</router-link>
-            <router-link :to="{ name: 'series_misterio' }">Misterios</router-link>
-            <router-link :to="{ name: 'series_policiales' }">Policiales</router-link>
-          </div>
-          <div class="submenu_items">
-            <router-link :to="{ name: 'series_reality' }">Reality shows y entrevistas</router-link>
-            <router-link :to="{ name: 'series_romance' }">Romances</router-link>
-            <router-link :to="{ name: 'series_fantasia' }">Sci-fi y fantasía</router-link>
-            <router-link :to="{ name: 'series_documental' }">Series documentales</router-link>
-            <router-link :to="{ name: 'series_telenovelas' }">Telenovelas</router-link>
-            <router-link :to="{ name: 'series_terror' }">Terror</router-link>
-            <router-link :to="{ name: 'series_thrillers' }">Thrillers</router-link>
-          </div>
+            <div class="submenu_items">
+              <!-- pasamos a traves de queryParams la data correspondiente a cada link segun sea su genero -->
+              <!-- la data sera recibida por el componente donde apunta con el "name" -->
+              <router-link :to="{ name: 'series_genero', query: { mo: data1 } }">Acción</router-link>
+              <router-link :to="{ name: 'series_genero', query: { mo: data2 } }">Animes</router-link>
+              <router-link :to="{ name: 'series_genero', query: { mo: data3 } }">Asiáticos</router-link>
+              <router-link :to="{ name: 'series_genero', query: { mo: data4 } }">Británicos</router-link>
+              <router-link :to="{ name: 'series_genero', query: { mo: data5 } }">Cienca y naturaleza</router-link>
+              <router-link :to="{ name: 'series_genero', query: { mo: data6 } }">Comedias</router-link>
+              <router-link :to="{ name: 'series_genero', query: { mo: data7 } }">Contenido infantil</router-link>
+            </div>
+            <div class="submenu_items">
+              <router-link :to="{ name: 'series_genero', query: { mo: data8 } }">De adolescentes</router-link>
+              <router-link :to="{ name: 'series_genero', query: { mo: data9 } }">De EE.UU.</router-link>
+              <router-link :to="{ name: 'series_genero', query: { mo: data10 } }">Dramas</router-link>
+              <router-link :to="{ name: 'series_genero', query: { mo: data11 } }">Especiales de stand up</router-link>
+              <router-link :to="{ name: 'series_genero', query: { mo: data12 } }">Latinoamericanos</router-link>
+              <router-link :to="{ name: 'series_genero', query: { mo: data13 } }">Misterios</router-link>
+              <router-link :to="{ name: 'series_genero', query: { mo: data14 } }">Policiales</router-link>
+            </div>
+            <div class="submenu_items">
+              <router-link :to="{ name: 'series_genero', query: { mo: data15 } }">Reality shows y entrevistas</router-link>
+              <router-link :to="{ name: 'series_genero', query: { mo: data16 } }">Romances</router-link>
+              <router-link :to="{ name: 'series_genero', query: { mo: data17 } }">Sci-fi y fantasía</router-link>
+              <router-link :to="{ name: 'series_genero', query: { mo: data18 } }">Series documentales</router-link>
+              <router-link :to="{ name: 'series_genero', query: { mo: data19 } }">Telenovelas</router-link>
+              <router-link :to="{ name: 'series_genero', query: { mo: data20 } }">Terror</router-link>
+              <router-link :to="{ name: 'series_genero', query: { mo: data21 } }">Thrillers</router-link>
+            </div>
         </div>
       </div>
       <div class="box_right">
@@ -58,10 +60,32 @@
 
 <script>
 import { ref, onMounted, watch } from "vue";
+import { encryptData, dataEndpointByLinkSeries } from "@/helpers/js/functions";
 
 export default {
   setup() {
     const flagVisibleSubmenu = ref(false);
+    const data1 = ref(null);
+    const data2 = ref(null);
+    const data3 = ref(null);
+    const data4 = ref(null);
+    const data5 = ref(null);
+    const data6 = ref(null);
+    const data7 = ref(null);
+    const data8 = ref(null);
+    const data9 = ref(null);
+    const data10 = ref(null);
+    const data11 = ref(null);
+    const data12 = ref(null);
+    const data13 = ref(null);
+    const data14 = ref(null);
+    const data15 = ref(null);
+    const data16 = ref(null);
+    const data17 = ref(null);
+    const data18 = ref(null);
+    const data19 = ref(null);
+    const data20 = ref(null);
+    const data21 = ref(null);
 
     // funcion para mostrar y ocultar el submenu al hacer click en el boton "Géneros"
     function clickBoton() {
@@ -85,6 +109,30 @@ export default {
     // document.addEventListener("click", handleClickOutside) cuando el componente está montado.
     onMounted(() => {
       document.addEventListener("click", handleClickOutside);
+      // tomamos la data a pasar segun cada posicion dentro de la funcion, procedemos a transformar la data del objeto
+      // con JSON.stringify() a una cadena de texto JSON, esto ya que si no es asi arroja un error al intentar encriptar
+      // el objeto, luego usamos la funcion para encryptar la data que finalmente pasaremos mediante query en el router-link
+      data1.value = encryptData(JSON.stringify(dataEndpointByLinkSeries()[0]));
+      data2.value = encryptData(JSON.stringify(dataEndpointByLinkSeries()[1]));
+      data3.value = encryptData(JSON.stringify(dataEndpointByLinkSeries()[2]));
+      data4.value = encryptData(JSON.stringify(dataEndpointByLinkSeries()[3]));
+      data5.value = encryptData(JSON.stringify(dataEndpointByLinkSeries()[4]));
+      data6.value = encryptData(JSON.stringify(dataEndpointByLinkSeries()[5]));
+      data7.value = encryptData(JSON.stringify(dataEndpointByLinkSeries()[6]));
+      data8.value = encryptData(JSON.stringify(dataEndpointByLinkSeries()[7]));
+      data9.value = encryptData(JSON.stringify(dataEndpointByLinkSeries()[8]));
+      data10.value = encryptData(JSON.stringify(dataEndpointByLinkSeries()[9]));
+      data11.value = encryptData(JSON.stringify(dataEndpointByLinkSeries()[10]));
+      data12.value = encryptData(JSON.stringify(dataEndpointByLinkSeries()[11]));
+      data13.value = encryptData(JSON.stringify(dataEndpointByLinkSeries()[12]));
+      data14.value = encryptData(JSON.stringify(dataEndpointByLinkSeries()[13]));
+      data15.value = encryptData(JSON.stringify(dataEndpointByLinkSeries()[14]));
+      data16.value = encryptData(JSON.stringify(dataEndpointByLinkSeries()[15]));
+      data17.value = encryptData(JSON.stringify(dataEndpointByLinkSeries()[16]));
+      data18.value = encryptData(JSON.stringify(dataEndpointByLinkSeries()[17]));
+      data19.value = encryptData(JSON.stringify(dataEndpointByLinkSeries()[18]));
+      data20.value = encryptData(JSON.stringify(dataEndpointByLinkSeries()[19]));
+      data21.value = encryptData(JSON.stringify(dataEndpointByLinkSeries()[20]));
     });
 
     watch(flagVisibleSubmenu, (newValue) => {
@@ -103,6 +151,28 @@ export default {
     return {
       clickBoton,
       flagVisibleSubmenu,
+      dataEndpointByLinkSeries,
+      data1,
+      data2,
+      data3,
+      data4,
+      data5,
+      data6,
+      data7,
+      data8,
+      data9,
+      data10,
+      data11,
+      data12,
+      data13,
+      data14,
+      data15,
+      data16,
+      data17,
+      data18,
+      data19,
+      data20,
+      data21,
     };
   },
 };
@@ -213,7 +283,7 @@ a:hover {
   text-decoration: underline #fff;
 }
 
-@media (min-width: 300px) and (max-width: 580px){
+@media (min-width: 300px) and (max-width: 580px) {
   .box_left {
     margin: 0rem 0rem 0.8rem 1rem;
   }
@@ -225,7 +295,7 @@ a:hover {
   h1 {
     font-size: 1.5rem;
   }
-  
+
   button {
     padding: 0.3rem 0.3rem 0.3rem 0.3rem;
     margin-left: 1rem;
@@ -233,7 +303,7 @@ a:hover {
   }
 
   button p {
-    font-size: .9rem;
+    font-size: 0.9rem;
   }
 
   #submenu {
@@ -246,7 +316,7 @@ a:hover {
 
   /* el "a" que representa el link viene siendo el router-link*/
   .submenu_items a {
-    padding: .2rem 0rem .2rem 0rem;
+    padding: 0.2rem 0rem 0.2rem 0rem;
   }
 }
 
@@ -262,7 +332,7 @@ a:hover {
   h1 {
     font-size: 1.5rem;
   }
-  
+
   button {
     padding: 0.3rem 0.3rem 0.3rem 0.3rem;
     margin-left: 1rem;
@@ -270,7 +340,7 @@ a:hover {
   }
 
   button p {
-    font-size: .9rem;
+    font-size: 0.9rem;
   }
 
   #submenu {

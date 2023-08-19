@@ -18,7 +18,6 @@
     </div>
     <div class="cont_carousels">
       <div class="carousels">
-        <!-- CAMBIAR ESTA COLECCION POR EL QUE CORRESPONDE AL DE SERIES -->
         <ColeccionCarruselesSeries></ColeccionCarruselesSeries>
       </div>
       <Footer></Footer>
@@ -30,11 +29,7 @@
 import { ref, onMounted, onBeforeUnmount, watch } from "vue";
 import EmbedVideoPlayer from "../EmbedVideoPlayer";
 import services from "@/helpers/services/services";
-import {
-  getPageRandom,
-  cutText,
-  convertDurationToSeconds,
-} from "@/helpers/js/functions";
+import { getPageRandom, cutText, convertDurationToSeconds } from "@/helpers/js/functions";
 import ComboboxGeneros from "./ComboboxGeneros";
 import Footer from "@/components/Footer";
 import ColeccionCarruselesSeries from "./ColeccionCarruselesSeries";
@@ -84,10 +79,8 @@ export default {
       window.addEventListener("scroll", handleScroll);
 
       // realizamos el llamado al servicio que es el endpoint con series
-      const response = await services.get_movie_services(
-        getPageRandom(58, 1),
-        "/discover/tv?language=es-MX&without_genres=37&with_original_language=en&first_air_date.gte=2005&with_watch_providers=8&watch_region=CL"
-      );
+      const response = await services.get_movie_services(getPageRandom(58, 1),
+      "/discover/tv?language=es-MX&without_genres=37&with_original_language=en&first_air_date.gte=2005&with_watch_providers=8&watch_region=CL");
       // pasamos los elementos contenidos en results a una variable
       const data = response.data.results;
       // usamos .filter() para traer todos los elementos que en su backdrop_path contengan una imagen
@@ -220,8 +213,7 @@ export default {
         // le pasaremos al CSS del div principal_menu la propiedad backgroundColor
         // esto quiere decir que cuando se haga scroll hacia abajo la barra difuminada
         // del menu principal dejara de serlo y se vera del color solido asignado, en este caso negro(#000)
-        cont_combobox.style.backgroundColor = "#000";
-        // cont_combobox.style.transition = "";
+        cont_combobox.style.backgroundColor = "#141414";
         cont_combobox.style.removeProperty("transition");
       } else {
         // en su defecto si el scrollTop es 0 se removera la propiedad CSS "background-color"

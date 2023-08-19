@@ -56,7 +56,7 @@ export default {
   bottom: 9rem;
 }
 
-@media (min-width: 380px) and (max-width: 500px){
+@media (min-width: 360px) and (max-width: 500px){
   .cont_carousels {
     box-shadow: rgb(0, 0, 0) 0px -10px 40px 20px;
   }

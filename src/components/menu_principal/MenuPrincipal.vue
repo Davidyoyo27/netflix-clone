@@ -84,7 +84,7 @@ export default {
         // le pasaremos al CSS del div principal_menu la propiedad backgroundColor
         // esto quiere decir que cuando se haga scroll hacia abajo la barra difuminada
         // del menu principal dejara de serlo y se vera del color solido asignado, en este caso negro(#000)
-        menu_principal.style.backgroundColor = "#000";
+        menu_principal.style.backgroundColor = "#141414";
         menu_principal.style.transition = "";
       } else {
         // en su defecto si el scrollTop es 0 se removera la propiedad CSS "background-color"
@@ -129,7 +129,7 @@ export default {
 .principal_menu_gradient {
   position: absolute;
   width: 100%;
-  box-shadow: rgb(0, 0, 0) 0px 0px 50px 80px;
+  box-shadow: rgb(0, 0, 0) 0px 10px 50px 80px;
   z-index: 1;
 }
 

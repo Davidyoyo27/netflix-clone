@@ -606,7 +606,7 @@ export default {
   cursor: default;
 }
 
-@media (min-width: 380px) and (max-width: 590px){
+@media (min-width: 360px) and (max-width: 590px){
   #cont_buttons button {
     padding: 0.3rem .8rem 0.3rem .8rem;
     font-size: 0.6rem;

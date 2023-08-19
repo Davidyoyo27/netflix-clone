@@ -1,4 +1,7 @@
 import services from "../services/services";
+// luego de instalar la libreria de crypto-js procedemos a importarla para su uso
+// npm install crypto-js
+import CryptoJS from "crypto-js";
 
 // generamos un numero random entre una cantidad especifica
 // max: 500, min: 1
@@ -59,6 +62,50 @@ function convertDurationToSeconds(duration) {
   // para ello solo multiplicamos la variable por el valor numerico correspondiente
   // luego se suma todo para retornar el valor final en segundos
   return hours * 3600 + minutes * 60 + seconds;
+}
+
+// creamos una funcion que recibe por parametro la data a encriptar
+function encryptData(dataToEncrypted) {
+  // usamos la libreria para encriptar la data y le proporcionamos una "secretKey"
+  // la cual se usara para encriptar la data usando dicha "secretKey"
+  return CryptoJS.AES.encrypt(dataToEncrypted, process.env.VUE_APP_SECRET_KEY).toString();
+}
+
+// creamos una funcion que recibe por parametro la data a desencriptar
+function decryptData(dataToDecrypted) {
+  // usamos la libreria para desencriptar la data
+  return CryptoJS.AES.decrypt(dataToDecrypted, process.env.VUE_APP_SECRET_KEY).toString(CryptoJS.enc.Utf8);
+}
+
+// creamos una funcion que tendra los objetos que contendran la data necesaria para pasarse a cada uno de los links
+// el combobox de las Series
+// pageMax: Se pasa al componente y es la pagina maxima que contendra el endpoint a la hora de llamar al servicio
+// titleName: Titulo que se pasa al componente y aparece cuando se accede a cada link en el combobox Generos
+// endpointFilters: filtros del endpoint que se pasan al componente para tener el servicio completo
+function dataEndpointByLinkSeries() {
+  return [
+    { pageMax: 7, titleName: "Series de acción y aventura", endpointFilters: "with_genres=10759&without_genres=16&without_keywords=210024" },
+    { pageMax: 7, titleName: "Series de anime", endpointFilters: "with_genres=16&with_keywords=210024|287501" },
+    { pageMax: 13, titleName: "TV asiática", endpointFilters: "with_origin_country=JP|KR&without_genres=16" },
+    { pageMax: 8, titleName: "Series británicas", endpointFilters: "without_genres=16&with_original_language=en" },
+    { pageMax: 1, titleName: "TV sobre ciencia y naturaleza", endpointFilters: "with_genres=99&with_keywords=221355|284176" },
+    { pageMax: 11, titleName: "Series de comedia", endpointFilters: "with_genres=35&without_genres=16&with_original_language=en" },
+    { pageMax: 10, titleName: "Contenido infantil", endpointFilters: "with_genres=10762" },
+    { pageMax: 1, titleName: "Series de adolescentes", endpointFilters: "without_genres=16&with_keywords=9799|304976&with_original_language=ko|ja|en" },
+    { pageMax: 8, titleName: "Series de EE.UU.", endpointFilters: "without_genres=37&with_origin_country=US" },
+    { pageMax: 48, titleName: "Series dramáticas", endpointFilters: "with_genres=18&without_genres=16" },
+    { pageMax: 1, titleName: "Especiales de stand up", endpointFilters: "with_keywords=9716" },
+    { pageMax: 3, titleName: "Series latinoamericanas", endpointFilters: "without_genres=16&with_origin_country=MX" },
+    { pageMax: 13, titleName: "Series de misterio", endpointFilters: "with_genres=9648" },
+    { pageMax: 2, titleName: "Series policiales", endpointFilters: "without_genres=16&with_keywords=6149" },
+    { pageMax: 12, titleName: "Reality shows, variedades y entrevistas", endpointFilters: "with_genres=10764&without_genres=16" },
+    { pageMax: 7, titleName: "Series románticas", endpointFilters: "with_keywords=9840" },
+    { pageMax: 11, titleName: "Series de sci-fi y fantasía", endpointFilters: "with_genres=10765&without_genres=10762&without_keywords=210024" },
+    { pageMax: 18, titleName: "Series documentales", endpointFilters: "with_genres=99" },
+    { pageMax: 1, titleName: "Telenovelas", endpointFilters: "with_genres=10766" },
+    { pageMax: 1, titleName: "Series de terror", endpointFilters: "with_keywords=315058&without_keywords=210024" },
+    { pageMax: 1, titleName: "Thrillers de TV", endpointFilters: "with_keywords=316362" },
+  ];
 }
 
 // funcion que toma los endpoints para extraer los datos necesarios para enviarlos al componente ComponenteVideoInicio.vue
@@ -320,4 +367,7 @@ export {
   getDataServicesMovies,
   cutText,
   convertDurationToSeconds,
+  encryptData,
+  decryptData,
+  dataEndpointByLinkSeries,
 };

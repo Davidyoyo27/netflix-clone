@@ -580,7 +580,7 @@ export default {
 }
 
 /* 400px aprox ya es mobile, probado con celular */
-@media (min-width: 380px) and (max-width: 500px){
+@media (min-width: 360px) and (max-width: 500px){
   #cont_buttons button {
     padding: 0.3rem .6rem 0.3rem .6rem;
     font-size: 0.6rem;

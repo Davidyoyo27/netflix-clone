@@ -3,7 +3,7 @@
     <div id="top_bar">
       <div v-show="FlagVisibleElements" class="container_bar">
         <router-link :to="{ name: 'series' }">Series ></router-link>
-        <h1>{{ nameTitleSection }}</h1>
+        <h1>{{ titleSerie }}</h1>
       </div>
     </div>
     <EmbedVideoPlayer
@@ -22,11 +22,8 @@
 import { ref, onMounted, onBeforeUnmount, watch } from "vue";
 import EmbedVideoPlayer from "../EmbedVideoPlayer";
 import services from "@/helpers/services/services";
-import {
-  getPageRandom,
-  cutText,
-  convertDurationToSeconds,
-} from "@/helpers/js/functions";
+import { getPageRandom, cutText, convertDurationToSeconds, decryptData } from "@/helpers/js/functions";
+import { useRoute } from 'vue-router';
 
 export default {
   components: {
@@ -52,14 +49,18 @@ export default {
     // duracion segundos de pelicula/serie
     const dataTimeVideoKey = ref(0);
     // nombre del titulo de la seccion dependiendo del genero que sea
-    const nameTitleSection = ref("Series de adolescentes");
+    const nameTitleSection = ref("Series de anime");
     const FlagVisibleElements = ref(false);
+    // usamos el route para traer la data que viene desde la url
+    const route = useRoute();
+    // recibimos la data que viene desde el query params desde la url
+    const receivedObject = route?.query?.mo || 'vacio';
+    const titleSerie = ref(null);
 
     // creamos la funcion
     function handleScroll() {
       // que contendra el valor del scrollY que en este caso es cuando
-      // se haga scroll vertical para luego asignarsela a la variable
-      // scrollTop
+      // se haga scroll vertical para luego asignarsela a la variable scrollTop
       scrollTop.value = window.scrollY;
     }
 
@@ -67,10 +68,21 @@ export default {
       // agregamos un escuchador que este atento a la interaccion del scroll
       // y le pasamos la funcion handleScroll
       window.addEventListener("scroll", handleScroll);
+      // recibimos la data encryptada que viene desde la url y la desencryptamos
+      const dataDecrypted = decryptData(receivedObject);
+      // tomamos la data desencriptada y la parseamos con JSON para convertir esa cadena de texto
+      // en el objeto y poder manipularlo
+      const dataObject = JSON.parse(dataDecrypted)
+      // titulo de la serie
+      titleSerie.value = dataObject.titleName;
+      // filtros del endpoint
+      const endpoint = dataObject.endpointFilters;
+      // cantidad de paginas maximas del endpoint
+      const pageMax = dataObject.pageMax;
 
-      // realizamos el llamado al servicio que es el endpoint con series
-      const response = await services.get_movie_services(getPageRandom(1, 1),
-      "/discover/tv?language=es-MX&first_air_date.gte=2005&without_genres=16&with_keywords=9799|304976&with_original_language=ko|ja|en&with_watch_providers=8&watch_region=CL");
+      // realizamos el llamado al servicio que es el endpoint con series y el filtro de animacion
+      const response = await services.get_movie_services(getPageRandom(pageMax, 1),
+      `/discover/tv?language=es-MX&first_air_date.gte=2010&${endpoint}&with_watch_providers=8&watch_region=CL`);
       // pasamos los elementos contenidos en results a una variable
       const data = response.data.results;
       // usamos .filter() para traer todos los elementos que en su backdrop_path contengan una imagen
@@ -223,6 +235,7 @@ export default {
       dataTimeVideoKey,
       nameTitleSection,
       FlagVisibleElements,
+      titleSerie,
     };
   },
 };

@@ -474,6 +474,8 @@ export default {
   justify-content: space-between;
   align-items: center;
   gap: 10px;
+  /* desactiva la seleccion de los elementos del click izquierdo */
+  user-select: none;
 }
 
 .box_right {

@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <router-link to="/" class="link">
+    <router-link :to="{ name: '/' }" class="link">
       <img v-bind:src="img_logo_principal_menu" alt="" />
     </router-link>
   </div>

@@ -118,6 +118,8 @@ export default {
   height: 4.2rem;
   position: fixed;
   transition: all .3s;
+  /* desactiva la seleccion de los elementos del click izquierdo */
+  user-select: none;
   width: 100%;
   z-index: 3;
 }

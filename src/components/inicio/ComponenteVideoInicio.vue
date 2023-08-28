@@ -451,6 +451,8 @@ export default {
   display: flex;
   justify-content: space-between;
   gap: 20px;
+  /* desactiva la seleccion de los elementos del click izquierdo */
+  user-select: none;
 }
 
 .box-left {

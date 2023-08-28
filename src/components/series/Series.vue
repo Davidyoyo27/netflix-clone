@@ -1,7 +1,20 @@
 <template>
-  <div>
-    <div v-show="FlagVisibleElements" id="combobox">
+  <div v-show="FlagVisibleElements">
+    <div id="combobox">
       <ComboboxGeneros></ComboboxGeneros>
+      <div class="box_right">
+        <div class="icon_right">
+          <router-link :to="{ name: 'series' }">
+            <font-awesome-icon class="icon" icon="fa-solid fa-align-left" />
+          </router-link>
+        </div>
+        <div class="icon_right">
+          <!--                                                          fed = filtros endpoint -->
+          <router-link :to="{ name: 'visualizar_todas_series', query: { fed: encryptedData } }">
+            <font-awesome-icon class="icon" icon="fa-solid fa-table-cells-large"/>
+          </router-link>
+        </div>
+      </div>
     </div>
     <div class="container_principal">
       <div class="cont_video">
@@ -26,23 +39,20 @@
 </template>
 
 <script>
-import { ref, onMounted, onBeforeUnmount, watch } from "vue";
-import EmbedVideoPlayer from "../EmbedVideoPlayer";
+import { ref, onMounted, onBeforeUnmount, watch, defineAsyncComponent } from "vue";
 import services from "@/helpers/services/services";
-import { getPageRandom, cutText, convertDurationToSeconds } from "@/helpers/js/functions";
-import ComboboxGeneros from "./ComboboxGeneros";
-import Footer from "@/components/Footer";
-import ColeccionCarruselesSeries from "./ColeccionCarruselesSeries";
+import { getPageRandom, cutText, convertDurationToSeconds, encryptData } from "@/helpers/js/functions";
 
 export default {
   // RECOMENDACION: al importar un componente no usar la extension .vue, ya que
   // al traer 2 componentes de la misma ruta con la extension .vue este generara un error
   // si bien el error no afecta el funcionamiento del modulo es molesto visualmente dentro del modulo
   components: {
-    EmbedVideoPlayer,
-    ComboboxGeneros,
-    Footer,
-    ColeccionCarruselesSeries,
+    //                                    LazyLoad
+    EmbedVideoPlayer: defineAsyncComponent(() => import(/* webpackChunkName: "EmbedVideoPlayer.vue" */ "@/components/EmbedVideoPlayer")),
+    ComboboxGeneros: defineAsyncComponent(() => import(/* webpackChunkName: "ComboboxGeneros.vue" */ "@/components/series/ComboboxGeneros")),
+    Footer: defineAsyncComponent(() => import(/* webpackChunkName: "Footer.vue" */ "@/components/Footer")),
+    ColeccionCarruselesSeries: defineAsyncComponent(() => import(/* webpackChunkName: "ColeccionCarruselesSeries.vue" */ "@/components/series/ColeccionCarruselesSeries")),
   },
   setup() {
     // key del trailer de youtube pelicula/serie
@@ -64,6 +74,10 @@ export default {
     // duracion segundos de pelicula/serie
     const dataTimeVideoKey = ref(0);
     const FlagVisibleElements = ref(false);
+    // endpoint que trae todas las series segun los filtros
+    const endpoint = ref("without_genres=37&with_original_language=en&first_air_date.gte=2005");
+    const pageMax = ref(58);
+    const encryptedData = ref(null);
 
     // creamos la funcion
     function handleScroll() {
@@ -79,8 +93,8 @@ export default {
       window.addEventListener("scroll", handleScroll);
 
       // realizamos el llamado al servicio que es el endpoint con series
-      const response = await services.get_movie_services(getPageRandom(58, 1),
-      "/discover/tv?language=es-MX&without_genres=37&with_original_language=en&first_air_date.gte=2005&with_watch_providers=8&watch_region=CL");
+      const response = await services.get_movie_services(getPageRandom(pageMax.value, 1), 
+      `/discover/tv?language=es-MX&${endpoint.value}&with_watch_providers=8&watch_region=CL`);
       // pasamos los elementos contenidos en results a una variable
       const data = response.data.results;
       // usamos .filter() para traer todos los elementos que en su backdrop_path contengan una imagen
@@ -98,6 +112,10 @@ export default {
       id.value = randomObject.id;
       // obtenemos el titulo de la pelicula/serie
       title.value = randomObject.name;
+
+      // encriptamos la data que sera pasada por la url
+      encryptedData.value = encryptData(JSON.stringify(endpoint.value));
+
       // usamos el .split(' ') para separar el texto de la sinopsis por cada espacio que tenga y obtener la cantidad de palabras que contiene
       const wordsOfOverview = randomObject.overview.split(" ");
       // evaluamos si la sinopsis posee mas de 50 palabras
@@ -118,9 +136,7 @@ export default {
       // hay ocasiones en que arroja un error de "undefined", y esto es porque el responseKey.data no contiene data y por ende arroja ese error
       // esto quiere decir que no todas las pelicula/serie contienen una key del trailer por ende si no encuentra dicha key retornara a la variable
       // "No hay key del trailer", en su defecto si la data existe pasara dicha data a la variable
-      responseKey.data === undefined
-        ? (keyTrailer.value = "No hay key del trailer")
-        : (resultServiceKey = responseKey.data.results);
+      (responseKey.data === undefined) ? keyTrailer.value = "No hay key del trailer" : resultServiceKey = responseKey.data.results;
 
       // verificamos si la data obtenida es un array y si el largo de esta es mayor a 0, ya que si es mayor a 0 quiere decir que posee datos dentro
       if (Array.isArray(resultServiceKey) && resultServiceKey.length > 0) {
@@ -132,33 +148,25 @@ export default {
       }
 
       // realizamos el llamado al servicio con el endpoint que contiene las certificaciones(12, 16, 18+, etc.) de las pelicula/serie
-      const responseCertification =
-        await services.get_data_series_certification_video(id.value);
+      const responseCertification = await services.get_data_series_certification_video(id.value);
 
       // verificamos si la data obtenida es un array y si el largo de esta es mayor a 0, ya que si es mayor a 0 quiere decir que posee datos dentro
-      if (
-        Array.isArray(responseCertification.data.results) &&
-        responseCertification.data.results.length > 0
-      ) {
+      if (Array.isArray(responseCertification.data.results) && responseCertification.data.results.length > 0) {
         // pasamos los resultados de la llamada al endpoint a una variable
         const dataRespResults = responseCertification.data.results;
         // en caso de que solo exista un objeto dentro del array se accedera directamente a el y se asignara la certificacion correspondiente
-        dataRespResults.length === 1
-          ? (certification.value = dataRespResults[0].rating)
-          : null;
+        (dataRespResults.length === 1) ? certification.value = dataRespResults[0].rating : null;
         // en caso de que la condicion anterior de tener solo 1 elemento no se cumpla tomamos la data y la mapeamos
         dataRespResults.map((item) => {
           // evaluando las certificaciones existentes dentro del endpoint se llego a la conclusion de que "BR"(Brasil) posee muchas similitudes
-          // con las certificaciones de Chile(CL), puesto que este ultimo no esta tan presente se usaraon las de Brasil como referencia
-          // si dentro de la certificacion el iso_3166_1 incluia "BR"
+          // con las certificaciones de Chile(CL), puesto que este ultimo no esta tan presente se usaraon las de Brasil como referencia.
+          // Si dentro de la certificacion el iso_3166_1 incluia "BR"
           if (item.iso_3166_1.includes("BR")) {
             // se pasara esa data a la variable
             certification.value = item.rating;
           } else {
             // en caso contrario generara un numero al azar con la cantidad maxima de dataRespResults
-            const randomIndex = Math.floor(
-              Math.random() * dataRespResults.length
-            );
+            const randomIndex = Math.floor(Math.random() * dataRespResults.length);
             // y ese numero aleatorio lo pasamos al dataRespResults para obtener un elemento aleatorio y de ese elemento extraer su .rating
             certification.value = dataRespResults[randomIndex].rating;
           }
@@ -175,19 +183,13 @@ export default {
         // en caso contrario y que si tenga key
       } else {
         // realizamos la peticion al endpoint que conecta con la api de youtube para obtener los datos de dicho video
-        const respYoutubeData = await services.get_data_youtube_data_v3(
-          keyTrailer.value
-        );
+        const respYoutubeData = await services.get_data_youtube_data_v3(keyTrailer.value);
         // hay ocasiones en que el objeto respYoutubeData.data.items[0] esta vacio o el indice 0 en el arragle no existe
         // por lo que arroja el siguiente error "respYoutubeData.data.items[0] is undefined", para ello
         // validamos si el objeto respYoutubeData.data.items existe y si al menos tiene un elemento antes de intentar acceder al indice 0
-        if (
-          respYoutubeData.data.items &&
-          respYoutubeData.data.items.length > 0
-        ) {
+        if (respYoutubeData.data.items && respYoutubeData.data.items.length > 0) {
           // accedemos al índice 0 de respYoutubeData.data.items para obtener la duracion del video
-          const duration =
-            respYoutubeData.data.items[0].contentDetails.duration;
+          const duration = respYoutubeData.data.items[0].contentDetails.duration;
           // pasamos el resultado de duration a la funcion para obtener su valor en segundos
           dataTimeVideoKey.value = convertDurationToSeconds(duration);
         } else {
@@ -196,6 +198,7 @@ export default {
         }
       }
 
+      // hacemos visible los elementos una vez la data esta cargada
       FlagVisibleElements.value = true;
     });
 
@@ -219,6 +222,7 @@ export default {
         // en su defecto si el scrollTop es 0 se removera la propiedad CSS "background-color"
         // del div cont_combobox dejando la barra del menu con el difuminado
         cont_combobox.style.removeProperty("background-color");
+        // cuando se esta en la posicion 0 del scroll, osea arriba, se le añade un efecto de transicion
         cont_combobox.style.transition = "1s";
       }
     });
@@ -234,6 +238,9 @@ export default {
       handleScroll,
       dataTimeVideoKey,
       FlagVisibleElements,
+      endpoint,
+      pageMax,
+      encryptedData,
     };
   },
 };
@@ -258,6 +265,31 @@ export default {
   z-index: 2;
 }
 
+.box_right {
+  display: flex;
+  align-items: flex-end;
+  margin: 0rem 5rem 0.5rem 0rem;
+}
+
+.icon_right {
+  padding: 0.3rem 0.8rem 0.3rem 0.8rem;
+  border: 1px solid #b6b4b4;
+}
+
+.icon_right:hover {
+  cursor: pointer;
+  border: 1px solid #fff;
+  color: #fff;
+}
+
+.icon_right .icon {
+  color: #b6b4b4;
+}
+
+.icon_right:hover .icon {
+  color: #fff;
+}
+
 .cont_carousels {
   background-color: #141414;
   width: 100%;
@@ -273,6 +305,19 @@ export default {
 }
 
 @media (min-width: 300px) and (max-width: 889px) {
+  .box_right {
+    margin: 0rem 1rem 0.5rem 0rem;
+  }
+
+  .icon_right {
+    padding: 0.3rem 0.5rem 0.3rem 0.5rem;
+    border: 1px solid #b6b4b4;
+  }
+
+  .icon {
+    font-size: 0.9rem;
+  }
+
   .cont_carousels {
     box-shadow: rgb(0, 0, 0) 0px -10px 40px 20px;
   }
@@ -287,6 +332,10 @@ export default {
 }
 
 @media (min-width: 890px) and (max-width: 1129px) {
+  .box_right {
+    margin: 0rem 2rem 0.5rem 0rem;
+  }
+
   .cont_carousels {
     box-shadow: rgb(0, 0, 0) 0px -10px 100px 20px;
   }
@@ -301,12 +350,8 @@ export default {
 }
 
 @media (min-width: 1130px) and (max-width: 1330px) {
-  #combobox {
-    width: 100%;
-    height: 9rem;
-    position: fixed;
-    display: flex;
-    z-index: 2;
+  .box_right {
+    margin: 0rem 2rem 0.5rem 0rem;
   }
 
   .cont_carousels {

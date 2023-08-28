@@ -1,33 +1,56 @@
 <template>
-  <div>
+  <div v-show="FlagVisibleElements">
     <div id="top_bar">
-      <div v-show="FlagVisibleElements" class="container_bar">
-        <router-link :to="{ name: 'series' }">Series ></router-link>
-        <h1>{{ titleSerie }}</h1>
+      <TitleSerie :titleSerie="titleSerie"></TitleSerie>
+      <div class="box_right">
+        <div class="icon_right">
+          <font-awesome-icon class="icon" icon="fa-solid fa-align-left" />
+        </div>
+        <div class="icon_right">
+          <!--                                                          fed = filtros endpoint -->
+          <router-link :to="{ name: 'visualizar_todas_series', query: { fed: encryptedData } }">
+            <font-awesome-icon
+              class="icon"
+              icon="fa-solid fa-table-cells-large"
+            />
+          </router-link>
+        </div>
       </div>
     </div>
-    <EmbedVideoPlayer
-      :idMovie="id"
-      :titleMovie="title"
-      :overviewMovie="overview"
-      :backgroundImageMovie="backdrop"
-      :certificationMovie="certification"
-      :videoId="keyTrailer"
-      :timeVideoId="dataTimeVideoKey"
-    ></EmbedVideoPlayer>
+    <div class="container_principal">
+      <div class="cont_video">
+        <EmbedVideoPlayer
+          :idMovie="id"
+          :titleMovie="title"
+          :overviewMovie="overview"
+          :backgroundImageMovie="backdrop"
+          :certificationMovie="certification"
+          :videoId="keyTrailer"
+          :timeVideoId="dataTimeVideoKey"
+        ></EmbedVideoPlayer>
+      </div>
+    </div>
+    <div class="cont_carousels">
+      <div class="carousels">
+        <PruebaColeccionCarruselesSeriesXGeneros></PruebaColeccionCarruselesSeriesXGeneros>
+      </div>
+      <Footer></Footer>
+    </div>
   </div>
 </template>
 
 <script>
-import { ref, onMounted, onBeforeUnmount, watch } from "vue";
-import EmbedVideoPlayer from "../EmbedVideoPlayer";
+import { ref, onMounted, onBeforeUnmount, watch, defineAsyncComponent } from "vue";
 import services from "@/helpers/services/services";
-import { getPageRandom, cutText, convertDurationToSeconds, decryptData } from "@/helpers/js/functions";
-import { useRoute } from 'vue-router';
+import { getPageRandom, cutText, convertDurationToSeconds, decryptData, encryptData } from "@/helpers/js/functions";
+import { useRoute } from "vue-router";
 
 export default {
   components: {
-    EmbedVideoPlayer,
+    EmbedVideoPlayer: defineAsyncComponent(() => import(/* webpackChunkName: "EmbedVideoPlayer.vue" */ "@/components/EmbedVideoPlayer")),
+    PruebaColeccionCarruselesSeriesXGeneros: defineAsyncComponent(() => import(/* webpackChunkName: "PruebaColeccionCarruselesSeriesXGeneros.vue" */ "@/components/series/PruebaColeccionCarruselesSeriesXGeneros")),
+    Footer: defineAsyncComponent(() => import(/* webpackChunkName: "Footer.vue" */ "@/components/Footer")),
+    TitleSerie: defineAsyncComponent(() => import(/* webpackChunkName: "TitleSerie.vue" */ "@/components/series/TitleSerie")),
   },
   setup() {
     // key del trailer de youtube pelicula/serie
@@ -48,14 +71,17 @@ export default {
     const scrollTop = ref(0);
     // duracion segundos de pelicula/serie
     const dataTimeVideoKey = ref(0);
-    // nombre del titulo de la seccion dependiendo del genero que sea
-    const nameTitleSection = ref("Series de anime");
+    // bandera para ocultar los elementos hasta que la data este completa
     const FlagVisibleElements = ref(false);
     // usamos el route para traer la data que viene desde la url
     const route = useRoute();
     // recibimos la data que viene desde el query params desde la url
-    const receivedObject = route?.query?.mo || 'vacio';
-    const titleSerie = ref(null);
+    const receivedObject = route?.query?.mo || "vacio";
+    // titulo de la serie que le pasaremos al componente <TitleSerie>
+    const titleSerie = ref("");
+
+    // const encryptedFilters = ref(null);
+    const encryptedData = ref(null);
 
     // creamos la funcion
     function handleScroll() {
@@ -72,17 +98,26 @@ export default {
       const dataDecrypted = decryptData(receivedObject);
       // tomamos la data desencriptada y la parseamos con JSON para convertir esa cadena de texto
       // en el objeto y poder manipularlo
-      const dataObject = JSON.parse(dataDecrypted)
+      const dataObject = JSON.parse(dataDecrypted);
       // titulo de la serie
       titleSerie.value = dataObject.titleName;
       // filtros del endpoint
-      const endpoint = dataObject.endpointFilters;
+      const filtersEndpoint = dataObject.endpointFilters;
       // cantidad de paginas maximas del endpoint
       const pageMax = dataObject.pageMax;
 
+      // creamos el objeto que sera la data que se necesita pasar por url
+      const objectData = {
+        title: titleSerie.value,
+        filters: filtersEndpoint,
+      };
+
+      // tomamos el objeto, lo convertimos a texto plano y encryptamos la data que sera pasada por la url
+      encryptedData.value = encryptData(JSON.stringify(objectData));
+
       // realizamos el llamado al servicio que es el endpoint con series y el filtro de animacion
       const response = await services.get_movie_services(getPageRandom(pageMax, 1),
-      `/discover/tv?language=es-MX&first_air_date.gte=2010&${endpoint}&with_watch_providers=8&watch_region=CL`);
+      `/discover/tv?language=es-MX&first_air_date.gte=2010&${filtersEndpoint}&with_watch_providers=8&watch_region=CL`);
       // pasamos los elementos contenidos en results a una variable
       const data = response.data.results;
       // usamos .filter() para traer todos los elementos que en su backdrop_path contengan una imagen
@@ -120,9 +155,7 @@ export default {
       // hay ocasiones en que arroja un error de "undefined", y esto es porque el responseKey.data no contiene data y por ende arroja ese error
       // esto quiere decir que no todas las pelicula/serie contienen una key del trailer por ende si no encuentra dicha key retornara a la variable
       // "No hay key del trailer", en su defecto si la data existe pasara dicha data a la variable
-      responseKey.data === undefined
-        ? (keyTrailer.value = "No hay key del trailer")
-        : (resultServiceKey = responseKey.data.results);
+      (responseKey.data === undefined) ? keyTrailer.value = "No hay key del trailer" : resultServiceKey = responseKey.data.results;
 
       // verificamos si la data obtenida es un array y si el largo de esta es mayor a 0, ya que si es mayor a 0 quiere decir que posee datos dentro
       if (Array.isArray(resultServiceKey) && resultServiceKey.length > 0) {
@@ -134,20 +167,14 @@ export default {
       }
 
       // realizamos el llamado al servicio con el endpoint que contiene las certificaciones(12, 16, 18+, etc.) de las pelicula/serie
-      const responseCertification =
-        await services.get_data_series_certification_video(id.value);
+      const responseCertification = await services.get_data_series_certification_video(id.value);
 
       // verificamos si la data obtenida es un array y si el largo de esta es mayor a 0, ya que si es mayor a 0 quiere decir que posee datos dentro
-      if (
-        Array.isArray(responseCertification.data.results) &&
-        responseCertification.data.results.length > 0
-      ) {
+      if (Array.isArray(responseCertification.data.results) && responseCertification.data.results.length > 0) {
         // pasamos los resultados de la llamada al endpoint a una variable
         const dataRespResults = responseCertification.data.results;
         // en caso de que solo exista un objeto dentro del array se accedera directamente a el y se asignara la certificacion correspondiente
-        dataRespResults.length === 1
-          ? (certification.value = dataRespResults[0].rating)
-          : null;
+        (dataRespResults.length === 1) ? certification.value = dataRespResults[0].rating : null;
         // en caso de que la condicion anterior de tener solo 1 elemento no se cumpla tomamos la data y la mapeamos
         dataRespResults.map((item) => {
           // evaluando las certificaciones existentes dentro del endpoint se llego a la conclusion de que "BR"(Brasil) posee muchas similitudes
@@ -158,9 +185,7 @@ export default {
             certification.value = item.rating;
           } else {
             // en caso contrario generara un numero al azar con la cantidad maxima de dataRespResults
-            const randomIndex = Math.floor(
-              Math.random() * dataRespResults.length
-            );
+            const randomIndex = Math.floor(Math.random() * dataRespResults.length);
             // y ese numero aleatorio lo pasamos al dataRespResults para obtener un elemento aleatorio y de ese elemento extraer su .rating
             certification.value = dataRespResults[randomIndex].rating;
           }
@@ -177,16 +202,11 @@ export default {
         // en caso contrario y que si tenga key
       } else {
         // realizamos la peticion al endpoint que conecta con la api de youtube para obtener los datos de dicho video
-        const respYoutubeData = await services.get_data_youtube_data_v3(
-          keyTrailer.value
-        );
+        const respYoutubeData = await services.get_data_youtube_data_v3(keyTrailer.value);
         // hay ocasiones en que el objeto respYoutubeData.data.items[0] esta vacio o el indice 0 en el arragle no existe
         // por lo que arroja el siguiente error "respYoutubeData.data.items[0] is undefined", para ello
         // validamos si el objeto respYoutubeData.data.items existe y si al menos tiene un elemento antes de intentar acceder al indice 0
-        if (
-          respYoutubeData.data.items &&
-          respYoutubeData.data.items.length > 0
-        ) {
+        if (respYoutubeData.data.items && respYoutubeData.data.items.length > 0) {
           // accedemos al índice 0 de respYoutubeData.data.items para obtener la duracion del video
           const duration =
             respYoutubeData.data.items[0].contentDetails.duration;
@@ -198,6 +218,7 @@ export default {
         }
       }
 
+      // una vez completa toda la data hacemos visible los elementos con su respectiva data ya cargada
       FlagVisibleElements.value = true;
     });
 
@@ -209,17 +230,20 @@ export default {
     // observamos la variable scrollTop la cual detectaremos cualquier cambio que tenga
     watch(scrollTop, () => {
       // tomamos el id del div principal menu
-      let cont_combobox = document.getElementById("top_bar");
+      let top_bar = document.getElementById("top_bar");
       // si scrollTop es mayor a 0
       if (scrollTop.value > 0) {
         // le pasaremos al CSS del div principal_menu la propiedad backgroundColor
         // esto quiere decir que cuando se haga scroll hacia abajo la barra difuminada
         // del menu principal dejara de serlo y se vera del color solido asignado, en este caso negro(#000)
-        cont_combobox.style.backgroundColor = "#000";
+        top_bar.style.backgroundColor = "#141414";
+        top_bar.style.removeProperty("transition");
       } else {
         // en su defecto si el scrollTop es 0 se removera la propiedad CSS "background-color"
-        // del div cont_combobox dejando la barra del menu con el difuminado
-        cont_combobox.style.removeProperty("background-color");
+        // del div top_bar dejando la barra del menu con el difuminado
+        top_bar.style.removeProperty("background-color");
+        // cuando se esta en la posicion 0 del scroll, osea arriba, se le añade un efecto de transicion
+        top_bar.style.transition = "1s";
       }
     });
 
@@ -233,15 +257,39 @@ export default {
       scrollTop,
       handleScroll,
       dataTimeVideoKey,
-      nameTitleSection,
       FlagVisibleElements,
       titleSerie,
+      encryptedData,
     };
   },
 };
 </script>
 
 <style scoped>
+.container_principal {
+  position: relative;
+  background-color: #141414;
+}
+
+.cont_video {
+  width: 100%;
+  height: 50vw;
+}
+
+.cont_carousels {
+  background-color: #141414;
+  width: 100%;
+  height: auto;
+  box-shadow: rgb(0, 0, 0) 0px -50px 100px 30px;
+  position: absolute;
+  z-index: 1;
+}
+
+.carousels {
+  position: relative;
+  bottom: 5rem;
+}
+
 #top_bar {
   width: 100%;
   height: 9rem;
@@ -251,25 +299,82 @@ export default {
   z-index: 2;
 }
 
-.container_bar {
-  width: 100%;
+.box_right {
   display: flex;
-  align-items: center;
-  padding-left: 4rem;
-  margin-bottom: 0.5rem;
+  margin: 0rem 5rem 0.5rem 0rem;
 }
 
-.container_bar a {
-  font-weight: 600;
-  text-decoration: none;
-  margin-right: 1rem;
-  font-size: 1.1rem;
-  color: #727171;
+.icon_right {
+  padding: 0.3rem 0.8rem 0.3rem 0.8rem;
+  border: 1px solid #b6b4b4;
 }
 
-.container_bar h1 {
-  font-weight: 600;
-  font-size: 2.3rem;
+.icon_right:hover {
+  cursor: pointer;
+  border: 1px solid #fff;
   color: #fff;
+}
+
+.icon_right .icon {
+  color: #b6b4b4;
+}
+
+.icon_right:hover .icon {
+  color: #fff;
+}
+
+@media (min-width: 300px) and (max-width: 889px) {
+  #top_bar {
+    height: 7rem;
+  }
+
+  .box_right {
+    margin: 0rem 1rem 0.5rem 0rem;
+  }
+
+  .icon_right {
+    padding: 0.3rem 0.5rem 0.3rem 0.5rem;
+    border: 1px solid #b6b4b4;
+  }
+
+  .icon {
+    font-size: 0.9rem;
+  }
+
+  .cont_carousels {
+    box-shadow: rgb(0, 0, 0) 0px -10px 40px 20px;
+  }
+
+  .carousels {
+    bottom: 2.5rem;
+  }
+}
+
+@media (min-width: 890px) and (max-width: 1129px) {
+  #top_bar {
+    height: 8rem;
+  }
+
+  .box_right {
+    margin: 0rem 2rem 0.5rem 0rem;
+  }
+
+  .cont_carousels {
+    box-shadow: rgb(0, 0, 0) 0px -10px 100px 20px;
+  }
+
+  .carousels {
+    bottom: 4rem;
+  }
+}
+
+@media (min-width: 1130px) and (max-width: 1330px) {
+  .box_right {
+    margin: 0rem 2rem 0.5rem 0rem;
+  }
+
+  .cont_carousels {
+    box-shadow: rgb(0, 0, 0) 0px -20px 100px 20px;
+  }
 }
 </style>

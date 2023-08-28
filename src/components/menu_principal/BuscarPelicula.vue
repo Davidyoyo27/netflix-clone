@@ -53,7 +53,9 @@ export default {
       if (newValue != "") {
         icon_visible.value = true;
         // asignamos la data dentro del input a una variable
-        const data_input = input_value.value;
+        // usamos "q" como variable haciendo referencia a "query" puesto que esto es lo que 
+        // sale en la url de Netflix al momento de ver la busqueda
+        const q = input_value.value;
         // usamos el router para enviar lo ingresado en el input por la url
         // esto es llamado "query params"
         // al enviarlo se necesitan en este caso 2 valores, name: "nombre de la ruta"
@@ -61,7 +63,8 @@ export default {
         router.push({
           name: "resultado_busqueda_pelicula",
           query: {
-            data_input,
+            // variable que se pasara por la url
+            q,
           },
         });
       } else {

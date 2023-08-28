@@ -25,6 +25,8 @@ import {
   faVolumeTimes,
   faVolumeUp,
   faVolumeXmark,
+  faAlignLeft,
+  faTableCellsLarge,
 } from "@fortawesome/free-solid-svg-icons";
 import { faFacebookF, faInstagram, faTwitter, faYoutube } from '@fortawesome/free-brands-svg-icons';
 
@@ -51,9 +53,14 @@ library.add(
   faInstagram,
   faTwitter,
   faYoutube,
+  faAlignLeft,
+  faTableCellsLarge,
 );
+// vuex
+import store from './store'; // Importa el store
 
 createApp(App)
+  .use(store)
   // usamos el componente
   //      nombre por el cual sera
   //          llamado el icono

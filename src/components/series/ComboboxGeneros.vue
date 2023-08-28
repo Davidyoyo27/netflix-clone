@@ -19,40 +19,36 @@
         </button>
         <!-- flagVisibleSubmenu muestra u oculta el menu segun el estado de la bandera  -->
         <div v-if="flagVisibleSubmenu" id="submenu">
-            <div class="submenu_items">
-              <!-- pasamos a traves de queryParams la data correspondiente a cada link segun sea su genero -->
-              <!-- la data sera recibida por el componente donde apunta con el "name" -->
-              <router-link :to="{ name: 'series_genero', query: { mo: data1 } }">Acción</router-link>
-              <router-link :to="{ name: 'series_genero', query: { mo: data2 } }">Animes</router-link>
-              <router-link :to="{ name: 'series_genero', query: { mo: data3 } }">Asiáticos</router-link>
-              <router-link :to="{ name: 'series_genero', query: { mo: data4 } }">Británicos</router-link>
-              <router-link :to="{ name: 'series_genero', query: { mo: data5 } }">Cienca y naturaleza</router-link>
-              <router-link :to="{ name: 'series_genero', query: { mo: data6 } }">Comedias</router-link>
-              <router-link :to="{ name: 'series_genero', query: { mo: data7 } }">Contenido infantil</router-link>
-            </div>
-            <div class="submenu_items">
-              <router-link :to="{ name: 'series_genero', query: { mo: data8 } }">De adolescentes</router-link>
-              <router-link :to="{ name: 'series_genero', query: { mo: data9 } }">De EE.UU.</router-link>
-              <router-link :to="{ name: 'series_genero', query: { mo: data10 } }">Dramas</router-link>
-              <router-link :to="{ name: 'series_genero', query: { mo: data11 } }">Especiales de stand up</router-link>
-              <router-link :to="{ name: 'series_genero', query: { mo: data12 } }">Latinoamericanos</router-link>
-              <router-link :to="{ name: 'series_genero', query: { mo: data13 } }">Misterios</router-link>
-              <router-link :to="{ name: 'series_genero', query: { mo: data14 } }">Policiales</router-link>
-            </div>
-            <div class="submenu_items">
-              <router-link :to="{ name: 'series_genero', query: { mo: data15 } }">Reality shows y entrevistas</router-link>
-              <router-link :to="{ name: 'series_genero', query: { mo: data16 } }">Romances</router-link>
-              <router-link :to="{ name: 'series_genero', query: { mo: data17 } }">Sci-fi y fantasía</router-link>
-              <router-link :to="{ name: 'series_genero', query: { mo: data18 } }">Series documentales</router-link>
-              <router-link :to="{ name: 'series_genero', query: { mo: data19 } }">Telenovelas</router-link>
-              <router-link :to="{ name: 'series_genero', query: { mo: data20 } }">Terror</router-link>
-              <router-link :to="{ name: 'series_genero', query: { mo: data21 } }">Thrillers</router-link>
-            </div>
+          <div class="submenu_items">
+            <!-- pasamos a traves de queryParams la data correspondiente a cada link segun sea su genero -->
+            <!-- la data sera recibida por el componente donde apunta con el "name" -->
+            <router-link :to="{ name: 'series_genero', query: { mo: data1 } }">Acción</router-link>
+            <router-link :to="{ name: 'series_genero', query: { mo: data2 } }">Animes</router-link>
+            <router-link :to="{ name: 'series_genero', query: { mo: data3 } }">Asiáticos</router-link>
+            <router-link :to="{ name: 'series_genero', query: { mo: data4 } }">Británicos</router-link>
+            <router-link :to="{ name: 'series_genero', query: { mo: data5 } }">Cienca y naturaleza</router-link>
+            <router-link :to="{ name: 'series_genero', query: { mo: data6 } }">Comedias</router-link>
+            <router-link :to="{ name: 'series_genero', query: { mo: data7 } }">Contenido infantil</router-link>
+          </div>
+          <div class="submenu_items">
+            <router-link :to="{ name: 'series_genero', query: { mo: data8 } }">De adolescentes</router-link>
+            <router-link :to="{ name: 'series_genero', query: { mo: data9 } }">De EE.UU.</router-link>
+            <router-link :to="{ name: 'series_genero', query: { mo: data10 } }">Dramas</router-link>
+            <router-link :to="{ name: 'series_genero', query: { mo: data11 } }">Especiales de stand up</router-link>
+            <router-link :to="{ name: 'series_genero', query: { mo: data12 } }">Latinoamericanos</router-link>
+            <router-link :to="{ name: 'series_genero', query: { mo: data13 } }">Misterios</router-link>
+            <router-link :to="{ name: 'series_genero', query: { mo: data14 } }">Policiales</router-link>
+          </div>
+          <div class="submenu_items">
+            <router-link :to="{ name: 'series_genero', query: { mo: data15 } }">Reality shows y entrevistas</router-link>
+            <router-link :to="{ name: 'series_genero', query: { mo: data16 } }">Romances</router-link>
+            <router-link :to="{ name: 'series_genero', query: { mo: data17 } }">Sci-fi y fantasía</router-link>
+            <router-link :to="{ name: 'series_genero', query: { mo: data18 } }">Series documentales</router-link>
+            <router-link :to="{ name: 'series_genero', query: { mo: data19 } }">Telenovelas</router-link>
+            <router-link :to="{ name: 'series_genero', query: { mo: data20 } }">Terror</router-link>
+            <router-link :to="{ name: 'series_genero', query: { mo: data21 } }">Thrillers</router-link>
+          </div>
         </div>
-      </div>
-      <div class="box_right">
-        <p>Icon 1</p>
-        <p>Icon 2</p>
       </div>
     </div>
   </div>
@@ -134,7 +130,7 @@ export default {
       data20.value = encryptData(JSON.stringify(dataEndpointByLinkSeries()[19]));
       data21.value = encryptData(JSON.stringify(dataEndpointByLinkSeries()[20]));
     });
-
+    
     watch(flagVisibleSubmenu, (newValue) => {
       // caputarmos el id del boton
       const boton = document.getElementById("boton");
@@ -190,6 +186,8 @@ export default {
   align-items: center;
   justify-content: space-between;
   width: 100%;
+  /* desactiva la seleccion de los elementos del click izquierdo */
+  user-select: none;
 }
 
 .box_left {
@@ -199,17 +197,9 @@ export default {
   position: relative;
 }
 
-.box_right {
-  display: flex;
-  margin-right: 5rem;
-}
-
-.box_right p {
-  color: #fff;
-}
-
 h1 {
   font-size: 2.3rem;
+  cursor: default;
 }
 
 p {
@@ -288,10 +278,6 @@ a:hover {
     margin: 0rem 0rem 0.8rem 1rem;
   }
 
-  .box_right {
-    margin-right: 1rem;
-  }
-
   h1 {
     font-size: 1.5rem;
   }
@@ -325,10 +311,6 @@ a:hover {
     margin: 0rem 0rem 0.8rem 1rem;
   }
 
-  .box_right {
-    margin-right: 1rem;
-  }
-
   h1 {
     font-size: 1.5rem;
   }
@@ -360,19 +342,11 @@ a:hover {
   .box_left {
     margin: 0rem 0rem 0.8rem 2rem;
   }
-
-  .box_right {
-    margin-right: 2rem;
-  }
 }
 
 @media (min-width: 1130px) and (max-width: 1330px) {
   .box_left {
     margin: 0rem 0rem 0.8rem 2rem;
-  }
-
-  .box_right {
-    margin-right: 2rem;
   }
 }
 </style>

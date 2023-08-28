@@ -85,7 +85,7 @@ function decryptData(dataToDecrypted) {
 function dataEndpointByLinkSeries() {
   return [
     { pageMax: 7, titleName: "Series de acción y aventura", endpointFilters: "with_genres=10759&without_genres=16&without_keywords=210024" },
-    { pageMax: 7, titleName: "Series de anime", endpointFilters: "with_genres=16&with_keywords=210024|287501" },
+    { pageMax: 5, titleName: "Series de anime", endpointFilters: "with_keywords=210024&with_origin_country=JP" },
     { pageMax: 13, titleName: "TV asiática", endpointFilters: "with_origin_country=JP|KR&without_genres=16" },
     { pageMax: 8, titleName: "Series británicas", endpointFilters: "without_genres=16&with_original_language=en" },
     { pageMax: 1, titleName: "TV sobre ciencia y naturaleza", endpointFilters: "with_genres=99&with_keywords=221355|284176" },
@@ -107,6 +107,52 @@ function dataEndpointByLinkSeries() {
     { pageMax: 1, titleName: "Thrillers de TV", endpointFilters: "with_keywords=316362" },
   ];
 }
+
+// creamos la funcion asincrona que obtendra todas las peliculas
+// se necesita pasarle por parametro el endpoint y la cantidad deseada de resultados que se retornen (20,50,100, etc.)
+ async function totalTVMoviesVisualization (endpoint, quantityResults) {
+  // pagina inicial que se pasara al endpoint
+  let actualPage = 1;
+  // variable que contendra la cantidad de elementos(peliculas) que evaluara el ciclo while
+  let totalResult = 0;
+  // llamamos nuevamente a la variable movies que esta inicializada arriba y la inicializamos como array vacio 
+  // ya que de no ser asi se irian sumando las peliculas encontradas en una misma busqueda en el input y el punto
+  // es que genere una nueva cantidad de elementos por busqueda unica
+  let movies = [];
+
+  // iniciamos el ciclo while el cual mientras totalResult sea menor a quantityResults este seguira ejecutandose
+  while (totalResult < quantityResults) {
+    // obtenemos la respuesta al servicio al cual se le pasan el numero de la pagina y el "query" el cual es la data del input
+    const response = await services.get_movie_services(actualPage, endpoint);
+    // desestructuramos para obtener la data de las variables results y total_pages
+    const { results, total_pages } = response.data;
+
+    // El método concat() se usa para unir dos o más arrays. Este método no cambia los arrays existentes, sino que devuelve un nuevo array.
+    // usamos el metodo concat para unir el array de results con los elementos que este contiene (peliculas) para ser almacenados en la variable
+    // movies
+    movies = movies.concat(results);
+    // usamos results.length para saber el largo del array que contiene los resultados (results: 20 elementos) y por cada vuelta del while 
+    // ser iran añadiendo 20 elementos hasta llegar al quantityResults(cantidad deseada) y esos resultados son los
+    // que se almacenaran en totalResult, la cual sera evaluada en la condicion del while
+    totalResult += results.length;
+
+    // sumamos 1 a la pagina actual por cada vuelta del while
+    actualPage += 1;
+
+    // si la pagina actual es mayor a la cantidad de paginas "total_pages" entregada por el servicio tambien se detiene el ciclo
+    if (actualPage > total_pages) {
+      break;
+    }
+  }
+
+  // finalmente usamos la variable movies que contiene todos los elementos(peliculas) para obtener con el .filter() todos los 
+  // posters que existen en las peliculas
+  let dataPosterMovie = movies.filter((item) => {
+    return item.poster_path;
+  });
+
+  return dataPosterMovie;
+};
 
 // funcion que toma los endpoints para extraer los datos necesarios para enviarlos al componente ComponenteVideoInicio.vue
 // y crear el video del inicio de la aplicacion
@@ -370,4 +416,5 @@ export {
   encryptData,
   decryptData,
   dataEndpointByLinkSeries,
+  totalTVMoviesVisualization,
 };

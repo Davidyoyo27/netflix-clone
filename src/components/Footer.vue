@@ -66,7 +66,7 @@
           <span>Código de servicio</span>
         </button>
       </div>
-      <p>© 1997-2023 Netflix, Inc.</p>
+      <span class="copyright">© 1997-2023 Netflix, Inc.</span>
     </div>
   </footer>
 </template>
@@ -127,6 +127,8 @@ export default {
   /* min-width permite que al reducirse el ancho de la ventana del navegador 
      el contenedor footer_links no se vaya haciendo mas pequeño */
   min-width: 51%;
+  /* desactiva la seleccion de los elementos del click izquierdo */
+  user-select: none;
 }
 
 .footer_icons {
@@ -185,7 +187,11 @@ span {
   color: #7c7c7c;
 }
 
-p {
+.copyright {
+  /* para poder establecer el texto a la izquierda con text-align: left, debemos
+    usar el display:block ya que el elemento span es un elemento en linea y por ende
+    no tiene un ancho definido */
+  display: block;
   text-align: left;
   font-size: 0.7rem;
   cursor: default;

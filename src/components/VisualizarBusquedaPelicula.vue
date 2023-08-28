@@ -12,15 +12,19 @@
       </div>
     </div>
   </div>
+  <Footer></Footer>
 </template>
 
 <script>
-import { ref, watch } from "vue";
+import { ref, watch, defineAsyncComponent } from "vue";
 import services from "@/helpers/services/services";
 // importamos el useRoute que es desde donde recibiremos la data que viene por la url
 import { useRoute } from "vue-router";
 
 export default {
+  components: {
+    Footer: defineAsyncComponent(() => import(/* webpackChunkName: "Footer.vue" */ "@/components/Footer")),
+  },
   setup() {
     // creamos una instancia del useRoute()
     const route = useRoute();
@@ -75,7 +79,9 @@ export default {
     };
 
     // usamos el watch para observar los cambios que se produscan en la variable que viene desde la url "route.query.data_input"
-    watch(() => route.query.data_input, (newValue) => {
+    watch(() => route.query.q, (newValue) => {
+      // recibimos la data que viene en el input y en este caso usando el watch seria almacenada en "newValue" asi que
+      // le pasamos esa data como parametro a la funcion resultSearchMovie que realizara la busqueda
       resultSearchMovie(newValue);
     });
 
@@ -90,6 +96,8 @@ export default {
 <style scoped>
 .wrapper {
   margin-top: 9.9rem;
+  /* desactiva la seleccion de los elementos del click izquierdo */
+  user-select: none;
 }
 
 p{
@@ -104,7 +112,6 @@ img {
 .wrap_container{
   display: flex;
   justify-content: center;
-  padding-bottom: 5rem;
 }
 
 .container {

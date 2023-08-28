@@ -1,45 +1,53 @@
 <template>
-  <div class="cont_info_carousel">
-    <h3 class="title">{{ title }}</h3>
-  </div>
-  <div class="container_carousel">
-    <div class="cont_pagination">
-      <div class="pagination_elT10M"></div>
+  <div class="wrapper">
+    <div class="cont_info_carousel">
+      <h3 class="title">{{ title }}</h3>
     </div>
-    <swiper
-      :slides-per-view="6"
-      :slides-per-group="4"
-      :loop="true"
-      :speed="500"
-      :navigation="cont_navigation"
-      :pagination="cont_pagination"
-      :breakpoints="cont_breakpoints"
-      :modules="imp_modules"
-      id="mySlider"
-    >
-      <swiper-slide
-        v-for="item in objectArray"
-        :key="item.number"
-        class="cont-image"
+    <div class="container_carousel">
+      <div class="cont_pagination">
+        <div class="pagination_elT10M"></div>
+      </div>
+      <swiper
+        :slides-per-view="6"
+        :slides-per-group="4"
+        :loop="true"
+        :speed="500"
+        :navigation="cont_navigation"
+        :pagination="cont_pagination"
+        :breakpoints="cont_breakpoints"
+        :modules="imp_modules"
+        id="mySlider"
       >
-        <img class="number" :src="item.img_number" alt="" />
-        <img
-          class="img_movie"
-          :src="link_img + item.link_image"
-          :alt="item.name_movie"
-        />
-      </swiper-slide>
-    </swiper>
-    <div class="cont_buttons">
-      <div class="button-pT10M">
-        <font-awesome-icon class="icon_right" icon="fa-solid fa-chevron-left" />
-      </div>
-      <div class="button-nT10M">
-        <font-awesome-icon class="icon_left" icon="fa-solid fa-chevron-right" />
-      </div>
-      <div class="cont_shadow">
-        <div class="box_shadow"></div>
-        <div class="box_shadow"></div>
+        <swiper-slide
+          v-for="item in objectArray"
+          :key="item.number"
+          class="cont-image"
+        >
+          <img class="number" :src="item.img_number" alt="" />
+          <img
+            class="img_movie"
+            :src="link_img + item.link_image"
+            :alt="item.name_movie"
+          />
+        </swiper-slide>
+      </swiper>
+      <div class="cont_buttons">
+        <div class="button-pT10M">
+          <font-awesome-icon
+            class="icon_right"
+            icon="fa-solid fa-chevron-left"
+          />
+        </div>
+        <div class="button-nT10M">
+          <font-awesome-icon
+            class="icon_left"
+            icon="fa-solid fa-chevron-right"
+          />
+        </div>
+        <div class="cont_shadow">
+          <div class="box_shadow"></div>
+          <div class="box_shadow"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -168,6 +176,11 @@ export default {
 </script>
 
 <style scoped>
+.wrapper{
+  /* desactiva la seleccion de los elementos del click izquierdo */
+  user-select: none;
+}
+
 .cont-image {
   display: flex;
   align-items: center;

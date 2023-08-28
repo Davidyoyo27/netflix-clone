@@ -16,7 +16,7 @@
 
     <!-- PIE DE PAGINA -->
     <footer>
-      <Footer></Footer>
+      <!-- <Footer></Footer> -->
     </footer>
     <!-- PIE DE PAGINA -->
   </div>

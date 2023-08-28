@@ -1,50 +1,50 @@
 <template>
-  <!-- una vez que la data esta lista se muestran los componentes (carruseles peliculas) -->
-  <div v-if="!flagPromiseData">
-    <!-- los numeros solo representan la variable y su orden de creacion -->
-    <!-- NO SU ORDEN O POSICION a la hora de mostrar cada componente de peliculas/series -->
-    
-    <!-- Series emocionantes aclamadas por la crítica -->
-    <CarruselPelicula :title="title1" :arrayData="dataResp1"></CarruselPelicula>
-    <!-- Series de suspenso -->
-    <CarruselPelicula :title="title2" :arrayData="dataResp2"></CarruselPelicula>
-    <!-- Series anime shonen -->
-    <CarruselPelicula :title="title3" :arrayData="dataResp3"></CarruselPelicula>
-    <!-- Series de guerra y politica -->
-    <CarruselPelicula :title="title18" :arrayData="dataResp18"></CarruselPelicula>
-    <!-- Series anime de misterio -->
-    <CarruselPelicula :title="title7" :arrayData="dataResp7"></CarruselPelicula>
-    <!-- Series anime de crimen -->
-    <CarruselPelicula :title="title5" :arrayData="dataResp5"></CarruselPelicula>
-    <!-- Telenovelas -->
-    <CarruselPelicula :title="title11" :arrayData="dataResp11"></CarruselPelicula>
-    <!-- Series anime de sci-fi y fantasía -->
-    <CarruselPelicula :title="title8" :arrayData="dataResp8"></CarruselPelicula>
-    <!-- Las 10 series más populares en Chile hoy -->
-    <CarruselTop10 :title="title19" :arrayData="dataResp19"></CarruselTop10>
-    <!-- Series anime japonesas -->
-    <CarruselPelicula :title="title9" :arrayData="dataResp9"></CarruselPelicula>
-    <!-- Series de crimen -->
-    <CarruselPelicula :title="title15" :arrayData="dataResp15"></CarruselPelicula>
-    <!-- Series románticas -->
-    <CarruselPelicula :title="title20" :arrayData="dataResp20"></CarruselPelicula>
-    <!-- Series de Sci-Fi y Fantasía -->
-    <CarruselPelicula :title="title10" :arrayData="dataResp10"></CarruselPelicula>
-    <!-- Series anime de drama -->
-    <CarruselPelicula :title="title6" :arrayData="dataResp6"></CarruselPelicula>
-    <!-- Series documentales -->
-    <CarruselPelicula :title="title16" :arrayData="dataResp16"></CarruselPelicula>
-    <!-- Series anime comedia -->
-    <CarruselPelicula :title="title4" :arrayData="dataResp4"></CarruselPelicula>
-    <!-- TV infantil y familiar -->
-    <CarruselPelicula :title="title12" :arrayData="dataResp12"></CarruselPelicula>
-    <!-- Series de animacion occidental -->
-    <CarruselPelicula :title="title13" :arrayData="dataResp13"></CarruselPelicula>
-    <!-- Series de misterio -->
-    <CarruselPelicula :title="title17" :arrayData="dataResp17"></CarruselPelicula>
-    <!-- Series occidentales de acción y aventura -->
-    <CarruselPelicula :title="title14" :arrayData="dataResp14"></CarruselPelicula>
-  </div>
+    <!-- una vez que la data esta lista se muestran los componentes (carruseles peliculas) -->
+    <div v-if="!flagPromiseData">
+      <!-- los numeros solo representan la variable y su orden de creacion -->
+      <!-- NO SU ORDEN O POSICION a la hora de mostrar cada componente de peliculas/series -->
+      
+      <!-- Series emocionantes aclamadas por la crítica -->
+      <CarruselPelicula :title="title1" :arrayData="dataResp1"></CarruselPelicula>
+      <!-- Series de suspenso -->
+      <CarruselPelicula :title="title2" :arrayData="dataResp2"></CarruselPelicula>
+      <!-- Series anime shonen -->
+      <CarruselPelicula :title="title3" :arrayData="dataResp3"></CarruselPelicula>
+      <!-- Series de guerra y politica -->
+      <CarruselPelicula :title="title18" :arrayData="dataResp18"></CarruselPelicula>
+      <!-- Series anime de misterio -->
+      <CarruselPelicula :title="title7" :arrayData="dataResp7"></CarruselPelicula>
+      <!-- Series anime de crimen -->
+      <CarruselPelicula :title="title5" :arrayData="dataResp5"></CarruselPelicula>
+      <!-- Telenovelas -->
+      <CarruselPelicula :title="title11" :arrayData="dataResp11"></CarruselPelicula>
+      <!-- Series anime de sci-fi y fantasía -->
+      <CarruselPelicula :title="title8" :arrayData="dataResp8"></CarruselPelicula>
+      <!-- Las 10 series más populares en Chile hoy -->
+      <CarruselTop10 :title="title19" :arrayData="dataResp19"></CarruselTop10>
+      <!-- Series anime japonesas -->
+      <CarruselPelicula :title="title9" :arrayData="dataResp9"></CarruselPelicula>
+      <!-- Series de crimen -->
+      <CarruselPelicula :title="title15" :arrayData="dataResp15"></CarruselPelicula>
+      <!-- Series románticas -->
+      <CarruselPelicula :title="title20" :arrayData="dataResp20"></CarruselPelicula>
+      <!-- Series de Sci-Fi y Fantasía -->
+      <CarruselPelicula :title="title10" :arrayData="dataResp10"></CarruselPelicula>
+      <!-- Series anime de drama -->
+      <CarruselPelicula :title="title6" :arrayData="dataResp6"></CarruselPelicula>
+      <!-- Series documentales -->
+      <CarruselPelicula :title="title16" :arrayData="dataResp16"></CarruselPelicula>
+      <!-- Series anime comedia -->
+      <CarruselPelicula :title="title4" :arrayData="dataResp4"></CarruselPelicula>
+      <!-- TV infantil y familiar -->
+      <CarruselPelicula :title="title12" :arrayData="dataResp12"></CarruselPelicula>
+      <!-- Series de animacion occidental -->
+      <CarruselPelicula :title="title13" :arrayData="dataResp13"></CarruselPelicula>
+      <!-- Series de misterio -->
+      <CarruselPelicula :title="title17" :arrayData="dataResp17"></CarruselPelicula>
+      <!-- Series occidentales de acción y aventura -->
+      <CarruselPelicula :title="title14" :arrayData="dataResp14"></CarruselPelicula>
+    </div>
 </template>
 
 <script>

@@ -108,6 +108,8 @@ export default {
 <style scoped>
 .container {
   margin: 0rem 0rem 4rem 4rem;
+  /* desactiva la seleccion de los elementos del click izquierdo */
+  user-select: none;
 }
 
 img {

@@ -108,6 +108,40 @@ function dataEndpointByLinkSeries() {
   ];
 }
 
+// creamos una funcion que tendra los objetos que contendran la data necesaria para pasarse a cada uno de los links
+// el combobox de las Series
+// pageMax: Se pasa al componente y es la pagina maxima que contendra el endpoint a la hora de llamar al servicio
+// titleName: Titulo que se pasa al componente y aparece cuando se accede a cada link en el combobox Generos
+// endpointFilters: filtros del endpoint que se pasan al componente para tener el servicio completo
+function dataEndpointByLinkMovies() {
+  return [
+    { pageMax: 26, titleName: "Películas de acción y aventura", endpointFilters: "release_date.gte=2010&with_genres=28" },
+    { pageMax: 4, titleName: "Películas de anime", endpointFilters: "release_date.gte=2010&with_keywords=210024" },
+    { pageMax: 30, titleName: "De intriga", endpointFilters: "release_date.gte=2010&with_genres=53" },
+    { pageMax: 9, titleName: "Cine de ayer, hoy y siempre", endpointFilters: "release_date.lte=2005&without_keywords=210024" },
+    { pageMax: 1, titleName: "Cortometrajes y docus cortos", endpointFilters: "release_date.gte=2010&with_keywords=174109|294531" },
+    { pageMax: 85, titleName: "De Hollywood a tu pantalla", endpointFilters: "release_date.gte=2010&without_genres=16&without_keywords=210024&with_original_language=en" },
+    { pageMax: 3, titleName: "Películas de deportes", endpointFilters: "release_date.gte=2010&with_keywords=6075" },
+    { pageMax: 23, titleName: "Películas documentales", endpointFilters: "release_date.gte=2010&with_genres=99" },
+    { pageMax: 63, titleName: "Cine dramático", endpointFilters: "release_date.gte=2010&with_genres=18" },
+    { pageMax: 12, titleName: "Películas de fantasía", endpointFilters: "release_date.gte=2010&with_genres=14" },
+    { pageMax: 1, titleName: "Fe y espiritualidad", endpointFilters: "release_date.gte=2010&with_keywords=6150|10706" },
+    // en cine independiente no se encontraron coincidencias asi que se opto por dejarlo vacio, si se genera data al entrar a la opcion 
+    // pero dicha data no es la que corresponde a la del genero o link
+    { pageMax: 3, titleName: "Cine independiente", endpointFilters: "" },
+    { pageMax: 92, titleName: "Películas internacionales", endpointFilters: "release_date.gte=2010&with_origin_country=AU|CA|GB|IE|NZ|US" },
+    { pageMax: 8, titleName: "Películas latinoamericanas", endpointFilters: "release_date.gte=2010&with_origin_country=MX" },
+    { pageMax: 6, titleName: "Películas aclamadas por la crítica", endpointFilters: "release_date.gte=2010&vote_average.gte=8" },
+    { pageMax: 9, titleName: "Música y musicales", endpointFilters: "release_date.gte=2010&with_genres=10402" },
+    { pageMax: 68, titleName: "Películas para reír", endpointFilters: "release_date.gte=2010&with_genres=35" },
+    { pageMax: 16, titleName: "Películas para ver en familia", endpointFilters: "release_date.gte=2010&with_genres=10751" },
+    { pageMax: 2, titleName: "Películas policiales", endpointFilters: "release_date.gte=2010&with_keywords=6149" },
+    { pageMax: 27, titleName: "Cine romántico", endpointFilters: "release_date.gte=2010&with_genres=10749" },
+    { pageMax: 9, titleName: "Cine de sci-fi", endpointFilters: "release_date.gte=2010&with_genres=878" },
+    { pageMax: 10, titleName: "Películas de terror", endpointFilters: "release_date.gte=2010&with_genres=27" },
+  ];
+}
+
 // creamos la funcion asincrona que obtendra todas las peliculas
 // se necesita pasarle por parametro el endpoint y la cantidad deseada de resultados que se retornen (20,50,100, etc.)
  async function totalTVMoviesVisualization (endpoint, quantityResults) {
@@ -417,4 +451,5 @@ export {
   decryptData,
   dataEndpointByLinkSeries,
   totalTVMoviesVisualization,
+  dataEndpointByLinkMovies,
 };

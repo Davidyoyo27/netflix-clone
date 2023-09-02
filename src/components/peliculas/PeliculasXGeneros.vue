@@ -1,15 +1,18 @@
 <template>
   <div v-show="FlagVisibleElements">
     <div id="top_bar">
-      <TituloSerie :titleSerie="titleSerie"></TituloSerie>
+      <TituloPelicula :titlePelicula="titleSerie"></TituloPelicula>
       <div class="box_right">
         <div class="icon_right">
           <font-awesome-icon class="icon" icon="fa-solid fa-align-left" />
         </div>
         <div class="icon_right">
-          <!--                                                          fed = filtros endpoint -->
-          <router-link :to="{ name: 'visualizar_todas_series', query: { fed: encryptedData } }">
-            <font-awesome-icon class="icon" icon="fa-solid fa-table-cells-large"/>
+          <!--                                                             fed = filtros endpoint -->
+          <router-link :to="{ name: 'visualizar_todas_peliculas', query: { fed: encryptedData } }">
+            <font-awesome-icon
+              class="icon"
+              icon="fa-solid fa-table-cells-large"
+            />
           </router-link>
         </div>
       </div>
@@ -29,7 +32,7 @@
     </div>
     <div class="cont_carousels">
       <div class="carousels">
-        <PruebaColeccionCarruselesSeriesXGeneros></PruebaColeccionCarruselesSeriesXGeneros>
+        <ColeccionCarruselesPeliculas></ColeccionCarruselesPeliculas>
       </div>
       <Footer></Footer>
     </div>
@@ -45,9 +48,9 @@ import { useRoute } from "vue-router";
 export default {
   components: {
     EmbedVideoPlayer: defineAsyncComponent(() => import(/* webpackChunkName: "EmbedVideoPlayer.vue" */ "@/components/EmbedVideoPlayer")),
-    PruebaColeccionCarruselesSeriesXGeneros: defineAsyncComponent(() => import(/* webpackChunkName: "PruebaColeccionCarruselesSeriesXGeneros.vue" */ "@/components/series/PruebaColeccionCarruselesSeriesXGeneros")),
+    ColeccionCarruselesPeliculas: defineAsyncComponent(() => import(/* webpackChunkName: "ColeccionCarruselesPeliculas.vue" */ "@/components/peliculas/ColeccionCarruselesPeliculas")),
     Footer: defineAsyncComponent(() => import(/* webpackChunkName: "Footer.vue" */ "@/components/Footer")),
-    TituloSerie: defineAsyncComponent(() => import(/* webpackChunkName: "TituloSerie.vue" */ "@/components/series/TituloSerie")),
+    TituloPelicula: defineAsyncComponent(() => import(/* webpackChunkName: "TituloPelicula.vue" */ "@/components/peliculas/TituloPelicula")),
   },
   setup() {
     // key del trailer de youtube pelicula/serie
@@ -76,7 +79,6 @@ export default {
     const receivedObject = route?.query?.mo || "vacio";
     // titulo de la serie que le pasaremos al componente <TitleSerie>
     const titleSerie = ref("");
-    // variable contenedora de la data encriptada que se pasara para ver todas las series
     const encryptedData = ref(null);
 
     // creamos la funcion
@@ -113,7 +115,7 @@ export default {
 
       // realizamos el llamado al servicio que es el endpoint con series y el filtro de animacion
       const response = await services.get_movie_services(getPageRandom(pageMax, 1),
-      `/discover/tv?language=es-MX&first_air_date.gte=2010&${filtersEndpoint}&with_watch_providers=8&watch_region=CL`);
+      `/discover/movie?language=es-MX&${filtersEndpoint}&with_watch_providers=8&watch_region=CL`);
       // pasamos los elementos contenidos en results a una variable
       const data = response.data.results;
       // usamos .filter() para traer todos los elementos que en su backdrop_path contengan una imagen
@@ -130,7 +132,7 @@ export default {
       // dentro del EmbedVideoPlayer para pasar ese ID hacia otro componente mas
       id.value = randomObject.id;
       // obtenemos el titulo de la pelicula/serie
-      title.value = randomObject.name;
+      title.value = randomObject.title;
       // usamos el .split(' ') para separar el texto de la sinopsis por cada espacio que tenga y obtener la cantidad de palabras que contiene
       const wordsOfOverview = randomObject.overview.split(" ");
       // evaluamos si la sinopsis posee mas de 50 palabras
@@ -146,7 +148,7 @@ export default {
       backdrop.value = movieBackdropLink.value + randomObject.backdrop_path;
 
       // realizamos el llamado al servicio con el endpoint que contiene las key de los trailer de la pelicula/serie
-      const responseKey = await services.get_data_key_series_video(id.value);
+      const responseKey = await services.get_data_key_movie_video(id.value);
       let resultServiceKey;
       // hay ocasiones en que arroja un error de "undefined", y esto es porque el responseKey.data no contiene data y por ende arroja ese error
       // esto quiere decir que no todas las pelicula/serie contienen una key del trailer por ende si no encuentra dicha key retornara a la variable
@@ -163,32 +165,29 @@ export default {
       }
 
       // realizamos el llamado al servicio con el endpoint que contiene las certificaciones(12, 16, 18+, etc.) de las pelicula/serie
-      const responseCertification = await services.get_data_series_certification_video(id.value);
+      const responseCertification = await services.get_data_movie_certification_video(id.value);
 
       // verificamos si la data obtenida es un array y si el largo de esta es mayor a 0, ya que si es mayor a 0 quiere decir que posee datos dentro
       if (Array.isArray(responseCertification.data.results) && responseCertification.data.results.length > 0) {
         // pasamos los resultados de la llamada al endpoint a una variable
         const dataRespResults = responseCertification.data.results;
-        // en caso de que solo exista un objeto dentro del array se accedera directamente a el y se asignara la certificacion correspondiente
-        (dataRespResults.length === 1) ? certification.value = dataRespResults[0].rating : null;
         // en caso de que la condicion anterior de tener solo 1 elemento no se cumpla tomamos la data y la mapeamos
         dataRespResults.map((item) => {
           // evaluando las certificaciones existentes dentro del endpoint se llego a la conclusion de que "BR"(Brasil) posee muchas similitudes
-          // con las certificaciones de Chile(CL), puesto que este ultimo no esta tan presente se usaraon las de Brasil como referencia
-          // si dentro de la certificacion el iso_3166_1 incluia "BR"
-          if (item.iso_3166_1.includes("BR")) {
-            // se pasara esa data a la variable
-            certification.value = item.rating;
-          } else {
-            // en caso contrario generara un numero al azar con la cantidad maxima de dataRespResults
-            const randomIndex = Math.floor(Math.random() * dataRespResults.length);
-            // y ese numero aleatorio lo pasamos al dataRespResults para obtener un elemento aleatorio y de ese elemento extraer su .rating
-            certification.value = dataRespResults[randomIndex].rating;
+          // con las certificaciones de Chile(CL), puesto que este ultimo no esta tan presente se usaraon las de Brasil como referencia.
+          // Si dentro de la certificacion el iso_3166_1 incluia "BR"
+          if(item.iso_3166_1 != "BR"){
+            // pasamos a la variable la certificacion
+            const firstCert = item.release_dates[0].certification;
+            // validamos si el valor de la variable es diferente de vacio de ser asi, almacenamos la data, de lo contrario retornamos vacio
+            (firstCert != "") ? certification.value = firstCert : certification.value = "Vacío";
+          }else{
+            // en caso de que el iso_3166_1 no sea BR tomamos el primer valor de la certificacion que salga
+            const secondCert = item.release_dates[0].certification;
+            // validamos si el valor de la variable es diferente de vacio de ser asi, almacenamos la data, de lo contrario retornamos vacio
+            (secondCert != "") ? certification.value = secondCert : certification.value = "Vacío";
           }
         });
-      } else {
-        // en caso de no existir data para la certificacion se retornara un "Vacío"
-        certification.value = "Vacío";
       }
 
       // evaluamos si keyTrailer no tiene una key de video
@@ -204,8 +203,7 @@ export default {
         // validamos si el objeto respYoutubeData.data.items existe y si al menos tiene un elemento antes de intentar acceder al indice 0
         if (respYoutubeData.data.items && respYoutubeData.data.items.length > 0) {
           // accedemos al índice 0 de respYoutubeData.data.items para obtener la duracion del video
-          const duration =
-            respYoutubeData.data.items[0].contentDetails.duration;
+          const duration = respYoutubeData.data.items[0].contentDetails.duration;
           // pasamos el resultado de duration a la funcion para obtener su valor en segundos
           dataTimeVideoKey.value = convertDurationToSeconds(duration);
         } else {

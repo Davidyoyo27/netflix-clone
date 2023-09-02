@@ -75,7 +75,7 @@ export default {
     }
   },
 
-  // endpoint certificacion(12, 16, 18+, etc.) de las peliculas/series
+  // endpoint certificacion(12, 16, 18+, etc.) de las series
   get_data_series_certification_video: async (id) => {
     try {
       const axiosConfig = {
@@ -96,11 +96,54 @@ export default {
     }
   },
 
+  // endpoint de YouTube data v3 la cual contiene informacion de cada video de youtube
   get_data_youtube_data_v3: async (key_video) => {
     try {
       const axiosConfig = {
         baseURL: process.env.VUE_APP_BASE_URL_YOUTUBE_DATA_API,
         url: `/videos?id=${key_video}&key=${process.env.VUE_APP_YOUTUBE_DATA_API_KEY}&part=contentDetails`,
+
+        method: "get",
+      };
+
+      const { data } = await axios.request(axiosConfig);
+      return { ok: true, data };
+    } catch (err) {
+      return { ok: false, error: err.message };
+    }
+  },
+
+  // endpoint trailer de peliculas con filtro por ID
+  get_data_key_movie_video: async (id) => {
+    try {
+      const axiosConfig = {
+        baseURL: process.env.VUE_APP_BASE_URL_MOVIEDB,
+        url: `/movie/${id}/videos?sort_by=popularity.desc`,
+
+        headers: {
+          Authorization: `Bearer ${process.env.VUE_APP_ACCESS_TOKEN_MOVIEDB}`,
+        },
+
+        method: "get",
+      };
+
+      const { data } = await axios.request(axiosConfig);
+      return { ok: true, data };
+    } catch (err) {
+      return { ok: false, error: err.message };
+    }
+  },
+
+  // endpoint certificacion(12, 16, 18+, etc.) de las peliculas
+  get_data_movie_certification_video: async (id) => {
+    try {
+      const axiosConfig = {
+        baseURL: process.env.VUE_APP_BASE_URL_MOVIEDB,
+        url: `/movie/${id}/release_dates`,
+
+        headers: {
+          Authorization: `Bearer ${process.env.VUE_APP_ACCESS_TOKEN_MOVIEDB}`,
+        },
 
         method: "get",
       };

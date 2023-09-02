@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
     <div id="title_container">
-      <TituloSerie :titleSerie="titleSerie"></TituloSerie>
+      <TituloPelicula :titlePelicula="titlePelicula"></TituloPelicula>
       <!-- ICONOS DERECHA -->
       <div class="box_right">
         <div class="icon_right">
@@ -11,10 +11,7 @@
         </div>
         <div class="container_select">
           <div id="icon_suggestion" @mousedown="clickBoton" @click.stop>
-            <font-awesome-icon
-              class="icon"
-              icon="fa-solid fa-table-cells-large"
-            />
+            <font-awesome-icon class="icon" icon="fa-solid fa-table-cells-large"/>
             <span>Sugerencias para ti</span>
             <div class="figure_right_menu"></div>
           </div>
@@ -34,7 +31,7 @@
       <div class="wrap_container">
         <div class="container">
           <div class="container_movies" v-for="data in dataPosterMovie" :key="data">
-            <img class="img_poster" :src="link_img + data.poster_path" :alt="data.name" />
+            <img class="img_poster" :src="link_img + data.poster_path" :alt="data.name"/>
           </div>
         </div>
       </div>
@@ -53,7 +50,7 @@ import { useStore } from "vuex";
 
 export default {
   components: {
-    TituloSerie: defineAsyncComponent(() => import(/* webpackChunkName: "TituloSerie.vue" */ "@/components/series/TituloSerie")),
+    TituloPelicula: defineAsyncComponent(() => import(/* webpackChunkName: "TituloPelicula.vue" */ "@/components/peliculas/TituloPelicula")),
     Footer: defineAsyncComponent(() => import(/* webpackChunkName: "Footer.vue" */ "@/components/Footer")),
   },
   setup() {
@@ -65,7 +62,7 @@ export default {
     // usamos el JSON.parse para transformar la data de un texto plano al objeto correspondiente
     const parsedData = JSON.parse(decryptedData);
     // titulo de la serie
-    const titleSerie = parsedData.title;
+    const titlePelicula = parsedData.title;
     // filtros del endpoint de la serie
     const filtersSerie = parsedData.filters;
     // data final que se mostrara por pantalla (peliculas)
@@ -137,7 +134,7 @@ export default {
     function createEndpointWithFilters(filter, secondFilter = "") {
       // este endpoint sera el estandar puesto que lo que cambian en este y los otros son solo los filtros, la siguiente data esta
       // contenida en todos los llamados al servicio
-      return `/discover/tv?language=es-MX&first_air_date.gte=2010&${filter}&with_watch_providers=8&watch_region=CL${secondFilter}`;
+      return `/discover/movie?language=es-MX&release_date.gte=2010&${filter}&with_watch_providers=8&watch_region=CL${secondFilter}`;
     }
 
     // Registrar el evento click en el documento cuando el componente está montado
@@ -205,7 +202,7 @@ export default {
     return {
       dataPosterMovie,
       link_img,
-      titleSerie,
+      titlePelicula,
       flagVisibleSubmenu,
       clickBoton,
       sendFilter,

@@ -22,6 +22,13 @@ function getDateMovieReleaseLastYear() {
   return dateYear;
 }
 
+// funcion que obtiene el actual año para pasarsela al endpoint
+function getDateMovieReleasePresentYear() {
+  const date = new Date();
+  const dateYear = date.getFullYear();
+  return dateYear;
+}
+
 // funcion que corta el texto segun el maximo de palabras que se especifique
 // a la funcion se le pasa como argumento 2 variables
 // text: el texto a evaluar
@@ -439,6 +446,25 @@ async function getDataServicesMovies() {
   ];
 }
 
+// data para el modulo de "Novedades Populares"
+async function getDataMoviePopularNews(){
+  const response = await Promise.all([
+    services.get_movie_services(getPageRandom(1,1),`/movie/now_playing?with_watch_providers=8&watch_region=CL`),
+    services.get_movie_services(getPageRandom(10,1),`/discover/movie?language=es-MX&primary_release_date.gte=${getDateMovieReleasePresentYear()}&with_watch_providers=8&watch_region=CL`),
+    services.get_movie_services(getPageRandom(20,1),`/movie/upcoming`),
+  ]);
+
+  const dataNuevoNetflix = response[0].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });
+  const dataEstrenosYear = response[1].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });
+  const dataEstrenos = response[2].data.results.filter((item) => item.poster_path !== null).map((item) => { return { poster_path: item.poster_path, name: item.name }; });
+
+  return [
+    dataNuevoNetflix,
+    dataEstrenosYear,
+    dataEstrenos,
+  ];
+}
+
 export {
   getPageRandom,
   getNumberRandom,
@@ -452,4 +478,5 @@ export {
   dataEndpointByLinkSeries,
   totalTVMoviesVisualization,
   dataEndpointByLinkMovies,
+  getDataMoviePopularNews,
 };

@@ -6,9 +6,8 @@
     <CarruselPelicula :title="title4" :arrayData="dataResp4"></CarruselPelicula>
     <CarruselTop10 :title="title5" :arrayData="dataResp5"></CarruselTop10>
     <div class="cont_footer">
-
+      <Footer></Footer>
     </div>
-    <Footer></Footer>
   </div>
 </template>
 

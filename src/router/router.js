@@ -1,6 +1,6 @@
 // 1.1-. instalamos el router: npm install vue-router@4 
 // 1.2-. realizamos la importacion de los elementos que usaremos que estan contenidos en vue-router
-import { createRouter, createWebHashHistory } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 
 // 1.3-. creamos las rutas e importamos los componentes a usar como paginas
 const routes = [
@@ -27,7 +27,9 @@ const routes = [
 
 // 1.4-. creamos la instancia del router
 const router = createRouter({
-    history: createWebHashHistory(),
+    // NOTA: ese hashtag "#/" que se veia en la url EJ: http://localhost:8081/#/ era porque se llamaba en el history al createWebHashHistory,
+    // para que esto no suceda se debe usar el createWebHistory()
+    history: createWebHistory(),
     routes,
 })
 

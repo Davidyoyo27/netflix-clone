@@ -9,8 +9,11 @@
     <!--                   elemento, en este caso item.number o en otro caso usar el index -->
     <!--              v-for="(index, item) in objectArrayLinks" :key="item.index" -->
     <div class="cont" v-for="item in objectArrayLinks" :key="item.number">
-      <router-link :to="item.link" class="link">
-        <p>{{ item.name_link }}</p>
+      <!--                     debemos poner el active-class="active" para hacer referencia a el link -->
+      <!--                     cuando llamemos a la variable desde el css para asignarle el cambio de estilo -->
+      <!--                     cuando se este en el link del menu -->
+      <router-link :to="item.link" class="link" active-class="active">
+        {{ item.name_link }}
       </router-link>
     </div>
   </div>
@@ -100,14 +103,20 @@ export default {
   text-decoration: none;
 }
 
-.link p {
+.link {
   font-size: 14px;
   font-weight: 600;
   color: #d3d3d3;
 }
 
-.link p:hover {
+.link:hover {
   color: #8d8a8a;
   transition: 0.5s;
+}
+
+/* aca se define el estilo del link cuando se este en dicha ruta, 
+  aunque salga el "0 references" si funciona */
+.active {
+ color: #fff;
 }
 </style>

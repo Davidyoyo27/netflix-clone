@@ -29,7 +29,7 @@
     </div>
     <div class="cont_carousels">
       <div class="carousels">
-        <PruebaColeccionCarruselesSeriesXGeneros></PruebaColeccionCarruselesSeriesXGeneros>
+        <ColeccionCarruselesSeries></ColeccionCarruselesSeries>
       </div>
       <Footer></Footer>
     </div>
@@ -45,7 +45,7 @@ import { useRoute } from "vue-router";
 export default {
   components: {
     EmbedVideoPlayer: defineAsyncComponent(() => import(/* webpackChunkName: "EmbedVideoPlayer.vue" */ "@/components/EmbedVideoPlayer")),
-    PruebaColeccionCarruselesSeriesXGeneros: defineAsyncComponent(() => import(/* webpackChunkName: "PruebaColeccionCarruselesSeriesXGeneros.vue" */ "@/components/series/PruebaColeccionCarruselesSeriesXGeneros")),
+    ColeccionCarruselesSeries: defineAsyncComponent(() => import(/* webpackChunkName: "ColeccionCarruselesSeries.vue" */ "@/components/series/ColeccionCarruselesSeries")),
     Footer: defineAsyncComponent(() => import(/* webpackChunkName: "Footer.vue" */ "@/components/Footer")),
     TituloSerie: defineAsyncComponent(() => import(/* webpackChunkName: "TituloSerie.vue" */ "@/components/series/TituloSerie")),
   },

@@ -17,8 +17,8 @@ const routes = [
     { path: '/peliculas/genero', name: 'peliculas_genero', component: () => import(/* webpackChunkName: "PeliculasXGeneros.vue" */ '../components/peliculas/PeliculasXGeneros'), },
     { path: '/peliculas/vsts', name: 'visualizar_todas_peliculas', component: () => import(/* webpackChunkName: "VisualizarTodasPeliculas.vue" */ '../components/peliculas/VisualizarTodasPeliculas') },
     { path: '/novedades', name: 'novedades', component: () => import(/* webpackChunkName: "Novedades.vue" */ '../components/Novedades') },
-    { path: '/mi_lista', name: 'mi_lista', component: () => import(/* webpackChunkName: "MiLista.vue" */ '../components/MiLista') },
-    { path: '/explora_por_idiomas', name: 'explora_por_idiomas', component: () => import(/* webpackChunkName: "ExploraIdiomas.vue" */ '../components/ExploraIdiomas') },
+    { path: '/mi_lista', name: 'mi_lista', component: () => import(/* webpackChunkName: "MiLista.vue" */ '../components/mi_lista/MiLista') },
+    { path: '/explora_por_idiomas', name: 'explora_por_idiomas', component: () => import(/* webpackChunkName: "ExploraIdiomas.vue" */ '../components/explora_por_idiomas/ExploraIdiomas') },
     { path: '/search', name: 'resultado_busqueda_pelicula', component: () => import(/* webpackChunkName: "VisualizarBusquedaPelicula.vue" */ '../components/VisualizarBusquedaPelicula') },
     // page 404 Not Found
     // se busca cualquier url que no tenga match con los especificados aca en las rutas

@@ -34,7 +34,7 @@
       <div class="wrap_container">
         <div class="container">
           <div class="container_movies" v-for="data in dataPosterMovie" :key="data">
-            <img class="img_poster" :src="link_img + data.poster_path" :alt="data.name" />
+            <img :src="link_img + data.poster_path" :alt="data.name" />
           </div>
         </div>
       </div>

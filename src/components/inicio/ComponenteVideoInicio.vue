@@ -125,7 +125,7 @@ export default {
           checkIfYTLoaded().then(() => {
             setTimeout(() => {
               createPlayer();
-          }, 2000);
+          }, 4000);
         });
       });
     });
@@ -222,7 +222,7 @@ export default {
       setTimeout(() => {
         // se reproduce el video
         playVideo();
-      }, 5000);
+      }, 3000);
     }
 
     // 5. The API calls this function when the player's state changes.

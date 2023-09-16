@@ -1,5 +1,13 @@
 <template>
   <div class="wrapper">
+    <!-- usamos el v-show en vez del v-if puesto que este ultimo tiene valores de renderizacion mucho mas altos que el v-show 
+      v-if = destruye y vuelve a renderizar el elemento para hacerlo visible o quitarlo segun corresponda 
+      (esto crea costes de alternancia mayores en la renderizacion)
+      v-show = oculta y muestra el elemento para hacerlo visible o quitarlo segun corresponda
+      (esto es similar a usar en css el visibility: hiiden puesto que el elemento solo se oculta pero sigue existiendo en el DOM) -->
+      <!--                                es posible pasar data de esta manera a traves de las props directamente -->
+      <!--                               :objectData="[ idMovie, titleMovie, backgroundImageMovie, videoId ]" -->
+    <MasInformacion v-show="showOverlay" ></MasInformacion>
     <div class="container">
       <div class="container_data">
         <!-- flagDataRenderized es para que mientras la data aun no sea visible 
@@ -20,11 +28,9 @@
                   <font-awesome-icon class="icon" icon="fa-solid fa-play" />
                   <span>Reproducir</span>
                 </button>
-                <button class="button_info">
-                  <font-awesome-icon
-                    class="icon"
-                    icon="fa-solid fa-circle-info"
-                  />
+                <!--                        @click="openOverlayMoreInformation(idMovie) -->
+                <button class="button_info" >
+                  <font-awesome-icon class="icon" icon="fa-solid fa-circle-info"/>
                   <span>Más información</span>
                 </button>
               </div>
@@ -56,7 +62,8 @@
 </template>
 
 <script>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed, watch, defineAsyncComponent, provide } from "vue";
+import { useStore } from "vuex";
 
 export default {
   // aca se reciben mediante las props la data que viene desde el componente padre
@@ -65,7 +72,7 @@ export default {
   //       una variable en el onMounted para luego exponerla en el return, para ello ver el ejemplo de titleMovie o overviewMovie
   //       que una vez recibidas en el props se exponen inmediatamente en el template
   props: {
-    // recibe la key del video desde el componente padre
+    // recibe la key del video(Youtube) desde el componente padre
     videoId: {
       type: String,
       required: true,
@@ -105,8 +112,11 @@ export default {
     // recibe la duracion en segundos del video
     timeVideoId: {
       type: Number,
-      required: true,
+      required: false,
     },
+  },
+  components:{
+    MasInformacion: defineAsyncComponent(() => import(/* webpackChunkName: "MasInformacion.vue" */ "@/components/MasInformacion")),
   },
   emits: [
     "ready",
@@ -139,6 +149,12 @@ export default {
     const flagEstateVideo = ref(null);
     // bandera para ocultar la certificacion y los botones mientras aun no esta la carga completa de la data
     const flagDataRenderized = ref(false);
+    const showOverlay = ref(false);
+    const store = useStore();
+    const objectDataMovie = ref(null);
+    const idPelicula = ref(0);
+
+    const stateShowOverlay = computed(() => store.state.showOverlay);
 
     onMounted(async () => {
       // asignar el id al <iframe>
@@ -147,10 +163,21 @@ export default {
         checkIfYTLoaded().then(() => {
           setTimeout(() => {
             createPlayer();
-          }, 2000);
+          }, 4000);
         });
       });
     });
+
+    watch(() => stateShowOverlay.value, (newValue) => {
+      showOverlay.value = newValue;
+    });
+
+
+    const openOverlayMoreInformation = (idM) => {
+      showOverlay.value = !showOverlay.value;
+      store.dispatch("actualizarShowOverlay", showOverlay.value);
+      idPelicula.value = idM;
+    }
     
     // desmutea el video reproducido y oculta el mismo boton
     function activateVolumeVideo() {
@@ -286,7 +313,7 @@ export default {
       setTimeout(() => {
         // se reproduce el video
         playVideo();
-      }, 5000);
+      }, 3000);
     }
 
     // 5. The API calls this function when the player's state changes.
@@ -430,6 +457,8 @@ export default {
       return player.value.loadVideoById({ videoId, startSeconds, endSeconds });
     }
 
+    provide('id', idPelicula);
+
     return {
       player,
       playerId,
@@ -444,6 +473,9 @@ export default {
       deactivateVolumeVideo,
       activateVolumeVideo,
       flagDataRenderized,
+      openOverlayMoreInformation,
+      showOverlay,
+      objectDataMovie,
     };
   },
 };

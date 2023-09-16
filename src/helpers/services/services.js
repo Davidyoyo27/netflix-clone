@@ -155,4 +155,25 @@ export default {
     }
   },
 
+  // endpoint trailer de peliculas con filtro por ID
+  get_data_movie_by_ID: async (id) => {
+    try {
+      const axiosConfig = {
+        baseURL: process.env.VUE_APP_BASE_URL_MOVIEDB,
+        url: `/movie/${id}?language=es-MX`,
+
+        headers: {
+          Authorization: `Bearer ${process.env.VUE_APP_ACCESS_TOKEN_MOVIEDB}`,
+        },
+
+        method: "get",
+      };
+
+      const { data } = await axios.request(axiosConfig);
+      return { ok: true, data };
+    } catch (err) {
+      return { ok: false, error: err.message };
+    }
+  },
+
 };

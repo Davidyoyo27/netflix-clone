@@ -27,6 +27,7 @@ import {
   faVolumeXmark,
   faAlignLeft,
   faTableCellsLarge,
+  faCircleXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { faFacebookF, faInstagram, faTwitter, faYoutube } from '@fortawesome/free-brands-svg-icons';
 
@@ -55,6 +56,7 @@ library.add(
   faYoutube,
   faAlignLeft,
   faTableCellsLarge,
+  faCircleXmark
 );
 // vuex
 import store from './store'; // Importa el store

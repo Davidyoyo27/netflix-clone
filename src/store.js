@@ -13,6 +13,8 @@ const store = createStore({
             filtroIdiomas: '',
             // variable usada para capturar la data del componente "ComboboxSugerencias.vue"
             filtroSugerencias: '',
+            // variable que contiene el estado del elemento superpuesto de "Mas Informacion" del video
+            showOverlay: false,
         }
     },
     mutations: {
@@ -29,6 +31,9 @@ const store = createStore({
         },
         setFiltroSugerencias(state, nuevoValor){
             state.filtroSugerencias = nuevoValor;
+        },
+        setShowOverlay(state, nuevoValor){
+            state.showOverlay = nuevoValor;
         }
     },
     actions: {
@@ -46,6 +51,9 @@ const store = createStore({
         },
         actualizarFiltroSugerencias({ commit }, nuevoValor){
             commit('setFiltroSugerencias', nuevoValor);
+        },
+        actualizarShowOverlay({ commit }, nuevoValor){
+            commit('setShowOverlay', nuevoValor);
         }
     }
 });

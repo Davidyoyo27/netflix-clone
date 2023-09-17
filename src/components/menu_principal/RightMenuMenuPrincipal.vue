@@ -94,15 +94,15 @@
 </template>
 
 <script>
-import img_perfil_menu from "@/assets/image-icon-netflix.png";
-import img_perfil_2_right_menu from "@/assets/image-icon-netflix-2.png";
-import img_perfil_3_right_menu from "@/assets/image-icon-netflix-3.png";
-import img_perfil_4_right_menu from "@/assets/image-icon-netflix-4.png";
-import img_perfil_ninos_right_menu from "@/assets/image-icon-netflix-5.png";
-import img_icon_admin_perfil_menu from "@/assets/pencil-icon.jpg";
+import img_perfil_menu from "@/assets/image-icon-netflix-min.png";
+import img_perfil_2_right_menu from "@/assets/image-icon-netflix-2-min.png";
+import img_perfil_3_right_menu from "@/assets/image-icon-netflix-3-min.png";
+import img_perfil_4_right_menu from "@/assets/image-icon-netflix-4-min.png";
+import img_perfil_ninos_right_menu from "@/assets/image-icon-netflix-5-min.png";
+import img_icon_admin_perfil_menu from "@/assets/pencil-icon.webp";
 import img_icon_transfer_perfil from "@/assets/transfer-perfil-icon.jpg";
-import img_icon_account from "@/assets/perfil-icon.png";
-import img_icon_center_of_help from "@/assets/interrogation-icon.png";
+import img_icon_account from "@/assets/perfil-icon-min.png";
+import img_icon_center_of_help from "@/assets/interrogation-icon-min.png";
 
 export default {
   setup() {

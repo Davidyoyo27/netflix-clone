@@ -54,16 +54,16 @@
 </template>
 
 <script>
-import img_uno from "@/assets/1.png";
-import img_dos from "@/assets/2.png";
-import img_tres from "@/assets/3.png";
-import img_cuatro from "@/assets/4.png";
-import img_cinco from "@/assets/5.png";
-import img_seis from "@/assets/6.png";
-import img_siete from "@/assets/7.png";
-import img_ocho from "@/assets/8.png";
-import img_nueve from "@/assets/9.png";
-import img_diez from "@/assets/10.png";
+import img_uno from "@/assets/1.webp";
+import img_dos from "@/assets/2.webp";
+import img_tres from "@/assets/3.webp";
+import img_cuatro from "@/assets/4.webp";
+import img_cinco from "@/assets/5.webp";
+import img_seis from "@/assets/6.webp";
+import img_siete from "@/assets/7.webp";
+import img_ocho from "@/assets/8.webp";
+import img_nueve from "@/assets/9.webp";
+import img_diez from "@/assets/10.webp";
 import { onMounted, ref, reactive } from "vue";
 // import Swiper core and required modules
 import { Navigation, Pagination, Scrollbar, A11y } from "swiper";

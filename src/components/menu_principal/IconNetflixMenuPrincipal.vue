@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import img_logo_principal_menu from "@/assets/Netflix_2015_logo.svg.png";
+import img_logo_principal_menu from "@/assets/Netflix_2015_logo.svg-min.png";
 
 export default {
   setup() {

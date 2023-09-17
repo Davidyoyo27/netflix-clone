@@ -17,19 +17,9 @@
     </div>
 </template>
 
-<script>
-export default {
-  props: {},
-  data() {
-    return {};
-  },
-  computed: {},
-};
-</script>
-
 <style scoped>
 .container {
-  background-image: url(../assets/Color_negro.jpg);
+  background-image: url(../assets/Color_negro.webp);
   /* con  propiedad fixed usando un background de una imagen esta permite 
   que se ocupe todo el contenido de la pantalla sin importar su tamaño*/
   position: fixed;
